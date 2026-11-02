@@ -19,6 +19,25 @@ import re
 
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 API = "https://generativelanguage.googleapis.com/v1beta/models"
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_API = "https://api.groq.com/openai/v1/chat/completions"
+
+
+def _groq_json(prompt):
+    """Groq (free tier) — the backup brain when Gemini is unavailable."""
+    import requests
+    r = requests.post(GROQ_API,
+                      headers={"Authorization":
+                               f"Bearer {os.environ['GROQ_API_KEY']}"},
+                      json={"model": GROQ_MODEL,
+                            "messages": [{"role": "user", "content": prompt}],
+                            "temperature": 0.7,
+                            "response_format": {"type": "json_object"}},
+                      timeout=60)
+    r.raise_for_status()
+    text = r.json()["choices"][0]["message"]["content"]
+    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
+    return json.loads(text)
 
 
 def _gemini_json(prompt):
@@ -141,16 +160,26 @@ def _validate(raw, topics):
 
 
 def generate(topics, topic):
-    """Returns {yt_title, caption, description, yt_tags} or None."""
-    if not os.environ.get("GEMINI_API_KEY"):
-        print("gen_meta: GEMINI_API_KEY not set — fallback metadata")
+    """Returns {yt_title, caption, description, yt_tags} or None.
+    Provider chain: Gemini, then Groq (both free), then None —
+    the caller falls back to deterministic rotation. Never raises."""
+    prompt = _prompt(topics, topic, _trending_hint())
+    providers = []
+    if os.environ.get("GEMINI_API_KEY"):
+        providers.append(("Gemini", _gemini_json))
+    if os.environ.get("GROQ_API_KEY"):
+        providers.append(("Groq", _groq_json))
+    if not providers:
+        print("gen_meta: no AI key set — fallback metadata")
         return None
-    try:
-        raw = _gemini_json(_prompt(topics, topic, _trending_hint()))
-        meta = _validate(raw, topics)
-        if meta is None:
-            print("gen_meta: Gemini output failed validation — fallback")
-        return meta
-    except Exception as e:
-        print(f"gen_meta: failed ({e}) — fallback metadata")
-        return None
+    for name, fn in providers:
+        try:
+            meta = _validate(fn(prompt), topics)
+            if meta is not None:
+                print(f"gen_meta: {name} metadata ready")
+                return meta
+            print(f"gen_meta: {name} output failed validation")
+        except Exception as e:
+            print(f"gen_meta: {name} failed ({e})")
+    print("gen_meta: all providers failed — fallback metadata")
+    return None
