@@ -58,6 +58,7 @@ _mkmod("publish_ig", publish=_pub("instagram", "ig-1"))
 _mkmod("publish_yt", publish=_pub("youtube", "yt-1"))
 _mkmod("preflight", check_all=lambda: [(p, True, "ok") for p in
                                         ("facebook", "instagram", "youtube")])
+_mkmod("gen_meta", generate=lambda *a, **k: None)
 
 # File-backed stub vault (same API as scripts/vault.py).
 _vault_dir = tempfile.mkdtemp(prefix="vault-stub-")
