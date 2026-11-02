@@ -1,1 +1,198 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwoiIiJSYWhhc3lhIEJoYXJhdCDigJQgdmlkZW8gYnVpbGRlci4KCk5hcnJhdGlvbiAoZWRnZS10dHMsIEhpbmRpKSArIHJlYWwgcGhvdG9zIG9mIHRoZSBwbGFjZSAoV2lraW1lZGlhIENvbW1vbnMpCisgc2xvdyB6b29tIChLZW4gQnVybnMpICsgYnVybnQtaW4gRGV2YW5hZ2FyaSBjYXB0aW9ucyAtPiB2ZXJ0aWNhbCAxMDgweDE5MjAgTVA0LgoKTm8gQUkgdmlkZW8gZ2VuZXJhdGlvbiBoZXJlOiBHaXRIdWIgQWN0aW9ucyBjYW5ub3QgY2FsbCBNdXNlJ3MgdmlkZW8gbW9kZWwuCklmIENvbW1vbnMgcmV0dXJucyB0b28gZmV3IHBob3RvcywgdGhlIGJ1aWxkZXIgZmFsbHMgYmFjayB0byBkYXJrIHRpdGxlCmNhcmRzIHNvIHRoZSBydW4gc3RpbGwgcHJvZHVjZXMgYSB2aWRlbyBpbnN0ZWFkIG9mIGZhaWxpbmcgc2lsZW50bHkuCiIiIgppbXBvcnQgYXN5bmNpbwppbXBvcnQganNvbgppbXBvcnQgb3MKaW1wb3J0IHJlCmltcG9ydCBzdWJwcm9jZXNzCmltcG9ydCBzeXMKaW1wb3J0IHVybGxpYi5wYXJzZQoKaW1wb3J0IHJlcXVlc3RzCgpXLCBIID0gMTA4MCwgMTkyMApWT0lDRSA9IG9zLmVudmlyb24uZ2V0KCJUVFNfVk9JQ0UiLCAiaGktSU4tTWFkaHVyTmV1cmFsIikKUkFURSA9IG9zLmVudmlyb24uZ2V0KCJUVFNfUkFURSIsICIrNiUiKQpQSVRDSCA9IG9zLmVudmlyb24uZ2V0KCJUVFNfUElUQ0giLCAiLTJIeiIpClVBID0geyJVc2VyLUFnZW50IjogIlJhaGFzeWFCaGFyYXRCb3QvMS4wIChlZHVjYXRpb25hbCBjaGFubmVsIGF1dG9tYXRpb24pIn0KCgpkZWYgc2goY21kKToKICAgIHByaW50KCIrIiwgIiAiLmpvaW4oY21kWzozXSksICIuLi4iLCBmbHVzaD1UcnVlKQogICAgciA9IHN1YnByb2Nlc3MucnVuKGNtZCwgY2FwdHVyZV9vdXRwdXQ9VHJ1ZSwgdGV4dD1UcnVlKQogICAgaWYgci5yZXR1cm5jb2RlICE9IDA6CiAgICAgICAgcmFpc2UgUnVudGltZUVycm9yKGYiY29tbWFuZCBmYWlsZWQ6IHtjbWRbMF19XG57ci5zdGRlcnJbLTIwMDA6XX0iKQogICAgcmV0dXJuIHIuc3Rkb3V0CgoKZGVmIHByb2JlX2R1cmF0aW9uKHBhdGgpOgogICAgb3V0ID0gc2goWyJmZnByb2JlIiwgIi12IiwgImVycm9yIiwgIi1zaG93X2VudHJpZXMiLCAiZm9ybWF0PWR1cmF0aW9uIiwKICAgICAgICAgICAgICAiLW9mIiwgImpzb24iLCBwYXRoXSkKICAgIHJldHVybiBmbG9hdChqc29uLmxvYWRzKG91dClbImZvcm1hdCJdWyJkdXJhdGlvbiJdKQoKCmFzeW5jIGRlZiB0dHModGV4dCwgb3V0X21wMyk6CiAgICBpbXBvcnQgZWRnZV90dHMKICAgIGF3YWl0IGVkZ2VfdHRzLkNvbW11bmljYXRlKHRleHQsIFZPSUNFLCByYXRlPVJBVEUsIHBpdGNoPVBJVENIKS5zYXZlKG91dF9tcDMpCgoKZGVmIHNwbGl0X3NlbnRlbmNlcyh0ZXh0KToKICAgIHBhcnRzID0gcmUuc3BsaXQociIoPzw9W+ClpCE/4oCmXSlccysiLCB0ZXh0LnN0cmlwKCkpCiAgICByZXR1cm4gW3Auc3RyaXAoKSBmb3IgcCBpbiBwYXJ0cyBpZiBwLnN0cmlwKCldCgoKZGVmIHdyYXBfY2FwdGlvbihzLCB3aWR0aD0yNik6CiAgICB3b3JkcywgbGluZXMsIGN1ciA9IHMuc3BsaXQoKSwgW10sICIiCiAgICBmb3IgdyBpbiB3b3JkczoKICAgICAgICBpZiBsZW4oY3VyKSArIGxlbih3KSArIDEgPD0gd2lkdGg6CiAgICAgICAgICAgIGN1ciA9IChjdXIgKyAiICIgKyB3KS5zdHJpcCgpCiAgICAgICAgZWxzZToKICAgICAgICAgICAgaWYgY3VyOgogICAgICAgICAgICAgICAgbGluZXMuYXBwZW5kKGN1cikKICAgICAgICAgICAgY3VyID0gdwogICAgaWYgY3VyOgogICAgICAgIGxpbmVzLmFwcGVuZChjdXIpCiAgICAjIG1lcmdlIGludG8gYXQgbW9zdCAyIGRpc3BsYXkgbGluZXMgcGVyIGN1ZSBieSBqb2luaW5nIGluIHBhaXJzCiAgICBjdWVzID0gW10KICAgIGkgPSAwCiAgICB3aGlsZSBpIDwgbGVuKGxpbmVzKToKICAgICAgICBjdWVzLmFwcGVuZCgiICIuam9pbihsaW5lc1tpOmkgKyAyXSkpCiAgICAgICAgaSArPSAyCiAgICByZXR1cm4gY3VlcwoKCmRlZiB0cyhzZWMpOgogICAgbXMgPSBpbnQocm91bmQoc2VjICogMTAwMCkpCiAgICBoLCBtcyA9IGRpdm1vZChtcywgMzYwMDAwMCkKICAgIG0sIG1zID0gZGl2bW9kKG1zLCA2MDAwMCkKICAgIHMsIG1zID0gZGl2bW9kKG1zLCAxMDAwKQogICAgcmV0dXJuIGYie2g6MDJkfTp7bTowMmR9OntzOjAyZH0se21zOjAzZH0iCgoKZGVmIG1ha2Vfc3J0KHRleHQsIGR1cmF0aW9uLCBwYXRoKToKICAgIHNlbnRlbmNlcyA9IHNwbGl0X3NlbnRlbmNlcyh0ZXh0KQogICAgY3VlcyA9IFtdCiAgICBmb3IgcyBpbiBzZW50ZW5jZXM6CiAgICAgICAgY3Vlcy5leHRlbmQod3JhcF9jYXB0aW9uKHMpKQogICAgdG90YWxfY2hhcnMgPSBzdW0obGVuKGMpIGZvciBjIGluIGN1ZXMpIG9yIDEKICAgIHQgPSAwLjAKICAgIHdpdGggb3BlbihwYXRoLCAidyIsIGVuY29kaW5nPSJ1dGYtOCIpIGFzIGY6CiAgICAgICAgZm9yIGksIGMgaW4gZW51bWVyYXRlKGN1ZXMsIDEpOgogICAgICAgICAgICBkID0gbWF4KDEuMiwgZHVyYXRpb24gKiBsZW4oYykgLyB0b3RhbF9jaGFycykKICAgICAgICAgICAgZi53cml0ZShmIntpfVxue3RzKHQpfSAtLT4ge3RzKG1pbihkdXJhdGlvbiwgdCArIGQpKX1cbntjfVxuXG4iKQogICAgICAgICAgICB0ICs9IGQKCgpkZWYgZmV0Y2hfaW1hZ2VzKHF1ZXJ5LCBvdXRkaXIsIHdhbnQ9NCk6CiAgICBwYXJhbXMgPSB7CiAgICAgICAgImFjdGlvbiI6ICJxdWVyeSIsICJmb3JtYXQiOiAianNvbiIsICJnZW5lcmF0b3IiOiAic2VhcmNoIiwKICAgICAgICAiZ3NybmFtZXNwYWNlIjogNiwgImdzcnNlYXJjaCI6IGYie3F1ZXJ5fSBmaWxldHlwZTpiaXRtYXAiLAogICAgICAgICJnc3JsaW1pdCI6IDE0LCAicHJvcCI6ICJpbWFnZWluZm8iLAogICAgICAgICJpaXByb3AiOiAidXJsfHNpemV8bWltZSIsICJpaXVybHdpZHRoIjogMTYwMCwKICAgIH0KICAgIHVybCA9ICJodHRwczovL2NvbW1vbnMud2lraW1lZGlhLm9yZy93L2FwaS5waHA/IiArIHVybGxpYi5wYXJzZS51cmxlbmNvZGUocGFyYW1zKQogICAgdHJ5OgogICAgICAgIHBhZ2VzID0gcmVxdWVzdHMuZ2V0KHVybCwgaGVhZGVycz1VQSwgdGltZW91dD0zMCkuanNvbigpWyJxdWVyeSJdWyJwYWdlcyJdCiAgICBleGNlcHQgRXhjZXB0aW9uIGFzIGU6CiAgICAgICAgcHJpbnQoZiJDb21tb25zIHNlYXJjaCBmYWlsZWQ6IHtlfSIpCiAgICAgICAgcmV0dXJuIFtdCiAgICBnb3QgPSBbXQogICAgZm9yIHAgaW4gc29ydGVkKHBhZ2VzLnZhbHVlcygpLCBrZXk9bGFtYmRhIHg6IHguZ2V0KCJpbmRleCIsIDk5KSk6CiAgICAgICAgaW5mbyA9IChwLmdldCgiaW1hZ2VpbmZvIikgb3IgW3t9XSlbMF0KICAgICAgICBpZiBpbmZvLmdldCgibWltZSIpIG5vdCBpbiAoImltYWdlL2pwZWciLCAiaW1hZ2UvcG5nIik6CiAgICAgICAgICAgIGNvbnRpbnVlCiAgICAgICAgaWYgKGluZm8uZ2V0KCJ3aWR0aCIpIG9yIDApIDwgOTAwOgogICAgICAgICAgICBjb250aW51ZQogICAgICAgIHNyYyA9IGluZm8uZ2V0KCJ0aHVtYnVybCIpIG9yIGluZm8uZ2V0KCJ1cmwiKQogICAgICAgIHRyeToKICAgICAgICAgICAgciA9IHJlcXVlc3RzLmdldChzcmMsIGhlYWRlcnM9VUEsIHRpbWVvdXQ9NDApCiAgICAgICAgICAgIHIucmFpc2VfZm9yX3N0YXR1cygpCiAgICAgICAgICAgIGZwID0gb3MucGF0aC5qb2luKG91dGRpciwgZiJpbWd7bGVuKGdvdCl9LmpwZyIpCiAgICAgICAgICAgIHdpdGggb3BlbihmcCwgIndiIikgYXMgZjoKICAgICAgICAgICAgICAgIGYud3JpdGUoci5jb250ZW50KQogICAgICAgICAgICBnb3QuYXBwZW5kKGZwKQogICAgICAgICAgICBwcmludCgiaW1hZ2U6Iiwgc3JjKQogICAgICAgIGV4Y2VwdCBFeGNlcHRpb24gYXMgZToKICAgICAgICAgICAgcHJpbnQoImltYWdlIGRvd25sb2FkIGZhaWxlZDoiLCBlKQogICAgICAgIGlmIGxlbihnb3QpID49IHdhbnQ6CiAgICAgICAgICAgIGJyZWFrCiAgICByZXR1cm4gZ290CgoKZGVmIHNlZ19mcm9tX2ltYWdlKGltZywgZHVyLCBvdXQpOgogICAgIyBzY2FsZSB0byBjb3ZlciAxMDgweDE5MjAsIHRoZW4gc2xvdyB6b29tLWluCiAgICB2ZiA9IChmInNjYWxlPXtXICogMn06e0ggKiAyfTpmb3JjZV9vcmlnaW5hbF9hc3BlY3RfcmF0aW89aW5jcmVhc2UsIgogICAgICAgICAgZiJjcm9wPXtXICogMn06e0ggKiAyfSwiCiAgICAgICAgICBmInpvb21wYW49ej0nbWluKHpvb20rMC4wMDA3LDEuMTQpJzpkPXtpbnQoZHVyICogMzApfTpzPXtXfXh7SH06ZnBzPTMwLCIKICAgICAgICAgICJzZXRzYXI9MSIpCiAgICBzaChbImZmbXBlZyIsICIteSIsICItdiIsICJlcnJvciIsICItbG9vcCIsICIxIiwgIi1pIiwgaW1nLAogICAgICAgICItdmYiLCB2ZiwgIi10IiwgZiJ7ZHVyOi4yZn0iLCAiLWM6diIsICJsaWJ4MjY0IiwgIi1waXhfZm10IiwgInl1djQyMHAiLCBvdXRdKQoKCmRlZiBzZWdfZnJvbV9jYXJkKHRleHQsIGR1ciwgb3V0KToKICAgICMgZmFsbGJhY2s6IGRhcmsgY2FyZCB3aXRoIHRoZSB0b3BpYyB0aXRsZSBpbiBEZXZhbmFnYXJpCiAgICBzYWZlID0gdGV4dC5yZXBsYWNlKCInIiwgIiIpLnJlcGxhY2UoIjoiLCAiICIpCiAgICB2ZiA9IChmImRyYXd0ZXh0PWZvbnRmaWxlPS91c3Ivc2hhcmUvZm9udHMvdHJ1ZXR5cGUvbm90by9Ob3RvU2Fuc0RldmFuYWdhcmktQm9sZC50dGY6IgogICAgICAgICAgZiJ0ZXh0PSd7c2FmZX0nOmZvbnRjb2xvcj0weEVFQzQ1RTpmb250c2l6ZT02NDoiCiAgICAgICAgICAieD0ody10ZXh0X3cpLzI6eT0oaC10ZXh0X2gpLzI6bGluZV9zcGFjaW5nPTE0LCIKICAgICAgICAgIGYiZm9ybWF0PXl1djQyMHAiKQogICAgc2goWyJmZm1wZWciLCAiLXkiLCAiLXYiLCAiZXJyb3IiLCAiLWYiLCAibGF2ZmkiLAogICAgICAgICItaSIsIGYiY29sb3I9Yz0weDBCMEIxMDpzPXtXfXh7SH06cj0zMCIsICItdmYiLCB2ZiwKICAgICAgICAiLXQiLCBmIntkdXI6LjJmfSIsICItYzp2IiwgImxpYngyNjQiLCBvdXRdKQoKCmRlZiBidWlsZCh0b3BpYywgd29ya2Rpcik6CiAgICBvcy5tYWtlZGlycyh3b3JrZGlyLCBleGlzdF9vaz1UcnVlKQogICAgc2NyaXB0ID0gdG9waWNbInNjcmlwdCJdCiAgICB2b2ljZV9tcDMgPSBvcy5wYXRoLmpvaW4od29ya2RpciwgInZvaWNlLm1wMyIpCiAgICBhc3luY2lvLnJ1bih0dHMoc2NyaXB0LCB2b2ljZV9tcDMpKQogICAgZHVyYXRpb24gPSBwcm9iZV9kdXJhdGlvbih2b2ljZV9tcDMpCiAgICBwcmludChmIm5hcnJhdGlvbjoge2R1cmF0aW9uOi4xZn1zIikKCiAgICBzcnQgPSBvcy5wYXRoLmpvaW4od29ya2RpciwgImNhcHRpb25zLnNydCIpCiAgICBtYWtlX3NydChzY3JpcHQsIGR1cmF0aW9uLCBzcnQpCgogICAgaW1hZ2VzID0gZmV0Y2hfaW1hZ2VzKHRvcGljWyJpbWFnZV9xdWVyeSJdLCB3b3JrZGlyKQogICAgbnNlZyA9IG1heCgyLCBsZW4oaW1hZ2VzKSkgaWYgaW1hZ2VzIGVsc2UgMwogICAgc2VnX2R1ciA9IGR1cmF0aW9uIC8gbnNlZwogICAgc2VncyA9IFtdCiAgICBmb3IgaSBpbiByYW5nZShuc2VnKToKICAgICAgICBzZWcgPSBvcy5wYXRoLmpvaW4od29ya2RpciwgZiJzZWd7aX0ubXA0IikKICAgICAgICBpZiBpbWFnZXM6CiAgICAgICAgICAgIHNlZ19mcm9tX2ltYWdlKGltYWdlc1tpICUgbGVuKGltYWdlcyldLCBzZWdfZHVyLCBzZWcpCiAgICAgICAgZWxzZToKICAgICAgICAgICAgbGFiZWwgPSB0b3BpY1sidGl0bGUiXS5zcGxpdCgifCIpWzBdLnN0cmlwKCkgaWYgaSA9PSAwIGVsc2UgdG9waWNbImhvb2siXQogICAgICAgICAgICBzZWdfZnJvbV9jYXJkKGxhYmVsIG9yICLgpLDgpLngpLjgpY3gpK8g4KSt4KS+4KSw4KSkIiwgc2VnX2R1ciwgc2VnKQogICAgICAgIHNlZ3MuYXBwZW5kKHNlZykKCiAgICBsaXN0ZmlsZSA9IG9zLnBhdGguam9pbih3b3JrZGlyLCAiY29uY2F0LnR4dCIpCiAgICB3aXRoIG9wZW4obGlzdGZpbGUsICJ3IikgYXMgZjoKICAgICAgICBmb3IgcyBpbiBzZWdzOgogICAgICAgICAgICBmLndyaXRlKGYiZmlsZSAne29zLnBhdGguYWJzcGF0aChzKX0nXG4iKQogICAgc2lsZW50ID0gb3MucGF0aC5qb2luKHdvcmtkaXIsICJzaWxlbnQubXA0IikKICAgIHNoKFsiZmZtcGVnIiwgIi15IiwgIi12IiwgImVycm9yIiwgIi1mIiwgImNvbmNhdCIsICItc2FmZSIsICIwIiwKICAgICAgICAiLWkiLCBsaXN0ZmlsZSwgIi1jIiwgImNvcHkiLCBzaWxlbnRdKQoKICAgIG91dCA9IG9zLnBhdGguam9pbih3b3JrZGlyLCAidmlkZW8ubXA0IikKICAgIHN1YiA9IChmInN1YnRpdGxlcz17c3J0fTpmb3JjZV9zdHlsZT0nRm9udE5hbWU9Tm90byBTYW5zIERldmFuYWdhcmksIgogICAgICAgICAgICJGb250U2l6ZT0xNSxQcmltYXJ5Q29sb3VyPSZIRkZGRkZGLE91dGxpbmVDb2xvdXI9Jkg5MDAwMDAwMCwiCiAgICAgICAgICAgIk91dGxpbmU9MixBbGlnbm1lbnQ9MixNYXJnaW5WPTkwJyIpCiAgICBzaChbImZmbXBlZyIsICIteSIsICItdiIsICJlcnJvciIsICItaSIsIHNpbGVudCwgIi1pIiwgdm9pY2VfbXAzLAogICAgICAgICItdmYiLCBzdWIsICItbWFwIiwgIjA6diIsICItbWFwIiwgIjE6YSIsICItYzp2IiwgImxpYngyNjQiLAogICAgICAgICItcHJlc2V0IiwgIm1lZGl1bSIsICItY3JmIiwgIjIwIiwgIi1jOmEiLCAiYWFjIiwgIi1iOmEiLCAiMTYwayIsCiAgICAgICAgIi1zaG9ydGVzdCIsIG91dF0pCiAgICBwcmludCgidmlkZW86Iiwgb3V0LCBmIntvcy5wYXRoLmdldHNpemUob3V0KSAvIDFlNjouMWZ9IE1CIikKICAgIHJldHVybiB7InZpZGVvIjogb3V0LCAiZHVyYXRpb24iOiBkdXJhdGlvbn0KCgppZiBfX25hbWVfXyA9PSAiX19tYWluX18iOgogICAgdG9waWMgPSBqc29uLmxvYWQob3BlbihzeXMuYXJndlsxXSwgZW5jb2Rpbmc9InV0Zi04IikpCiAgICBwcmludChqc29uLmR1bXBzKGJ1aWxkKHRvcGljLCBzeXMuYXJndlsyXSkpKQo=
+#!/usr/bin/env python3
+"""Rahasya Bharat — video builder.
+
+Narration (edge-tts, Hindi) + real photos of the place (Wikimedia Commons)
++ slow zoom (Ken Burns) + burnt-in Devanagari captions -> vertical 1080x1920 MP4.
+
+No AI video generation here: GitHub Actions cannot call Muse's video model.
+If Commons returns too few photos, the builder falls back to dark title
+cards so the run still produces a video instead of failing silently.
+"""
+import asyncio
+import json
+import os
+import re
+import subprocess
+import sys
+import urllib.parse
+
+import requests
+
+W, H = 1080, 1920
+VOICE = os.environ.get("TTS_VOICE", "hi-IN-MadhurNeural")
+RATE = os.environ.get("TTS_RATE", "+6%")
+PITCH = os.environ.get("TTS_PITCH", "-2Hz")
+UA = {"User-Agent": "RahasyaBharatBot/1.0 (educational channel automation)"}
+
+
+def sh(cmd):
+    print("+", " ".join(cmd[:3]), "...", flush=True)
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError(f"command failed: {cmd[0]}\n{r.stderr[-2000:]}")
+    return r.stdout
+
+
+def probe_duration(path):
+    out = sh(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+              "-of", "json", path])
+    return float(json.loads(out)["format"]["duration"])
+
+
+async def tts(text, out_mp3):
+    import edge_tts
+    await edge_tts.Communicate(text, VOICE, rate=RATE, pitch=PITCH).save(out_mp3)
+
+
+def split_sentences(text):
+    parts = re.split(r"(?<=[।!?…])\s+", text.strip())
+    return [p.strip() for p in parts if p.strip()]
+
+
+def wrap_caption(s, width=26):
+    words, lines, cur = s.split(), [], ""
+    for w in words:
+        if len(cur) + len(w) + 1 <= width:
+            cur = (cur + " " + w).strip()
+        else:
+            if cur:
+                lines.append(cur)
+            cur = w
+    if cur:
+        lines.append(cur)
+    # merge into at most 2 display lines per cue by joining in pairs
+    cues = []
+    i = 0
+    while i < len(lines):
+        cues.append(" ".join(lines[i:i + 2]))
+        i += 2
+    return cues
+
+
+def ts(sec):
+    ms = int(round(sec * 1000))
+    h, ms = divmod(ms, 3600000)
+    m, ms = divmod(ms, 60000)
+    s, ms = divmod(ms, 1000)
+    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+
+def make_srt(text, duration, path):
+    sentences = split_sentences(text)
+    cues = []
+    for s in sentences:
+        cues.extend(wrap_caption(s))
+    total_chars = sum(len(c) for c in cues) or 1
+    t = 0.0
+    with open(path, "w", encoding="utf-8") as f:
+        for i, c in enumerate(cues, 1):
+            d = max(1.2, duration * len(c) / total_chars)
+            f.write(f"{i}\n{ts(t)} --> {ts(min(duration, t + d))}\n{c}\n\n")
+            t += d
+
+
+def fetch_images(query, outdir, want=4):
+    params = {
+        "action": "query", "format": "json", "generator": "search",
+        "gsrnamespace": 6, "gsrsearch": f"{query} filetype:bitmap",
+        "gsrlimit": 14, "prop": "imageinfo",
+        "iiprop": "url|size|mime", "iiurlwidth": 1600,
+    }
+    url = "https://commons.wikimedia.org/w/api.php?" + urllib.parse.urlencode(params)
+    try:
+        pages = requests.get(url, headers=UA, timeout=30).json()["query"]["pages"]
+    except Exception as e:
+        print(f"Commons search failed: {e}")
+        return []
+    got = []
+    for p in sorted(pages.values(), key=lambda x: x.get("index", 99)):
+        info = (p.get("imageinfo") or [{}])[0]
+        if info.get("mime") not in ("image/jpeg", "image/png"):
+            continue
+        if (info.get("width") or 0) < 900:
+            continue
+        src = info.get("thumburl") or info.get("url")
+        try:
+            r = requests.get(src, headers=UA, timeout=40)
+            r.raise_for_status()
+            fp = os.path.join(outdir, f"img{len(got)}.jpg")
+            with open(fp, "wb") as f:
+                f.write(r.content)
+            got.append(fp)
+            print("image:", src)
+        except Exception as e:
+            print("image download failed:", e)
+        if len(got) >= want:
+            break
+    return got
+
+
+def seg_from_image(img, dur, out):
+    # scale to cover 1080x1920, then slow zoom-in
+    vf = (f"scale={W * 2}:{H * 2}:force_original_aspect_ratio=increase,"
+          f"crop={W * 2}:{H * 2},"
+          f"zoompan=z='min(zoom+0.0007,1.14)':d={int(dur * 30)}:s={W}x{H}:fps=30,"
+          "setsar=1")
+    sh(["ffmpeg", "-y", "-v", "error", "-loop", "1", "-i", img,
+        "-vf", vf, "-t", f"{dur:.2f}", "-c:v", "libx264", "-pix_fmt", "yuv420p", out])
+
+
+def seg_from_card(text, dur, out):
+    # fallback: dark card with the topic title in Devanagari
+    safe = text.replace("'", "").replace(":", " ")
+    vf = (f"drawtext=fontfile=/usr/share/fonts/truetype/noto/NotoSansDevanagari-Bold.ttf:"
+          f"text='{safe}':fontcolor=0xEEC45E:fontsize=64:"
+          "x=(w-text_w)/2:y=(h-text_h)/2:line_spacing=14,"
+          f"format=yuv420p")
+    sh(["ffmpeg", "-y", "-v", "error", "-f", "lavfi",
+        "-i", f"color=c=0x0B0B10:s={W}x{H}:r=30", "-vf", vf,
+        "-t", f"{dur:.2f}", "-c:v", "libx264", out])
+
+
+def build(topic, workdir):
+    os.makedirs(workdir, exist_ok=True)
+    script = topic["script"]
+    voice_mp3 = os.path.join(workdir, "voice.mp3")
+    asyncio.run(tts(script, voice_mp3))
+    duration = probe_duration(voice_mp3)
+    print(f"narration: {duration:.1f}s")
+
+    srt = os.path.join(workdir, "captions.srt")
+    make_srt(script, duration, srt)
+
+    images = fetch_images(topic["image_query"], workdir)
+    nseg = max(2, len(images)) if images else 3
+    seg_dur = duration / nseg
+    segs = []
+    for i in range(nseg):
+        seg = os.path.join(workdir, f"seg{i}.mp4")
+        if images:
+            seg_from_image(images[i % len(images)], seg_dur, seg)
+        else:
+            label = topic["title"].split("|")[0].strip() if i == 0 else topic["hook"]
+            seg_from_card(label or "रहस्य भारत", seg_dur, seg)
+        segs.append(seg)
+
+    listfile = os.path.join(workdir, "concat.txt")
+    with open(listfile, "w") as f:
+        for s in segs:
+            f.write(f"file '{os.path.abspath(s)}'\n")
+    silent = os.path.join(workdir, "silent.mp4")
+    sh(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0",
+        "-i", listfile, "-c", "copy", silent])
+
+    out = os.path.join(workdir, "video.mp4")
+    sub = (f"subtitles={srt}:force_style='FontName=Noto Sans Devanagari,"
+           "FontSize=15,PrimaryColour=&HFFFFFF,OutlineColour=&H90000000,"
+           "Outline=2,Alignment=2,MarginV=90'")
+    sh(["ffmpeg", "-y", "-v", "error", "-i", silent, "-i", voice_mp3,
+        "-vf", sub, "-map", "0:v", "-map", "1:a", "-c:v", "libx264",
+        "-preset", "medium", "-crf", "20", "-c:a", "aac", "-b:a", "160k",
+        "-shortest", out])
+    print("video:", out, f"{os.path.getsize(out) / 1e6:.1f} MB")
+    return {"video": out, "duration": duration}
+
+
+if __name__ == "__main__":
+    topic = json.load(open(sys.argv[1], encoding="utf-8"))
+    print(json.dumps(build(topic, sys.argv[2])))
