@@ -75,14 +75,15 @@ Description extra: {topic['desc_extra']}
 Script: {topic['script']}{trend_line}
 
 SIRF ek JSON object do (koi extra text nahi):
-{{"yt_title": "...", "caption": "...", "description": "...", "tags": ["...", ...], "hashtags": ["#...", ...]}}
+{{"yt_title": "...", "caption": "...", "description": "...", "tags": ["...", ...], "hashtags": ["#...", ...], "question": "..."}}
 
 NIYAM (lazmi):
 - yt_title: Devanagari Hindi me, 90 characters se kam, script ke sach par based — jo baat script me nahi hai woh title me daalna MANA hai, jhootha clickbait MANA hai. Ant me "| Rahasya Bharat" jodo.
 - tags: 15-20 search phrases — is kahani ke sthan, naam, prashn par. Devanagari Hindi + Hinglish + English ka mix.
 - hashtags: 5-8, pehla #RahasyaBharat ho.
 - caption: pehli line hook wali ho, phir 2-3 chhoti lines, ant me ye line bilkul aisi: "{topics['outro_line']}" aur phir hashtags.
-- description: 3-5 lines — kahani ka saar aur ek sawal jo comment ke liye uksaye, ant me hashtags."""
+- description: 3-5 lines — kahani ka saar aur ek sawal jo comment ke liye uksaye, ant me hashtags.
+- question: ek chhota sawal (1 line) jo is video par pehle comment ke roop me lagega aur logon ko jawab dene par uksayega — is kahani se juda ho, "?" par khatm ho."""
 
 
 def _clean_tags(raw):
@@ -131,8 +132,12 @@ def _validate(raw, topics):
         caption += "\n" + " ".join(hashtags)
     if "#RahasyaBharat" not in description:
         description += "\n" + " ".join(hashtags)
-    return {"yt_title": title, "caption": caption,
+    meta = {"yt_title": title, "caption": caption,
             "description": description, "yt_tags": tags}
+    q = str(raw.get("question") or "").strip()
+    if 10 <= len(q) <= 160:
+        meta["question"] = q
+    return meta
 
 
 def generate(topics, topic):
