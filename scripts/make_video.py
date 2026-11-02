@@ -18,6 +18,8 @@ import urllib.parse
 
 import requests
 
+import stock_media
+
 W, H = 1080, 1920
 VOICE = os.environ.get("TTS_VOICE", "hi-IN-MadhurNeural")
 RATE = os.environ.get("TTS_RATE", "+6%")
@@ -168,6 +170,15 @@ def hook_filter(topic, workdir):
             "enable='between(t\\,0\\,3.2)'")
 
 
+def seg_from_clip(clip, dur, out):
+    # stock atmosphere clip: loop if short, crop-cover to 1080x1920
+    vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,"
+          f"crop={W}:{H},fps=30,setsar=1")
+    sh(["ffmpeg", "-y", "-v", "error", "-stream_loop", "-1", "-i", clip,
+        "-vf", vf, "-t", f"{dur:.2f}", "-c:v", "libx264",
+        "-pix_fmt", "yuv420p", out])
+
+
 def seg_from_card(text, dur, out):
     # fallback: dark card with the topic title in Devanagari
     safe = text.replace("'", "").replace(":", " ")
@@ -192,13 +203,25 @@ def build(topic, workdir):
     make_srt(script, duration, srt)
 
     images = fetch_images(topic["image_query"], workdir)
-    nseg = max(2, len(images)) if images else 3
+    clips = []
+    if os.environ.get("PEXELS_API_KEY") and topic.get("stock_query"):
+        try:
+            clips = stock_media.fetch_clips(topic["stock_query"], workdir)
+        except Exception as e:
+            print(f"stock clips unavailable, photos only: {e}")
+            clips = []
+    plan = stock_media.plan_media(images, clips)
+    nseg = len(plan) if plan else 3
     seg_dur = duration / nseg
     segs = []
     for i in range(nseg):
         seg = os.path.join(workdir, f"seg{i}.mp4")
-        if images:
-            seg_from_image(images[i % len(images)], seg_dur, seg)
+        if plan:
+            kind, src = plan[i]
+            if kind == "clip":
+                seg_from_clip(src, seg_dur, seg)
+            else:
+                seg_from_image(src, seg_dur, seg)
         else:
             label = topic["title"].split("|")[0].strip() if i == 0 else topic["hook"]
             seg_from_card(label or "रहस्य भारत", seg_dur, seg)
