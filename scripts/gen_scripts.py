@@ -42,14 +42,15 @@ def _prompt(topic, next_title):
 Video ka vishay (title): {topic['title']}
 Jagah/vishay ki search query (andaz ke liye): {topic['image_query']}
 
-SIRF ek JSON object do: {{"hook": "...", "desc_extra": "...", "script": "..."}}
+SIRF ek JSON object do: {{"hook": "...", "desc_extra": "...", "script": "...", "stock_query": "..."}}
 
 SCRIPT KE NIYAM (lazmi):
 - script: Devanagari Hindi me 820-1000 characters ki boli jaane wali narration. Pehli line hook wali ho — wahi "hook" field me bhi do (ek chhoti si line jo 3 second me sunne wale ko rok de, "..." se shuru ho sakti hai jaise "एक गाँव... जहाँ...").
 - Lehja: katha-vachak jaisa, aasan shabdon me, har 2-3 line me nayi baat ya mod — bore hone ki jagah na ho.
 - IMAANDARI SABSE UPAR: sirf pakke, mashhoor tathya hi likho. Jo baat pakki na ho use "kaha jata hai" / "mana jata hai" karke likho. Kinwadanti ko kinwadanti hi kaho, use sach mat banao. Koi date, sankhya ya naam andaze se bilkul mat banao — shak ho to woh detail chhod do.
 - Ant ki aakhri line me agli video ka tease ho: "{when} — {next_title}" ki tarz par ek chhoti si jhalak.
-- desc_extra: ek line me video ka saar (caption ke liye)."""
+- desc_extra: ek line me video ka saar (caption ke liye).
+- stock_query: 2-4 angrezi shabdon me stock video ki khoj — sirf MAHAUL ke liye (jaise pahad, kohra, mandir ki ghanti, udte pakshi); asli jagah ka naam mat do, mahaul do."""
 
 
 def _next_title(topics, topic):
@@ -95,9 +96,10 @@ def main():
             if not (600 <= len(script) <= 1250) or len(hook) < 10:
                 print(f"draft rejected (bad shape): {t['id']} script={len(script)} chars")
                 continue
+            stock = str(raw.get("stock_query") or "").strip()[:60]
             drafts["drafts"].append({
                 "id": t["id"], "hook": hook, "desc_extra": desc,
-                "script": script,
+                "script": script, "stock_query": stock,
                 "drafted_at": dt.datetime.now(ist).isoformat(timespec="seconds"),
             })
             print(f"drafted: {t['id']} ({len(script)} chars)")
