@@ -1,7 +1,9 @@
 """Offline tests for stock_media helpers (no network)."""
 import os
 import sys
+import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
@@ -53,6 +55,42 @@ class TestPlanMedia(unittest.TestCase):
                                       [f"c{i}" for i in range(6)])
         self.assertLessEqual(len(plan), 6)
         self.assertEqual(plan[0], ("image", "i0"))
+
+
+class _Resp:
+    def __init__(self, content=b"x" * 30000, ctype="image/jpeg", fail=False):
+        self.content = content
+        self.headers = {"Content-Type": ctype}
+        self._fail = fail
+
+    def raise_for_status(self):
+        if self._fail:
+            raise RuntimeError("http 500")
+
+
+class TestAiImages(unittest.TestCase):
+    def test_success_writes_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            with mock.patch("requests.get", return_value=_Resp()):
+                got = stock_media.fetch_ai_images("mountain fog", d, want=1)
+            self.assertEqual(len(got), 1)
+            self.assertTrue(os.path.exists(got[0]))
+
+    def test_failure_returns_empty(self):
+        with tempfile.TemporaryDirectory() as d:
+            with mock.patch("requests.get", return_value=_Resp(fail=True)):
+                self.assertEqual(stock_media.fetch_ai_images("x", d, want=1),
+                                 [])
+
+    def test_non_image_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            with mock.patch("requests.get",
+                            return_value=_Resp(ctype="text/html")):
+                self.assertEqual(stock_media.fetch_ai_images("x", d, want=1),
+                                 [])
+
+    def test_empty_query(self):
+        self.assertEqual(stock_media.fetch_ai_images("", "/tmp"), [])
 
 
 if __name__ == "__main__":
