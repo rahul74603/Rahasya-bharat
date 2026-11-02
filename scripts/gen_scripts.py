@@ -35,6 +35,61 @@ def _gemini_json(prompt):
     return json.loads(text)
 
 
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+
+
+def _groq_json(prompt):
+    import requests
+    r = requests.post("https://api.groq.com/openai/v1/chat/completions",
+                      headers={"Authorization":
+                               f"Bearer {os.environ['GROQ_API_KEY']}"},
+                      json={"model": GROQ_MODEL,
+                            "messages": [{"role": "user", "content": prompt}],
+                            "temperature": 0.8,
+                            "response_format": {"type": "json_object"}},
+                      timeout=90)
+    r.raise_for_status()
+    text = r.json()["choices"][0]["message"]["content"]
+    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
+    return json.loads(text)
+
+
+def _draft_json(prompt):
+    """Gemini first, Groq as backup — whichever answers, wins."""
+    errors = []
+    if os.environ.get("GEMINI_API_KEY"):
+        try:
+            return _gemini_json(prompt)
+        except Exception as e:
+            errors.append(f"gemini: {e}")
+    if os.environ.get("GROQ_API_KEY"):
+        try:
+            return _groq_json(prompt)
+        except Exception as e:
+            errors.append(f"groq: {e}")
+    raise RuntimeError("; ".join(errors) or "no AI key set")
+
+
+def _qc(script, hook):
+    """Groq's independent quality pre-check of a draft: is the story
+    complete, clean, interesting? Best-effort — returns None when Groq
+    is unavailable. Muse's morning review stays the final gate; this
+    score just tells the reviewer where to look first."""
+    if not os.environ.get("GROQ_API_KEY"):
+        return None
+    prompt = f"""Tum ek sakht Hindi video-script reviewer ho. Neeche ek 60-90 second ki Shorts narration script ka draft hai. Use jaancho: (1) kahani PURI hai ya adhuri kat gayi hai? (2) koi spasht gadbadi, dohraav ya ajeeb jumla? (3) shuruaat rokne wali hai aur ant me agli video ki jhalak hai? (4) sunne me interesting hai?
+
+Hook: {hook}
+Script: {script}
+
+SIRF ek JSON object do: {{"score": 1-10 ka number, "complete": true/false, "issues": ["chhoti chhoti samasyayein, agar hon"]}}"""
+    raw = _groq_json(prompt)
+    score = int(raw.get("score") or 0)
+    issues = [str(i)[:120] for i in (raw.get("issues") or [])][:5]
+    return {"by": "groq", "score": max(1, min(10, score)),
+            "complete": bool(raw.get("complete")), "issues": issues}
+
+
 def _prompt(topic, next_title):
     slot_hi = "इतिहास की कहानी (सुबह)" if topic["slot"] == "morning" else "रहस्य/अनोखी जगह (शाम)"
     when = "कल सुबह" if topic["slot"] == "morning" else "कल शाम"
@@ -61,8 +116,8 @@ def _next_title(topics, topic):
 
 
 def main():
-    if not os.environ.get("GEMINI_API_KEY"):
-        print("ERROR: GEMINI_API_KEY not set")
+    if not (os.environ.get("GEMINI_API_KEY") or os.environ.get("GROQ_API_KEY")):
+        print("ERROR: neither GEMINI_API_KEY nor GROQ_API_KEY is set")
         return 1
     topics_path = os.path.join(ROOT, "topics.json")
     drafts_path = os.path.join(ROOT, "drafts.json")
@@ -89,7 +144,7 @@ def main():
     ist = dt.timezone(dt.timedelta(hours=5, minutes=30))
     for t in picks:
         try:
-            raw = _gemini_json(_prompt(t, _next_title(topics, t)))
+            raw = _draft_json(_prompt(t, _next_title(topics, t)))
             script = str(raw.get("script") or "").strip()
             hook = str(raw.get("hook") or "").strip()
             desc = str(raw.get("desc_extra") or "").strip()
@@ -97,11 +152,20 @@ def main():
                 print(f"draft rejected (bad shape): {t['id']} script={len(script)} chars")
                 continue
             stock = str(raw.get("stock_query") or "").strip()[:60]
-            drafts["drafts"].append({
+            entry = {
                 "id": t["id"], "hook": hook, "desc_extra": desc,
                 "script": script, "stock_query": stock,
                 "drafted_at": dt.datetime.now(ist).isoformat(timespec="seconds"),
-            })
+            }
+            try:
+                qc = _qc(script, hook)
+                if qc:
+                    entry["qc"] = qc
+                    print(f"qc: {t['id']} score {qc['score']}/10, "
+                          f"complete={qc['complete']}, issues={qc['issues']}")
+            except Exception as e:
+                print(f"qc skipped for {t['id']}: {e}")
+            drafts["drafts"].append(entry)
             print(f"drafted: {t['id']} ({len(script)} chars)")
         except Exception as e:
             print(f"draft failed for {t['id']}: {e}")
