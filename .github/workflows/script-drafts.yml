@@ -1,0 +1,37 @@
+name: Rahasya Bharat — Script Drafts (Gemini)
+
+# Roz subah 05:00 IST = 23:30 UTC (pichhli raat) — video banne se pehle
+# agle topics ke script drafts taiyaar, taaki review ka time mil jaye.
+on:
+  schedule:
+    - cron: "30 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  drafts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: pip install -q -r requirements.txt
+
+      - name: Generate drafts (Gemini)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/gen_scripts.py
+
+      - name: Save drafts
+        run: |
+          git config user.name "rahasya-bot"
+          git config user.email "actions@github.com"
+          git add drafts.json
+          git diff --cached --quiet || git commit -m "chore: script drafts update [skip ci]"
+          git push
