@@ -68,6 +68,15 @@ def test_meta_permission_error_means_alive():
     assert "alive" in res["facebook"][1]
 
 
+def test_meta_permission_error_with_code_190_still_alive():
+    # The exact 2026-11-03 05:00 production case: the permissions
+    # message arrived attached to code 190 and was misread as DEAD.
+    err = {"error": {"message": PERM_ERR["error"]["message"], "code": 190}}
+    res = run_with(get=lambda *a, **k: Resp(400, err, "perm190"))
+    assert res["facebook"][0] is True, res["facebook"]
+    assert res["instagram"][0] is True, res["instagram"]
+
+
 def test_meta_dead_token_fails():
     res = run_with(get=lambda *a, **k: Resp(400, DEAD_ERR, "dead"))
     assert res["facebook"][0] is False, res["facebook"]
