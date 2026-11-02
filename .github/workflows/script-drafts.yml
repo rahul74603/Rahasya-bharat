@@ -23,9 +23,10 @@ jobs:
       - name: Install Python deps
         run: pip install -q -r requirements.txt
 
-      - name: Generate drafts (Gemini)
+      - name: Generate drafts (Gemini, Groq backup + QC)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: python scripts/gen_scripts.py
 
       - name: Save drafts
