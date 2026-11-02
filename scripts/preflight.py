@@ -45,7 +45,13 @@ def _need(name):
 def _classify_meta(resp):
     """(alive, detail) for a non-200 Graph probe response. `alive` is
     True only for permission errors, which prove the token itself was
-    accepted by Graph; everything else is a real failure detail."""
+    accepted by Graph; everything else is a real failure detail.
+
+    ORDER MATTERS (regression of 2026-11-03 05:00): this permission
+    error can arrive WITH code 190 attached, so the permission check
+    must run before the dead-token check. A genuine dead-token 190
+    response always carries the validation/expiry text and never a
+    permissions message, so checking permissions first is safe."""
     text = resp.text or ""
     try:
         err = resp.json().get("error", {})
@@ -53,12 +59,13 @@ def _classify_meta(resp):
         err = {}
     code = err.get("code")
     msg = err.get("message", "") or text
-    if code == 190 or any(m in msg for m in DEAD_MARKERS):
-        return False, f"token DEAD — HTTP {resp.status_code}: {text[:200]}"
-    if code in PERM_CODES or any(m in msg for m in PERM_MARKERS):
+    if any(m in msg for m in PERM_MARKERS) or (
+            code in PERM_CODES and "validating" not in msg):
         return True, ("token alive (probe asked for a read permission the "
                       "posting token doesn't carry; posting permissions "
                       "were verified when the token was minted)")
+    if code == 190 or any(m in msg for m in DEAD_MARKERS):
+        return False, f"token DEAD — HTTP {resp.status_code}: {text[:200]}"
     return False, f"HTTP {resp.status_code}: {text[:200]}"
 
 
