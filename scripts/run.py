@@ -28,6 +28,7 @@ import tempfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gh_release
 import make_video
+import preflight
 import publish_fb
 import publish_ig
 import publish_yt
@@ -35,6 +36,7 @@ import vault
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLATFORMS = ("facebook", "instagram", "youtube")
+MAX_ATTEMPTS = 3  # failed runs before a pending video is quarantined
 YT_TAGS = ["Rahasya Bharat", "Hindi Facts", "Itihaas", "Rahasya"]
 
 
@@ -186,7 +188,19 @@ def process_vault(manifest, state, slot):
             if publish_entry(manifest, topic_id, entry, video_path):
                 finish_entry(manifest, state, topic_id, entry)
             else:
-                stuck += 1
+                entry["attempts"] = entry.get("attempts", 0) + 1
+                if entry["attempts"] >= MAX_ATTEMPTS:
+                    entry["quarantined_at"] = ist_now().isoformat(timespec="seconds")
+                    entry["quarantine_reason"] = (
+                        f"still incomplete after {entry['attempts']} failed runs")
+                    manifest["quarantined"][topic_id] = entry
+                    manifest["pending"].pop(topic_id, None)
+                    vault.save_manifest(manifest)
+                    print(f"QUARANTINED: {topic_id} — video kept in the vault, "
+                          "no longer blocking new builds. Manual review needed.")
+                else:
+                    vault.save_manifest(manifest)
+                    stuck += 1
     return stuck
 
 
@@ -212,10 +226,28 @@ def main():
         print("dry-run: skipping publish. video at", built["video"])
         return 0
 
+    # 0) Preflight — tokens pehle, mehnat baad me. Ek bhi platform ki
+    #    credential mari ho to run yahin laal, wajah ke saath.
+    failed = []
+    for name, ok, detail in preflight.check_all():
+        print(f"preflight {name}: {'OK' if ok else 'FAIL'} — {detail}")
+        if not ok:
+            failed.append(name)
+    if failed:
+        print(f"PREFLIGHT FAILED: {', '.join(failed)} — fix the credential "
+              "first; nothing was built or posted.")
+        return 3
+
     manifest = vault.load_manifest()
-    posted_ids = set(state.get("posted", {})) | set(manifest["done"])
+    manifest.setdefault("quarantined", {})
+    for qid in manifest["quarantined"]:
+        print(f"WARNING: {qid} is QUARANTINED in the vault (video safe, "
+              "not blocking). Manual review needed to retry or drop it.")
+    posted_ids = (set(state.get("posted", {})) | set(manifest["done"])
+                  | set(manifest["quarantined"]))
     done_fps = {v.get("fingerprint") for v in state.get("posted", {}).values()}
     done_fps |= {v.get("fingerprint") for v in manifest["done"].values()}
+    done_fps |= {v.get("fingerprint") for v in manifest["quarantined"].values()}
 
     # 1) Vault first — kal ki adhuri video aaj ki nayi video se pehle.
     stuck = process_vault(manifest, state, args.slot)
@@ -223,7 +255,8 @@ def main():
         print(f"ERROR: {stuck} pending video(s) for slot={args.slot} still "
               "incomplete — not building a new one until the queue clears.")
         return 1
-    posted_ids = set(state.get("posted", {})) | set(manifest["done"])
+    posted_ids = (set(state.get("posted", {})) | set(manifest["done"])
+                  | set(manifest["quarantined"]))
 
     # 2) Next topic.
     topic = pick_topic(topics, posted_ids, done_fps, args.slot)
@@ -246,6 +279,7 @@ def main():
         "slot": args.slot, "title": topic["title"], "yt_title": yt_title,
         "caption": caption, "description": description,
         "fingerprint": fingerprint(topic),
+        "attempts": 0,
         "built_at": ist_now().isoformat(timespec="seconds"),
         "video_asset": vault.put_video(topic["id"], built["video"]),
         "platforms": {p: {"status": "pending", "id": None, "error": None}
@@ -261,8 +295,11 @@ def main():
         print(json.dumps({"posted": topic["id"], "ok": list(PLATFORMS)},
                          ensure_ascii=False))
         return 0
-    print(f"PARTIAL: {topic['id']} stays in the vault — the next run will "
-          "retry only the missing platforms.")
+    entry["attempts"] = entry.get("attempts", 0) + 1
+    vault.save_manifest(manifest)
+    print(f"PARTIAL: {topic['id']} stays in the vault (attempt "
+          f"{entry['attempts']}/{MAX_ATTEMPTS}) — the next run will retry "
+          "only the missing platforms.")
     return 1
 
 
