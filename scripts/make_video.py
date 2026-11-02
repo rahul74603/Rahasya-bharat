@@ -203,6 +203,15 @@ def build(topic, workdir):
     make_srt(script, duration, srt)
 
     images = fetch_images(topic["image_query"], workdir)
+    if len(images) < 2:
+        # Commons par asli photos kam mili — mahaul ke liye generated
+        # tasveerein (asli photos ke BAAD hi lagti hain, jagah nahi banti)
+        try:
+            images += stock_media.fetch_ai_images(
+                topic.get("stock_query") or topic["image_query"],
+                workdir, want=3 - len(images))
+        except Exception as e:
+            print(f"ai images unavailable: {e}")
     clips = []
     if os.environ.get("PEXELS_API_KEY") and topic.get("stock_query"):
         try:
