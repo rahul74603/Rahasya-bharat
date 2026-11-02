@@ -57,6 +57,27 @@ class TestPlanMedia(unittest.TestCase):
         self.assertEqual(plan[0], ("image", "i0"))
 
 
+class TestPickPixabay(unittest.TestCase):
+    def _v(self, name, height, size=1000):
+        return {"url": f"https://x/{name}.mp4", "height": height,
+                "width": 1280, "size": size}
+
+    def test_prefers_near_1200(self):
+        video = {"videos": {"tiny": self._v("tiny", 240),
+                            "small": self._v("small", 720),
+                            "medium": self._v("medium", 1080),
+                            "large": self._v("large", 2160)}}
+        self.assertEqual(stock_media.pick_pixabay(video),
+                         "https://x/medium.mp4")
+
+    def test_too_small_only(self):
+        video = {"videos": {"tiny": self._v("tiny", 240)}}
+        self.assertIsNone(stock_media.pick_pixabay(video))
+
+    def test_empty(self):
+        self.assertIsNone(stock_media.pick_pixabay({}))
+
+
 class _Resp:
     def __init__(self, content=b"x" * 30000, ctype="image/jpeg", fail=False):
         self.content = content
