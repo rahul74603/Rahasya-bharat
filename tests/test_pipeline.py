@@ -21,6 +21,7 @@ sys.path.insert(0, SCRIPTS)
 
 CALLS = []
 FAIL = set()
+FAIL_COMMENTS = set()
 
 
 def _mkmod(name, **attrs):
@@ -59,6 +60,19 @@ _mkmod("publish_yt", publish=_pub("youtube", "yt-1"))
 _mkmod("preflight", check_all=lambda: [(p, True, "ok") for p in
                                         ("facebook", "instagram", "youtube")])
 _mkmod("gen_meta", generate=lambda *a, **k: None)
+
+
+def _cmt(platform):
+    def f(oid, text):
+        CALLS.append(("comment", platform))
+        if platform in FAIL_COMMENTS:
+            raise RuntimeError("no comment permission")
+        return f"c-{platform}"
+    return f
+
+
+_mkmod("post_comment", comment_facebook=_cmt("facebook"),
+       comment_instagram=_cmt("instagram"), comment_youtube=_cmt("youtube"))
 
 # File-backed stub vault (same API as scripts/vault.py).
 _vault_dir = tempfile.mkdtemp(prefix="vault-stub-")
@@ -128,6 +142,7 @@ class Base(unittest.TestCase):
     def setUp(self):
         CALLS.clear()
         FAIL.clear()
+        FAIL_COMMENTS.clear()
         self.root = tempfile.mkdtemp(prefix="rb-root-")
         run.ROOT = self.root
         if os.path.exists(_vault_file):
@@ -220,6 +235,27 @@ class TestVaultFlow(Base):
         self.assertIn("t1", state["posted"])
         self.assertIn("t1", m["done"])
         self.assertEqual(m["pending"], {})
+
+    def test_comments_recorded_on_finish(self):
+        m = self._seed_pending()
+        state = {"posted": {}}
+        stuck = run.process_vault(m, state, "morning")
+        self.assertEqual(stuck, 0)
+        comments = [c for c in CALLS if c[0] == "comment"]
+        self.assertEqual(len(comments), 3)
+        self.assertEqual(state["posted"]["t1"]["comments"],
+                         {"facebook": "done", "instagram": "done",
+                          "youtube": "done"})
+
+    def test_comment_failure_never_blocks(self):
+        FAIL_COMMENTS.update(run.PLATFORMS)
+        m = self._seed_pending()
+        state = {"posted": {}}
+        stuck = run.process_vault(m, state, "morning")
+        self.assertEqual(stuck, 0)
+        self.assertIn("t1", state["posted"])
+        self.assertTrue(all(v == "failed"
+                            for v in state["posted"]["t1"]["comments"].values()))
 
     def test_stuck_before_cap(self):
         FAIL.update(run.PLATFORMS)
