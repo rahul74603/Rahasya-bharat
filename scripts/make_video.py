@@ -23,6 +23,7 @@ VOICE = os.environ.get("TTS_VOICE", "hi-IN-MadhurNeural")
 RATE = os.environ.get("TTS_RATE", "+6%")
 PITCH = os.environ.get("TTS_PITCH", "-2Hz")
 UA = {"User-Agent": "RahasyaBharatBot/1.0 (educational channel automation)"}
+FONT = "/usr/share/fonts/truetype/noto/NotoSansDevanagari-Bold.ttf"
 
 
 def sh(cmd):
@@ -137,10 +138,40 @@ def seg_from_image(img, dur, out):
         "-vf", vf, "-t", f"{dur:.2f}", "-c:v", "libx264", "-pix_fmt", "yuv420p", out])
 
 
+def wrap_lines(s, width=15):
+    words, lines, cur = s.split(), [], ""
+    for w in words:
+        if len(cur) + len(w) + 1 <= width:
+            cur = (cur + " " + w).strip()
+        else:
+            if cur:
+                lines.append(cur)
+            cur = w
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def hook_filter(topic, workdir):
+    """Big hook text over the first ~3 seconds — the scroll-stopper.
+    Returns an extra ffmpeg filter fragment ('' when unavailable)."""
+    hook = (topic.get("hook") or "").strip()
+    if not hook or not os.path.exists(FONT):
+        return ""
+    path = os.path.join(workdir, "hook.txt")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(wrap_lines(hook)))
+    return (f",drawtext=fontfile={FONT}:textfile={path}:"
+            "fontcolor=white:fontsize=84:borderw=3:bordercolor=black:"
+            "box=1:boxcolor=black@0.45:boxborderw=26:"
+            "x=(w-text_w)/2:y=h*0.26:line_spacing=16:"
+            "enable='between(t\\,0\\,3.2)'")
+
+
 def seg_from_card(text, dur, out):
     # fallback: dark card with the topic title in Devanagari
     safe = text.replace("'", "").replace(":", " ")
-    vf = (f"drawtext=fontfile=/usr/share/fonts/truetype/noto/NotoSansDevanagari-Bold.ttf:"
+    vf = (f"drawtext=fontfile={FONT}:"
           f"text='{safe}':fontcolor=0xEEC45E:fontsize=64:"
           "x=(w-text_w)/2:y=(h-text_h)/2:line_spacing=14,"
           f"format=yuv420p")
@@ -186,7 +217,8 @@ def build(topic, workdir):
            "FontSize=15,PrimaryColour=&HFFFFFF,OutlineColour=&H90000000,"
            "Outline=2,Alignment=2,MarginV=90'")
     sh(["ffmpeg", "-y", "-v", "error", "-i", silent, "-i", voice_mp3,
-        "-vf", sub, "-map", "0:v", "-map", "1:a", "-c:v", "libx264",
+        "-vf", sub + hook_filter(topic, workdir), "-map", "0:v", "-map", "1:a",
+        "-c:v", "libx264",
         "-preset", "medium", "-crf", "20", "-c:a", "aac", "-b:a", "160k",
         "-shortest", out])
     print("video:", out, f"{os.path.getsize(out) / 1e6:.1f} MB")
