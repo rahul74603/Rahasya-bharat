@@ -9,8 +9,10 @@ itself. Without a PEXELS_API_KEY, or on any failure, this returns []
 and the builder silently uses photos only — a post never blocks.
 """
 import os
+import urllib.parse
 
 API = "https://api.pexels.com/videos/search"
+POLLINATIONS = "https://image.pollinations.ai/prompt/"
 UA = {"User-Agent": "RahasyaBharatBot/1.0 (educational channel automation)"}
 MAX_BYTES = 45 * 1024 * 1024
 
@@ -43,6 +45,37 @@ def plan_media(images, clips):
         plan.append(("clip", clips[ci]))
         ci += 1
     return plan[:6]
+
+
+def fetch_ai_images(query, outdir, want=2):
+    """Pollinations (free, no key) — generated atmosphere images, used
+    ONLY when Commons returned too few real photos. Same honesty rule
+    as the clips: atmosphere, never the place itself. Any failure
+    returns what it has (possibly []) and never blocks the build."""
+    if not query:
+        return []
+    import requests
+    prompt = (f"cinematic vertical scene, {query}, dramatic moody light, "
+              "photorealistic, no text, no people closeup")
+    got = []
+    for i in range(want):
+        fp = os.path.join(outdir, f"ai{len(got)}.jpg")
+        url = (POLLINATIONS + urllib.parse.quote(prompt)
+               + f"?width=1080&height=1920&nologo=true&seed={17 + i * 7}")
+        try:
+            r = requests.get(url, headers=UA, timeout=120)
+            r.raise_for_status()
+            if not r.headers.get("Content-Type", "").startswith("image"):
+                raise RuntimeError("not an image")
+            if len(r.content) < 25000:
+                raise RuntimeError("image too small")
+            with open(fp, "wb") as f:
+                f.write(r.content)
+            got.append(fp)
+            print("ai image:", fp)
+        except Exception as e:
+            print("ai image failed:", e)
+    return got
 
 
 def fetch_clips(query, outdir, want=3):
