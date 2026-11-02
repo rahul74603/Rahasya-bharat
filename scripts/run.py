@@ -1,1 +1,270 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwoiIiJSYWhhc3lhIEJoYXJhdCDigJQgZGFpbHkgb3JjaGVzdHJhdG9yIChWMikuCgpGbG93IHBlciBydW46CiAgMS4gVkFVTFQgRklSU1Q6IGFueSB2aWRlbyBidWlsdCBlYXJsaWVyIGJ1dCBub3QgZnVsbHkgcHVibGlzaGVkIGlzCiAgICAgcmV0cmllZCDigJQgb25seSBvbiB0aGUgcGxhdGZvcm1zIHN0aWxsIG1pc3NpbmcgaXQgKGR1cGxpY2F0ZS1zYWZlKS4KICAgICBBIHN0dWNrIHF1ZXVlIGJsb2NrcyBuZXcgYnVpbGRzIGZvciB0aGF0IHNsb3QsIHNvIHZpZGVvcyBuZXZlciBwaWxlIHVwLgogIDIuIE90aGVyd2lzZSBwaWNrIHRoZSBuZXh0IHNjcmlwdC1yZWFkeSB0b3BpYywgYnVpbGQgdGhlIHZpZGVvLCBwdXQgaXQKICAgICBpbiB0aGUgdmF1bHQgQkVGT1JFIHB1Ymxpc2hpbmcsIHRoZW4gcHVibGlzaCBwbGF0Zm9ybSBieSBwbGF0Zm9ybSwKICAgICBzYXZpbmcgcHJvZ3Jlc3MgYWZ0ZXIgZXZlcnkgc2luZ2xlIHBsYXRmb3JtLgogIDMuIEEgdG9waWMgaXMgcmVjb3JkZWQgYXMgcG9zdGVkIG9ubHkgd2hlbiBhbGwgMyBwbGF0Zm9ybXMgaGF2ZSBpdC4KCkRlc2lnbiBydWxlczogbm90aGluZyBmYWlscyBzaWxlbnRseSAoYW55IGZhaWx1cmUgLT4gZXhpdCAxIC0+IHJlZCBydW4pOwphIGJ1aWx0IHZpZGVvIGlzIG5ldmVyIGxvc3Q7IHRoZSBzYW1lIHNjcmlwdCBpcyBuZXZlciBwb3N0ZWQgdHdpY2UKKHRvcGljIGlkICsgc2NyaXB0IGZpbmdlcnByaW50IGFyZSBib3RoIGNoZWNrZWQpLgoKVjIgYWRkaXRpb25zOiBkeW5hbWljIHRpdGxlcyBhbmQgcm90YXRpbmcgaGFzaHRhZyBwb29scyAocGVyIHNsb3QsCnJvdGF0ZWQgZGFpbHkpOyB0b3BpYy1iYW5rLWxvdyB3YXJuaW5nIHNvIHRoZSBtb250aGx5IHJlZnJlc2ggaXMgdmlzaWJsZS4KIiIiCmltcG9ydCBhcmdwYXJzZQppbXBvcnQgZGF0ZXRpbWUgYXMgZHQKaW1wb3J0IGhhc2hsaWIKaW1wb3J0IGpzb24KaW1wb3J0IG9zCmltcG9ydCBzeXMKaW1wb3J0IHRlbXBmaWxlCgpzeXMucGF0aC5pbnNlcnQoMCwgb3MucGF0aC5kaXJuYW1lKG9zLnBhdGguYWJzcGF0aChfX2ZpbGVfXykpKQppbXBvcnQgZ2hfcmVsZWFzZQppbXBvcnQgbWFrZV92aWRlbwppbXBvcnQgcHVibGlzaF9mYgppbXBvcnQgcHVibGlzaF9pZwppbXBvcnQgcHVibGlzaF95dAppbXBvcnQgdmF1bHQKClJPT1QgPSBvcy5wYXRoLmRpcm5hbWUob3MucGF0aC5kaXJuYW1lKG9zLnBhdGguYWJzcGF0aChfX2ZpbGVfXykpKQpQTEFURk9STVMgPSAoImZhY2Vib29rIiwgImluc3RhZ3JhbSIsICJ5b3V0dWJlIikKWVRfVEFHUyA9IFsiUmFoYXN5YSBCaGFyYXQiLCAiSGluZGkgRmFjdHMiLCAiSXRpaGFhcyIsICJSYWhhc3lhIl0KCgpkZWYgbG9hZChuYW1lKToKICAgIHdpdGggb3Blbihvcy5wYXRoLmpvaW4oUk9PVCwgbmFtZSksIGVuY29kaW5nPSJ1dGYtOCIpIGFzIGY6CiAgICAgICAgcmV0dXJuIGpzb24ubG9hZChmKQoKCmRlZiBzYXZlKG5hbWUsIG9iaik6CiAgICB3aXRoIG9wZW4ob3MucGF0aC5qb2luKFJPT1QsIG5hbWUpLCAidyIsIGVuY29kaW5nPSJ1dGYtOCIpIGFzIGY6CiAgICAgICAganNvbi5kdW1wKG9iaiwgZiwgZW5zdXJlX2FzY2lpPUZhbHNlLCBpbmRlbnQ9MSkKCgpkZWYgaXN0X25vdygpOgogICAgcmV0dXJuIGR0LmRhdGV0aW1lLm5vdyhkdC50aW1lem9uZShkdC50aW1lZGVsdGEoaG91cnM9NSwgbWludXRlcz0zMCkpKQoKCmRlZiBmaW5nZXJwcmludCh0b3BpYyk6CiAgICByZXR1cm4gaGFzaGxpYi5zaGEyNTYoKHRvcGljLmdldCgic2NyaXB0Iikgb3IgIiIpLmVuY29kZSgidXRmLTgiKSkuaGV4ZGlnZXN0KClbOjE2XQoKCmRlZiBwaWNrX3RvcGljKHRvcGljcywgcG9zdGVkX2lkcywgZG9uZV9maW5nZXJwcmludHMsIHNsb3QpOgogICAgIiIiTmV4dCBzY3JpcHQtcmVhZHkgdG9waWMgZm9yIHRoZSBzbG90LCBza2lwcGluZyBhbnl0aGluZyBhbHJlYWR5CiAgICBwb3N0ZWQg4oCUIGJ5IHRvcGljIGlkIE9SIGJ5IGlkZW50aWNhbCBzY3JpcHQgdW5kZXIgYW5vdGhlciBpZC4iIiIKICAgIGZvciB0IGluIHRvcGljc1sidG9waWNzIl06CiAgICAgICAgaWYgdFsic2xvdCJdICE9IHNsb3Qgb3IgdFsiaWQiXSBpbiBwb3N0ZWRfaWRzOgogICAgICAgICAgICBjb250aW51ZQogICAgICAgIGlmIG5vdCB0LmdldCgic2NyaXB0Iik6CiAgICAgICAgICAgIGNvbnRpbnVlCiAgICAgICAgaWYgZmluZ2VycHJpbnQodCkgaW4gZG9uZV9maW5nZXJwcmludHM6CiAgICAgICAgICAgIHByaW50KGYic2tpcCAoc2FtZSBzY3JpcHQgYWxyZWFkeSBwb3N0ZWQpOiB7dFsnaWQnXX0iKQogICAgICAgICAgICBjb250aW51ZQogICAgICAgIHJldHVybiB0CiAgICByZXR1cm4gTm9uZQoKCmRlZiBzY3JpcHRfcmVhZHlfbGVmdCh0b3BpY3MsIHBvc3RlZF9pZHMsIHNsb3QpOgogICAgcmV0dXJuIHN1bSgxIGZvciB0IGluIHRvcGljc1sidG9waWNzIl0KICAgICAgICAgICAgICAgaWYgdFsic2xvdCJdID09IHNsb3QgYW5kIHRbImlkIl0gbm90IGluIHBvc3RlZF9pZHMgYW5kIHQuZ2V0KCJzY3JpcHQiKSkKCgpkZWYgdGV4dHModG9waWNzLCB0b3BpYywgd2hlbj1Ob25lKToKICAgICIiIkR5bmFtaWMgY2FwdGlvbi9kZXNjcmlwdGlvbi90aXRsZTogaGFzaHRhZyBwb29scyByb3RhdGUgZGFpbHksCiAgICB0aGUgWW91VHViZSB0aXRsZSBhbHRlcm5hdGVzIGJldHdlZW4gdGhlIHN0b3JlZCB0aXRsZSBhbmQgYQogICAgaG9vay1sZWQgdmFyaWFudC4gTm8gZmFrZSAndHJlbmRpbmcnIGNsYWltcyDigJQgcm90YXRpb24gaXMgb3Vycy4iIiIKICAgIHdoZW4gPSB3aGVuIG9yIGlzdF9ub3coKQogICAgZGF5ID0gd2hlbi50aW1ldHVwbGUoKS50bV95ZGF5CiAgICB0YWdzID0gbGlzdCh0b3BpY3NbImNvbW1vbl9oYXNodGFncyJdKQogICAgcG9vbHMgPSB0b3BpY3MuZ2V0KCJoYXNodGFnX3Bvb2xzIiwge30pCiAgICBwb29sID0gcG9vbHMuZ2V0KCJpdGloYWFzIiBpZiB0b3BpY1sic2xvdCJdID09ICJtb3JuaW5nIiBlbHNlICJyYWhhc3lhIiwgW10pCiAgICBpZiBwb29sOgogICAgICAgIHN0YXJ0ID0gKGRheSArICgwIGlmIHRvcGljWyJzbG90Il0gPT0gIm1vcm5pbmciIGVsc2UgMykpICUgbGVuKHBvb2wpCiAgICAgICAgdGFncyArPSBbcG9vbFsoc3RhcnQgKyBpKSAlIGxlbihwb29sKV0gZm9yIGkgaW4gcmFuZ2UoMyldCiAgICBzbG90X3RhZyA9ICIjSXRpaGFhc0tpS2FoYW5pIiBpZiB0b3BpY1sic2xvdCJdID09ICJtb3JuaW5nIiBlbHNlICIjUmFoYXN5YSIKICAgIHRhZ3MuYXBwZW5kKHNsb3RfdGFnKQogICAgY2FwdGlvbiA9ICgKICAgICAgICBmInt0b3BpY1snaG9vayddfVxuXG57dG9waWNbJ2Rlc2NfZXh0cmEnXX1cblxuIgogICAgICAgIGYie3RvcGljc1snb3V0cm9fbGluZSddfVxueycgJy5qb2luKHRhZ3MpfSIKICAgICkKICAgIGRlc2NyaXB0aW9uID0gKAogICAgICAgIGYie3RvcGljWydkZXNjX2V4dHJhJ119XG5cbnt0b3BpY1snc2NyaXB0J11bOjI0MF19Li4uXG5cbiIKICAgICAgICBmInt0b3BpY3NbJ291dHJvX2xpbmUnXX1cbuCkmuCliOCkqOCksjoge3RvcGljc1snaGFuZGxlJ119IChZb3VUdWJlIC8gSW5zdGFncmFtIC8gRmFjZWJvb2spXG4iCiAgICAgICAgZiJ7JyAnLmpvaW4odGFncyl9IgogICAgKQogICAgaWYgZGF5ICUgMiA9PSAwOgogICAgICAgIHl0X3RpdGxlID0gdG9waWNbInRpdGxlIl0KICAgIGVsc2U6CiAgICAgICAgeXRfdGl0bGUgPSB0b3BpY1siaG9vayJdLnJzdHJpcCgi4KWkLiE/ICIpICsgIiB8IFJhaGFzeWEgQmhhcmF0IgogICAgcmV0dXJuIGNhcHRpb24sIGRlc2NyaXB0aW9uLCB5dF90aXRsZQoKCmRlZiBhdHRlbXB0KGVudHJ5LCBuYW1lLCBmbik6CiAgICB0cnk6CiAgICAgICAgcGlkID0gZm4oKQogICAgICAgIGVudHJ5WyJwbGF0Zm9ybXMiXVtuYW1lXSA9IHsic3RhdHVzIjogImRvbmUiLCAiaWQiOiBzdHIocGlkKSwgImVycm9yIjogTm9uZX0KICAgICAgICBwcmludChmIltPS10ge25hbWV9OiB7cGlkfSIpCiAgICAgICAgcmV0dXJuIFRydWUKICAgIGV4Y2VwdCBFeGNlcHRpb24gYXMgZTogICMgcmVwb3J0IGFuZCBjb250aW51ZSB3aXRoIG90aGVyIHBsYXRmb3JtcwogICAgICAgIGVudHJ5WyJwbGF0Zm9ybXMiXVtuYW1lXSA9IHsic3RhdHVzIjogInBlbmRpbmciLCAiaWQiOiBOb25lLCAiZXJyb3IiOiBzdHIoZSl9CiAgICAgICAgcHJpbnQoZiJbRkFJTF0ge25hbWV9OiB7ZX0iKQogICAgICAgIHJldHVybiBGYWxzZQoKCmRlZiBwdWJsaXNoX2VudHJ5KG1hbmlmZXN0LCB0b3BpY19pZCwgZW50cnksIHZpZGVvX3BhdGgpOgogICAgIiIiUHVibGlzaCBvbmUgdmF1bHQgZW50cnkgb24gZXZlcnkgcGxhdGZvcm0gc3RpbGwgbWlzc2luZyBpdC4KICAgIE1hbmlmZXN0IGlzIHNhdmVkIGFmdGVyIEVBQ0ggcGxhdGZvcm0sIHNvIHByb2dyZXNzIGlzIG5ldmVyIGxvc3QuIiIiCiAgICB3YXJuaW5ncyA9IFtdCgogICAgZGVmIGlnX2Zsb3coKToKICAgICAgICByaWQsIHRhZywgdXJsID0gZ2hfcmVsZWFzZS5jcmVhdGVfcHVibGljX2NvcHkodmlkZW9fcGF0aCkKICAgICAgICB0cnk6CiAgICAgICAgICAgIHJldHVybiBwdWJsaXNoX2lnLnB1Ymxpc2godXJsLCBlbnRyeVsiY2FwdGlvbiJdKQogICAgICAgIGZpbmFsbHk6CiAgICAgICAgICAgIHRyeToKICAgICAgICAgICAgICAgIGdoX3JlbGVhc2UuZGVsZXRlX3B1YmxpY19jb3B5KHJpZCwgdGFnKQogICAgICAgICAgICBleGNlcHQgRXhjZXB0aW9uIGFzIGU6CiAgICAgICAgICAgICAgICB3YXJuaW5ncy5hcHBlbmQoZiJpZyB0ZW1wLXJlbGVhc2UgY2xlYW51cDoge2V9IikKCiAgICBqb2JzID0gewogICAgICAgICJmYWNlYm9vayI6IGxhbWJkYTogcHVibGlzaF9mYi5wdWJsaXNoKHZpZGVvX3BhdGgsIGVudHJ5WyJjYXB0aW9uIl0pLAogICAgICAgICJpbnN0YWdyYW0iOiBpZ19mbG93LAogICAgICAgICJ5b3V0dWJlIjogbGFtYmRhOiBwdWJsaXNoX3l0LnB1Ymxpc2goCiAgICAgICAgICAgIHZpZGVvX3BhdGgsIGVudHJ5WyJ5dF90aXRsZSJdLCBlbnRyeVsiZGVzY3JpcHRpb24iXSwgWVRfVEFHUyksCiAgICB9CiAgICBmb3IgbmFtZSBpbiBQTEFURk9STVM6CiAgICAgICAgaWYgZW50cnlbInBsYXRmb3JtcyJdW25hbWVdWyJzdGF0dXMiXSA9PSAiZG9uZSI6CiAgICAgICAgICAgIHByaW50KGYiW3NraXBdIHtuYW1lfSBhbHJlYWR5IHBvc3RlZCBmb3Ige3RvcGljX2lkfSIpCiAgICAgICAgICAgIGNvbnRpbnVlCiAgICAgICAgYXR0ZW1wdChlbnRyeSwgbmFtZSwgam9ic1tuYW1lXSkKICAgICAgICB2YXVsdC5zYXZlX21hbmlmZXN0KG1hbmlmZXN0KQogICAgaWYgd2FybmluZ3M6CiAgICAgICAgcHJpbnQoIndhcm5pbmdzOiIsIHdhcm5pbmdzKQogICAgcmV0dXJuIGFsbChlbnRyeVsicGxhdGZvcm1zIl1bcF1bInN0YXR1cyJdID09ICJkb25lIiBmb3IgcCBpbiBQTEFURk9STVMpCgoKZGVmIGZpbmlzaF9lbnRyeShtYW5pZmVzdCwgc3RhdGUsIHRvcGljX2lkLCBlbnRyeSk6CiAgICAiIiJBbGwgcGxhdGZvcm1zIGhhdmUgaXQ6IGNsZWFyIHRoZSB2YXVsdCBzbG90LCByZW1lbWJlciBpdCBmb3JldmVyLiIiIgogICAgdHJ5OgogICAgICAgIHZhdWx0LmRlbGV0ZV92aWRlbyhlbnRyeVsidmlkZW9fYXNzZXQiXSkKICAgIGV4Y2VwdCBFeGNlcHRpb24gYXMgZToKICAgICAgICBwcmludCgidmF1bHQgdmlkZW8gZGVsZXRlIHdhcm5pbmc6IiwgZSkKICAgIG1hbmlmZXN0WyJwZW5kaW5nIl0ucG9wKHRvcGljX2lkLCBOb25lKQogICAgbWFuaWZlc3RbImRvbmUiXVt0b3BpY19pZF0gPSB7CiAgICAgICAgImZpbmdlcnByaW50IjogZW50cnlbImZpbmdlcnByaW50Il0sICJhdCI6IGlzdF9ub3coKS5pc29mb3JtYXQodGltZXNwZWM9InNlY29uZHMiKSwKICAgIH0KICAgIHZhdWx0LnNhdmVfbWFuaWZlc3QobWFuaWZlc3QpCiAgICBzdGF0ZS5zZXRkZWZhdWx0KCJwb3N0ZWQiLCB7fSlbdG9waWNfaWRdID0gewogICAgICAgICJhdCI6IGlzdF9ub3coKS5pc29mb3JtYXQodGltZXNwZWM9InNlY29uZHMiKSwKICAgICAgICAic2xvdCI6IGVudHJ5WyJzbG90Il0sCiAgICAgICAgInJlc3VsdHMiOiB7cDogZW50cnlbInBsYXRmb3JtcyJdW3BdWyJpZCJdIGZvciBwIGluIFBMQVRGT1JNU30sCiAgICAgICAgImZhaWx1cmVzIjogW10sCiAgICAgICAgImZpbmdlcnByaW50IjogZW50cnlbImZpbmdlcnByaW50Il0sCiAgICB9CiAgICBzYXZlKCJzdGF0ZS5qc29uIiwgc3RhdGUpCgoKZGVmIHByb2Nlc3NfdmF1bHQobWFuaWZlc3QsIHN0YXRlLCBzbG90KToKICAgICIiIlJldHJ5IHRoaXMgc2xvdCdzIHBlbmRpbmcgdmlkZW9zLiBSZXR1cm5zIGhvdyBtYW55IGFyZSBTVElMTAogICAgaW5jb21wbGV0ZSBhZnRlcndhcmRzICh0aG9zZSBibG9jayBuZXcgYnVpbGRzIGZvciB0aGUgc2xvdCkuIiIiCiAgICBzdHVjayA9IDAKICAgIGZvciB0b3BpY19pZCBpbiBsaXN0KG1hbmlmZXN0WyJwZW5kaW5nIl0ua2V5cygpKToKICAgICAgICBlbnRyeSA9IG1hbmlmZXN0WyJwZW5kaW5nIl1bdG9waWNfaWRdCiAgICAgICAgaWYgZW50cnlbInNsb3QiXSAhPSBzbG90OgogICAgICAgICAgICBjb250aW51ZQogICAgICAgIHByaW50KGYidmF1bHQgcmV0cnk6IHt0b3BpY19pZH0iKQogICAgICAgIHdpdGggdGVtcGZpbGUuVGVtcG9yYXJ5RGlyZWN0b3J5KCkgYXMgdGQ6CiAgICAgICAgICAgIHZpZGVvX3BhdGggPSB2YXVsdC5nZXRfdmlkZW8oZW50cnlbInZpZGVvX2Fzc2V0Il0sCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb3MucGF0aC5qb2luKHRkLCBmInt0b3BpY19pZH0ubXA0IikpCiAgICAgICAgICAgIGlmIHB1Ymxpc2hfZW50cnkobWFuaWZlc3QsIHRvcGljX2lkLCBlbnRyeSwgdmlkZW9fcGF0aCk6CiAgICAgICAgICAgICAgICBmaW5pc2hfZW50cnkobWFuaWZlc3QsIHN0YXRlLCB0b3BpY19pZCwgZW50cnkpCiAgICAgICAgICAgIGVsc2U6CiAgICAgICAgICAgICAgICBzdHVjayArPSAxCiAgICByZXR1cm4gc3R1Y2sKCgpkZWYgbWFpbigpOgogICAgYXAgPSBhcmdwYXJzZS5Bcmd1bWVudFBhcnNlcigpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tc2xvdCIsIGNob2ljZXM9WyJtb3JuaW5nIiwgImV2ZW5pbmciXSwgcmVxdWlyZWQ9VHJ1ZSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1kcnktcnVuIiwgYWN0aW9uPSJzdG9yZV90cnVlIiwKICAgICAgICAgICAgICAgICAgICBoZWxwPSJidWlsZCB0aGUgdmlkZW8gYnV0IGRvIG5vdCBwdWJsaXNoIG9yIHVwZGF0ZSBzdGF0ZSIpCiAgICBhcmdzID0gYXAucGFyc2VfYXJncygpCgogICAgdG9waWNzID0gbG9hZCgidG9waWNzLmpzb24iKQogICAgc3RhdGUgPSBsb2FkKCJzdGF0ZS5qc29uIikKCiAgICBpZiBhcmdzLmRyeV9ydW46CiAgICAgICAgdG9waWMgPSBwaWNrX3RvcGljKHRvcGljcywgc2V0KHN0YXRlLmdldCgicG9zdGVkIiwge30pKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAge3YuZ2V0KCJmaW5nZXJwcmludCIpIGZvciB2IGluIHN0YXRlLmdldCgicG9zdGVkIiwge30pLnZhbHVlcygpfSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgYXJncy5zbG90KQogICAgICAgIGlmIHRvcGljIGlzIE5vbmU6CiAgICAgICAgICAgIHByaW50KGYiRVJST1I6IG5vIHNjcmlwdC1yZWFkeSB0b3BpYyBsZWZ0IGZvciBzbG90PXthcmdzLnNsb3R9LiIpCiAgICAgICAgICAgIHJldHVybiAyCiAgICAgICAgd29ya2RpciA9IG9zLnBhdGguam9pbihST09ULCAiYnVpbGQiLCBmIntpc3Rfbm93KCk6JVklbSVkfS17YXJncy5zbG90fS17dG9waWNbJ2lkJ119IikKICAgICAgICBidWlsdCA9IG1ha2VfdmlkZW8uYnVpbGQodG9waWMsIHdvcmtkaXIpCiAgICAgICAgcHJpbnQoImRyeS1ydW46IHNraXBwaW5nIHB1Ymxpc2guIHZpZGVvIGF0IiwgYnVpbHRbInZpZGVvIl0pCiAgICAgICAgcmV0dXJuIDAKCiAgICBtYW5pZmVzdCA9IHZhdWx0LmxvYWRfbWFuaWZlc3QoKQogICAgcG9zdGVkX2lkcyA9IHNldChzdGF0ZS5nZXQoInBvc3RlZCIsIHt9KSkgfCBzZXQobWFuaWZlc3RbImRvbmUiXSkKICAgIGRvbmVfZnBzID0ge3YuZ2V0KCJmaW5nZXJwcmludCIpIGZvciB2IGluIHN0YXRlLmdldCgicG9zdGVkIiwge30pLnZhbHVlcygpfQogICAgZG9uZV9mcHMgfD0ge3YuZ2V0KCJmaW5nZXJwcmludCIpIGZvciB2IGluIG1hbmlmZXN0WyJkb25lIl0udmFsdWVzKCl9CgogICAgIyAxKSBWYXVsdCBmaXJzdCDigJQga2FsIGtpIGFkaHVyaSB2aWRlbyBhYWoga2kgbmF5aSB2aWRlbyBzZSBwZWhsZS4KICAgIHN0dWNrID0gcHJvY2Vzc192YXVsdChtYW5pZmVzdCwgc3RhdGUsIGFyZ3Muc2xvdCkKICAgIGlmIHN0dWNrOgogICAgICAgIHByaW50KGYiRVJST1I6IHtzdHVja30gcGVuZGluZyB2aWRlbyhzKSBmb3Igc2xvdD17YXJncy5zbG90fSBzdGlsbCAiCiAgICAgICAgICAgICAgImluY29tcGxldGUg4oCUIG5vdCBidWlsZGluZyBhIG5ldyBvbmUgdW50aWwgdGhlIHF1ZXVlIGNsZWFycy4iKQogICAgICAgIHJldHVybiAxCiAgICBwb3N0ZWRfaWRzID0gc2V0KHN0YXRlLmdldCgicG9zdGVkIiwge30pKSB8IHNldChtYW5pZmVzdFsiZG9uZSJdKQoKICAgICMgMikgTmV4dCB0b3BpYy4KICAgIHRvcGljID0gcGlja190b3BpYyh0b3BpY3MsIHBvc3RlZF9pZHMsIGRvbmVfZnBzLCBhcmdzLnNsb3QpCiAgICBsZWZ0ID0gc2NyaXB0X3JlYWR5X2xlZnQodG9waWNzLCBwb3N0ZWRfaWRzLCBhcmdzLnNsb3QpCiAgICBpZiBsZWZ0IDw9IDM6CiAgICAgICAgcHJpbnQoZiJXQVJOSU5HOiBUT1BJQyBCQU5LIExPVyDigJQgb25seSB7bGVmdH0gc2NyaXB0LXJlYWR5IHRvcGljKHMpICIKICAgICAgICAgICAgICBmImxlZnQgZm9yIHNsb3Q9e2FyZ3Muc2xvdH0uIE1vbnRobHkgdG9waWMgcmVmcmVzaCBkdWUuIikKICAgIGlmIHRvcGljIGlzIE5vbmU6CiAgICAgICAgcHJpbnQoZiJFUlJPUjogbm8gc2NyaXB0LXJlYWR5IHRvcGljIGxlZnQgZm9yIHNsb3Q9e2FyZ3Muc2xvdH0uICIKICAgICAgICAgICAgICAiQWRkIG5hcnJhdGlvbiBzY3JpcHRzIGluIHRvcGljcy5qc29uIOKAlCByZWZ1c2luZyB0byBwb3N0IGZpbGxlci4iKQogICAgICAgIHJldHVybiAyCiAgICBwcmludChmInRvcGljOiB7dG9waWNbJ2lkJ119IOKAlCB7dG9waWNbJ3RpdGxlJ119IikKCiAgICB3b3JrZGlyID0gb3MucGF0aC5qb2luKFJPT1QsICJidWlsZCIsIGYie2lzdF9ub3coKTolWSVtJWR9LXthcmdzLnNsb3R9LXt0b3BpY1snaWQnXX0iKQogICAgYnVpbHQgPSBtYWtlX3ZpZGVvLmJ1aWxkKHRvcGljLCB3b3JrZGlyKQogICAgY2FwdGlvbiwgZGVzY3JpcHRpb24sIHl0X3RpdGxlID0gdGV4dHModG9waWNzLCB0b3BpYykKCiAgICAjIDMpIFZhdWx0IEJFRk9SRSBwdWJsaXNoaW5nIOKAlCB0aGUgYnVpbHQgdmlkZW8gY2FuIG5vIGxvbmdlciBiZSBsb3N0LgogICAgZW50cnkgPSB7CiAgICAgICAgInNsb3QiOiBhcmdzLnNsb3QsICJ0aXRsZSI6IHRvcGljWyJ0aXRsZSJdLCAieXRfdGl0bGUiOiB5dF90aXRsZSwKICAgICAgICAiY2FwdGlvbiI6IGNhcHRpb24sICJkZXNjcmlwdGlvbiI6IGRlc2NyaXB0aW9uLAogICAgICAgICJmaW5nZXJwcmludCI6IGZpbmdlcnByaW50KHRvcGljKSwKICAgICAgICAiYnVpbHRfYXQiOiBpc3Rfbm93KCkuaXNvZm9ybWF0KHRpbWVzcGVjPSJzZWNvbmRzIiksCiAgICAgICAgInZpZGVvX2Fzc2V0IjogdmF1bHQucHV0X3ZpZGVvKHRvcGljWyJpZCJdLCBidWlsdFsidmlkZW8iXSksCiAgICAgICAgInBsYXRmb3JtcyI6IHtwOiB7InN0YXR1cyI6ICJwZW5kaW5nIiwgImlkIjogTm9uZSwgImVycm9yIjogTm9uZX0KICAgICAgICAgICAgICAgICAgICAgIGZvciBwIGluIFBMQVRGT1JNU30sCiAgICB9CiAgICBtYW5pZmVzdFsicGVuZGluZyJdW3RvcGljWyJpZCJdXSA9IGVudHJ5CiAgICB2YXVsdC5zYXZlX21hbmlmZXN0KG1hbmlmZXN0KQogICAgcHJpbnQoZiJ2YXVsdDoge3RvcGljWydpZCddfSBzdG9yZWQgKGFzc2V0IHtlbnRyeVsndmlkZW9fYXNzZXQnXX0pIikKCiAgICAjIDQpIFB1Ymxpc2g7IG9uIGFueSBmYWlsdXJlIHRoZSBlbnRyeSBzdGF5cyBpbiB0aGUgdmF1bHQgZm9yIG5leHQgcnVuLgogICAgaWYgcHVibGlzaF9lbnRyeShtYW5pZmVzdCwgdG9waWNbImlkIl0sIGVudHJ5LCBidWlsdFsidmlkZW8iXSk6CiAgICAgICAgZmluaXNoX2VudHJ5KG1hbmlmZXN0LCBzdGF0ZSwgdG9waWNbImlkIl0sIGVudHJ5KQogICAgICAgIHByaW50KGpzb24uZHVtcHMoeyJwb3N0ZWQiOiB0b3BpY1siaWQiXSwgIm9rIjogbGlzdChQTEFURk9STVMpfSwKICAgICAgICAgICAgICAgICAgICAgICAgIGVuc3VyZV9hc2NpaT1GYWxzZSkpCiAgICAgICAgcmV0dXJuIDAKICAgIHByaW50KGYiUEFSVElBTDoge3RvcGljWydpZCddfSBzdGF5cyBpbiB0aGUgdmF1bHQg4oCUIHRoZSBuZXh0IHJ1biB3aWxsICIKICAgICAgICAgICJyZXRyeSBvbmx5IHRoZSBtaXNzaW5nIHBsYXRmb3Jtcy4iKQogICAgcmV0dXJuIDEKCgppZiBfX25hbWVfXyA9PSAiX19tYWluX18iOgogICAgc3lzLmV4aXQobWFpbigpKQo=
+#!/usr/bin/env python3
+"""Rahasya Bharat — daily orchestrator (V2).
+
+Flow per run:
+  1. VAULT FIRST: any video built earlier but not fully published is
+     retried — only on the platforms still missing it (duplicate-safe).
+     A stuck queue blocks new builds for that slot, so videos never pile up.
+  2. Otherwise pick the next script-ready topic, build the video, put it
+     in the vault BEFORE publishing, then publish platform by platform,
+     saving progress after every single platform.
+  3. A topic is recorded as posted only when all 3 platforms have it.
+
+Design rules: nothing fails silently (any failure -> exit 1 -> red run);
+a built video is never lost; the same script is never posted twice
+(topic id + script fingerprint are both checked).
+
+V2 additions: dynamic titles and rotating hashtag pools (per slot,
+rotated daily); topic-bank-low warning so the monthly refresh is visible.
+"""
+import argparse
+import datetime as dt
+import hashlib
+import json
+import os
+import sys
+import tempfile
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gh_release
+import make_video
+import publish_fb
+import publish_ig
+import publish_yt
+import vault
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PLATFORMS = ("facebook", "instagram", "youtube")
+YT_TAGS = ["Rahasya Bharat", "Hindi Facts", "Itihaas", "Rahasya"]
+
+
+def load(name):
+    with open(os.path.join(ROOT, name), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save(name, obj):
+    with open(os.path.join(ROOT, name), "w", encoding="utf-8") as f:
+        json.dump(obj, f, ensure_ascii=False, indent=1)
+
+
+def ist_now():
+    return dt.datetime.now(dt.timezone(dt.timedelta(hours=5, minutes=30)))
+
+
+def fingerprint(topic):
+    return hashlib.sha256((topic.get("script") or "").encode("utf-8")).hexdigest()[:16]
+
+
+def pick_topic(topics, posted_ids, done_fingerprints, slot):
+    """Next script-ready topic for the slot, skipping anything already
+    posted — by topic id OR by identical script under another id."""
+    for t in topics["topics"]:
+        if t["slot"] != slot or t["id"] in posted_ids:
+            continue
+        if not t.get("script"):
+            continue
+        if fingerprint(t) in done_fingerprints:
+            print(f"skip (same script already posted): {t['id']}")
+            continue
+        return t
+    return None
+
+
+def script_ready_left(topics, posted_ids, slot):
+    return sum(1 for t in topics["topics"]
+               if t["slot"] == slot and t["id"] not in posted_ids and t.get("script"))
+
+
+def texts(topics, topic, when=None):
+    """Dynamic caption/description/title: hashtag pools rotate daily,
+    the YouTube title alternates between the stored title and a
+    hook-led variant. No fake 'trending' claims — rotation is ours."""
+    when = when or ist_now()
+    day = when.timetuple().tm_yday
+    tags = list(topics["common_hashtags"])
+    pools = topics.get("hashtag_pools", {})
+    pool = pools.get("itihaas" if topic["slot"] == "morning" else "rahasya", [])
+    if pool:
+        start = (day + (0 if topic["slot"] == "morning" else 3)) % len(pool)
+        tags += [pool[(start + i) % len(pool)] for i in range(3)]
+    slot_tag = "#ItihaasKiKahani" if topic["slot"] == "morning" else "#Rahasya"
+    tags.append(slot_tag)
+    caption = (
+        f"{topic['hook']}\n\n{topic['desc_extra']}\n\n"
+        f"{topics['outro_line']}\n{' '.join(tags)}"
+    )
+    description = (
+        f"{topic['desc_extra']}\n\n{topic['script'][:240]}...\n\n"
+        f"{topics['outro_line']}\nचैनल: {topics['handle']} (YouTube / Instagram / Facebook)\n"
+        f"{' '.join(tags)}"
+    )
+    if day % 2 == 0:
+        yt_title = topic["title"]
+    else:
+        yt_title = topic["hook"].rstrip("।.!? ") + " | Rahasya Bharat"
+    return caption, description, yt_title
+
+
+def attempt(entry, name, fn):
+    try:
+        pid = fn()
+        entry["platforms"][name] = {"status": "done", "id": str(pid), "error": None}
+        print(f"[OK] {name}: {pid}")
+        return True
+    except Exception as e:  # report and continue with other platforms
+        entry["platforms"][name] = {"status": "pending", "id": None, "error": str(e)}
+        print(f"[FAIL] {name}: {e}")
+        return False
+
+
+def publish_entry(manifest, topic_id, entry, video_path):
+    """Publish one vault entry on every platform still missing it.
+    Manifest is saved after EACH platform, so progress is never lost."""
+    warnings = []
+
+    def ig_flow():
+        rid, tag, url = gh_release.create_public_copy(video_path)
+        try:
+            return publish_ig.publish(url, entry["caption"])
+        finally:
+            try:
+                gh_release.delete_public_copy(rid, tag)
+            except Exception as e:
+                warnings.append(f"ig temp-release cleanup: {e}")
+
+    jobs = {
+        "facebook": lambda: publish_fb.publish(video_path, entry["caption"]),
+        "instagram": ig_flow,
+        "youtube": lambda: publish_yt.publish(
+            video_path, entry["yt_title"], entry["description"], YT_TAGS),
+    }
+    for name in PLATFORMS:
+        if entry["platforms"][name]["status"] == "done":
+            print(f"[skip] {name} already posted for {topic_id}")
+            continue
+        attempt(entry, name, jobs[name])
+        vault.save_manifest(manifest)
+    if warnings:
+        print("warnings:", warnings)
+    return all(entry["platforms"][p]["status"] == "done" for p in PLATFORMS)
+
+
+def finish_entry(manifest, state, topic_id, entry):
+    """All platforms have it: clear the vault slot, remember it forever."""
+    try:
+        vault.delete_video(entry["video_asset"])
+    except Exception as e:
+        print("vault video delete warning:", e)
+    manifest["pending"].pop(topic_id, None)
+    manifest["done"][topic_id] = {
+        "fingerprint": entry["fingerprint"], "at": ist_now().isoformat(timespec="seconds"),
+    }
+    vault.save_manifest(manifest)
+    state.setdefault("posted", {})[topic_id] = {
+        "at": ist_now().isoformat(timespec="seconds"),
+        "slot": entry["slot"],
+        "results": {p: entry["platforms"][p]["id"] for p in PLATFORMS},
+        "failures": [],
+        "fingerprint": entry["fingerprint"],
+    }
+    save("state.json", state)
+
+
+def process_vault(manifest, state, slot):
+    """Retry this slot's pending videos. Returns how many are STILL
+    incomplete afterwards (those block new builds for the slot)."""
+    stuck = 0
+    for topic_id in list(manifest["pending"].keys()):
+        entry = manifest["pending"][topic_id]
+        if entry["slot"] != slot:
+            continue
+        print(f"vault retry: {topic_id}")
+        with tempfile.TemporaryDirectory() as td:
+            video_path = vault.get_video(entry["video_asset"],
+                                         os.path.join(td, f"{topic_id}.mp4"))
+            if publish_entry(manifest, topic_id, entry, video_path):
+                finish_entry(manifest, state, topic_id, entry)
+            else:
+                stuck += 1
+    return stuck
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--slot", choices=["morning", "evening"], required=True)
+    ap.add_argument("--dry-run", action="store_true",
+                    help="build the video but do not publish or update state")
+    args = ap.parse_args()
+
+    topics = load("topics.json")
+    state = load("state.json")
+
+    if args.dry_run:
+        topic = pick_topic(topics, set(state.get("posted", {})),
+                           {v.get("fingerprint") for v in state.get("posted", {}).values()},
+                           args.slot)
+        if topic is None:
+            print(f"ERROR: no script-ready topic left for slot={args.slot}.")
+            return 2
+        workdir = os.path.join(ROOT, "build", f"{ist_now():%Y%m%d}-{args.slot}-{topic['id']}")
+        built = make_video.build(topic, workdir)
+        print("dry-run: skipping publish. video at", built["video"])
+        return 0
+
+    manifest = vault.load_manifest()
+    posted_ids = set(state.get("posted", {})) | set(manifest["done"])
+    done_fps = {v.get("fingerprint") for v in state.get("posted", {}).values()}
+    done_fps |= {v.get("fingerprint") for v in manifest["done"].values()}
+
+    # 1) Vault first — kal ki adhuri video aaj ki nayi video se pehle.
+    stuck = process_vault(manifest, state, args.slot)
+    if stuck:
+        print(f"ERROR: {stuck} pending video(s) for slot={args.slot} still "
+              "incomplete — not building a new one until the queue clears.")
+        return 1
+    posted_ids = set(state.get("posted", {})) | set(manifest["done"])
+
+    # 2) Next topic.
+    topic = pick_topic(topics, posted_ids, done_fps, args.slot)
+    left = script_ready_left(topics, posted_ids, args.slot)
+    if left <= 3:
+        print(f"WARNING: TOPIC BANK LOW — only {left} script-ready topic(s) "
+              f"left for slot={args.slot}. Monthly topic refresh due.")
+    if topic is None:
+        print(f"ERROR: no script-ready topic left for slot={args.slot}. "
+              "Add narration scripts in topics.json — refusing to post filler.")
+        return 2
+    print(f"topic: {topic['id']} — {topic['title']}")
+
+    workdir = os.path.join(ROOT, "build", f"{ist_now():%Y%m%d}-{args.slot}-{topic['id']}")
+    built = make_video.build(topic, workdir)
+    caption, description, yt_title = texts(topics, topic)
+
+    # 3) Vault BEFORE publishing — the built video can no longer be lost.
+    entry = {
+        "slot": args.slot, "title": topic["title"], "yt_title": yt_title,
+        "caption": caption, "description": description,
+        "fingerprint": fingerprint(topic),
+        "built_at": ist_now().isoformat(timespec="seconds"),
+        "video_asset": vault.put_video(topic["id"], built["video"]),
+        "platforms": {p: {"status": "pending", "id": None, "error": None}
+                      for p in PLATFORMS},
+    }
+    manifest["pending"][topic["id"]] = entry
+    vault.save_manifest(manifest)
+    print(f"vault: {topic['id']} stored (asset {entry['video_asset']})")
+
+    # 4) Publish; on any failure the entry stays in the vault for next run.
+    if publish_entry(manifest, topic["id"], entry, built["video"]):
+        finish_entry(manifest, state, topic["id"], entry)
+        print(json.dumps({"posted": topic["id"], "ok": list(PLATFORMS)},
+                         ensure_ascii=False))
+        return 0
+    print(f"PARTIAL: {topic['id']} stays in the vault — the next run will "
+          "retry only the missing platforms.")
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
