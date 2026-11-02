@@ -17,8 +17,14 @@ Manifest shape:
         }
      }
   },
-  "done": { "<topic_id>": {"fingerprint": ..., "at": iso} }
+  "done": { "<topic_id>": {"fingerprint": ..., "at": iso} },
+  "quarantined": { "<topic_id>": <entry + quarantined_at + reason> }
 }
+
+Each pending entry also carries "attempts" (failed runs so far). After
+MAX_ATTEMPTS failed runs an entry is moved to "quarantined": its video
+stays stored, but it stops blocking new builds (a permanently broken
+upload once froze a sister channel for ~2 months — never again).
 
 The manifest is updated through the API after EVERY platform attempt, so
 a crashed or failed run never loses track of what is already posted —
@@ -93,8 +99,9 @@ def load_manifest():
             m = json.loads(r.content.decode("utf-8"))
             m.setdefault("pending", {})
             m.setdefault("done", {})
+            m.setdefault("quarantined", {})
             return m
-    return {"pending": {}, "done": {}}
+    return {"pending": {}, "done": {}, "quarantined": {}}
 
 
 def save_manifest(manifest):
