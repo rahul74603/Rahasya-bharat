@@ -30,6 +30,26 @@ class TestGenMeta(unittest.TestCase):
     def setUp(self):
         gen_meta._trending_hint = lambda: ""
 
+    def test_groq_fallback_when_gemini_fails(self):
+        with mock.patch.dict(os.environ, {"GEMINI_API_KEY": "k",
+                                          "GROQ_API_KEY": "g"}):
+            def boom(prompt):
+                raise RuntimeError("gemini down")
+            gen_meta._gemini_json = boom
+            gen_meta._groq_json = lambda prompt: dict(GOOD)
+            meta = gen_meta.generate(TOPICS, TOPIC)
+        self.assertIsNotNone(meta)
+        self.assertTrue(meta["yt_title"].endswith("Rahasya Bharat"))
+
+    def test_all_providers_fail_returns_none(self):
+        with mock.patch.dict(os.environ, {"GEMINI_API_KEY": "k",
+                                          "GROQ_API_KEY": "g"}):
+            def boom(prompt):
+                raise RuntimeError("down")
+            gen_meta._gemini_json = boom
+            gen_meta._groq_json = boom
+            self.assertIsNone(gen_meta.generate(TOPICS, TOPIC))
+
     def test_no_key_returns_none(self):
         with mock.patch.dict(os.environ, {}, clear=True):
             self.assertIsNone(gen_meta.generate(TOPICS, TOPIC))
