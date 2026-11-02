@@ -78,43 +78,90 @@ def fetch_ai_images(query, outdir, want=2):
     return got
 
 
-def fetch_clips(query, outdir, want=3):
-    key = os.environ.get("PEXELS_API_KEY")
-    if not key or not query:
-        return []
+def _download(url, fp):
     import requests
-    try:
-        r = requests.get(API, headers={"Authorization": key, **UA},
-                         params={"query": query, "orientation": "portrait",
-                                 "per_page": 12},
-                         timeout=30)
-        r.raise_for_status()
-        videos = r.json().get("videos", [])
-    except Exception as e:
-        print(f"Pexels search failed: {e}")
-        return []
+    with requests.get(url, headers=UA, timeout=90, stream=True) as resp:
+        resp.raise_for_status()
+        size = 0
+        with open(fp, "wb") as f:
+            for chunk in resp.iter_content(1 << 16):
+                size += len(chunk)
+                if size > MAX_BYTES:
+                    raise RuntimeError("clip too large")
+                f.write(chunk)
+
+
+def _collect(links, outdir, want, offset, tag):
     got = []
-    for v in videos:
-        link = pick_file(v)
-        if not link:
-            continue
-        fp = os.path.join(outdir, f"clip{len(got)}.mp4")
+    for link in links:
+        fp = os.path.join(outdir, f"clip{offset + len(got)}.mp4")
         try:
-            with requests.get(link, headers=UA, timeout=90, stream=True) as resp:
-                resp.raise_for_status()
-                size = 0
-                with open(fp, "wb") as f:
-                    for chunk in resp.iter_content(1 << 16):
-                        size += len(chunk)
-                        if size > MAX_BYTES:
-                            raise RuntimeError("clip too large")
-                        f.write(chunk)
+            _download(link, fp)
             got.append(fp)
-            print("clip:", link[:90])
+            print(f"clip[{tag}]:", link[:90])
         except Exception as e:
-            print("clip download failed:", e)
+            print(f"clip download failed ({tag}):", e)
             if os.path.exists(fp):
                 os.remove(fp)
         if len(got) >= want:
             break
+    return got
+
+
+def _fetch_pexels(query, outdir, want, offset):
+    import requests
+    r = requests.get(API, headers={"Authorization": os.environ["PEXELS_API_KEY"],
+                                   **UA},
+                     params={"query": query, "orientation": "portrait",
+                             "per_page": 12},
+                     timeout=30)
+    r.raise_for_status()
+    links = [link for v in r.json().get("videos", [])
+             if (link := pick_file(v))]
+    return _collect(links, outdir, want, offset, "pexels")
+
+
+def pick_pixabay(video):
+    """Pixabay returns size variants (large/medium/small/tiny).
+    Prefer a variant tall enough to crop (>=720) without a huge file."""
+    variants = []
+    for v in (video.get("videos") or {}).values():
+        if v.get("url") and (v.get("height") or 0) >= 720:
+            variants.append(v)
+    if not variants:
+        return None
+    variants.sort(key=lambda v: (abs((v.get("height") or 0) - 1200),
+                                 v.get("size") or 0))
+    return variants[0]["url"]
+
+
+def _fetch_pixabay(query, outdir, want, offset):
+    import requests
+    r = requests.get("https://pixabay.com/api/videos/",
+                     params={"key": os.environ["PIXABAY_API_KEY"],
+                             "q": query, "per_page": 12,
+                             "video_type": "film"},
+                     headers=UA, timeout=30)
+    r.raise_for_status()
+    links = [link for v in r.json().get("hits", [])
+             if (link := pick_pixabay(v))]
+    return _collect(links, outdir, want, offset, "pixabay")
+
+
+def fetch_clips(query, outdir, want=3):
+    """Providers in order: Pexels (when its key exists), then Pixabay.
+    Any provider failing just means fewer clips — never an exception."""
+    if not query:
+        return []
+    got = []
+    for env, fn in (("PEXELS_API_KEY", _fetch_pexels),
+                    ("PIXABAY_API_KEY", _fetch_pixabay)):
+        if len(got) >= want:
+            break
+        if not os.environ.get(env):
+            continue
+        try:
+            got += fn(query, outdir, want - len(got), len(got))
+        except Exception as e:
+            print(f"{env} provider failed: {e}")
     return got
