@@ -1,1 +1,134 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwoiIiJQZW5kaW5nLXZpZGVvIHZhdWx0IOKAlCBhIGJ1aWx0IHZpZGVvIGlzIE5FVkVSIGxvc3QgaWYgcHVibGlzaGluZyBmYWlscy4KClN0b3JhZ2U6IG9uZSBwZXJtYW5lbnQgR2l0SHViIFJlbGVhc2UgKHRhZyAidmF1bHQiKSBpbiB0aGlzIHJlcG8uCkFzc2V0czogb25lIDx0b3BpY19pZD4ubXA0IHBlciBwZW5kaW5nIHZpZGVvICsgb25lIHZhdWx0Lmpzb24gbWFuaWZlc3QuCgpNYW5pZmVzdCBzaGFwZToKewogICJwZW5kaW5nIjogewogICAgICI8dG9waWNfaWQ+IjogewogICAgICAgICJzbG90IjogIm1vcm5pbmd8ZXZlbmluZyIsICJ0aXRsZSI6IC4uLiwgImNhcHRpb24iOiAuLi4sCiAgICAgICAgImRlc2NyaXB0aW9uIjogLi4uLCAidGFncyI6IFsuLi5dLCAiZmluZ2VycHJpbnQiOiAuLi4sCiAgICAgICAgImJ1aWx0X2F0IjogaXNvLCAidmlkZW9fYXNzZXQiOiA8YXNzZXQgaWQ+LAogICAgICAgICJwbGF0Zm9ybXMiOiB7CiAgICAgICAgICAgImZhY2Vib29rIjogIHsic3RhdHVzIjogInBlbmRpbmd8ZG9uZSIsICJpZCI6IC4uLiwgImVycm9yIjogLi4ufSwKICAgICAgICAgICAiaW5zdGFncmFtIjogey4uLn0sICJ5b3V0dWJlIjogey4uLn0KICAgICAgICB9CiAgICAgfQogIH0sCiAgImRvbmUiOiB7ICI8dG9waWNfaWQ+IjogeyJmaW5nZXJwcmludCI6IC4uLiwgImF0IjogaXNvfSB9Cn0KClRoZSBtYW5pZmVzdCBpcyB1cGRhdGVkIHRocm91Z2ggdGhlIEFQSSBhZnRlciBFVkVSWSBwbGF0Zm9ybSBhdHRlbXB0LCBzbwphIGNyYXNoZWQgb3IgZmFpbGVkIHJ1biBuZXZlciBsb3NlcyB0cmFjayBvZiB3aGF0IGlzIGFscmVhZHkgcG9zdGVkIOKAlAp0aGF0IGlzIHdoYXQgbWFrZXMgcmV0cmllcyBkdXBsaWNhdGUtc2FmZS4KIiIiCmltcG9ydCBqc29uCmltcG9ydCBvcwoKaW1wb3J0IHJlcXVlc3RzCgpBUEkgPSAiaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbSIKVEFHID0gInZhdWx0IgpNQU5JRkVTVCA9ICJ2YXVsdC5qc29uIgoKCmRlZiBfaCgpOgogICAgcmV0dXJuIHsKICAgICAgICAiQXV0aG9yaXphdGlvbiI6IGYiQmVhcmVyIHtvcy5lbnZpcm9uWydHSF9UT0tFTiddfSIsCiAgICAgICAgIkFjY2VwdCI6ICJhcHBsaWNhdGlvbi92bmQuZ2l0aHViK2pzb24iLAogICAgfQoKCmRlZiBfcmVwbygpOgogICAgcmV0dXJuIG9zLmVudmlyb25bIkdJVEhVQl9SRVBPU0lUT1JZIl0gICMgb3duZXIvbmFtZSwgYXV0by1zZXQgaW4gQWN0aW9ucwoKCmRlZiBfcmVsZWFzZSgpOgogICAgciA9IHJlcXVlc3RzLmdldChmIntBUEl9L3JlcG9zL3tfcmVwbygpfS9yZWxlYXNlcy90YWdzL3tUQUd9IiwKICAgICAgICAgICAgICAgICAgICAgaGVhZGVycz1faCgpLCB0aW1lb3V0PTYwKQogICAgaWYgci5zdGF0dXNfY29kZSA9PSA0MDQ6CiAgICAgICAgciA9IHJlcXVlc3RzLnBvc3QoZiJ7QVBJfS9yZXBvcy97X3JlcG8oKX0vcmVsZWFzZXMiLCBoZWFkZXJzPV9oKCksIGpzb249ewogICAgICAgICAgICAidGFnX25hbWUiOiBUQUcsICJuYW1lIjogIlBlbmRpbmcgVmlkZW8gVmF1bHQiLAogICAgICAgICAgICAiYm9keSI6ICJWaWRlb3MgYnVpbHQgYnV0IG5vdCB5ZXQgZnVsbHkgcHVibGlzaGVkIGxpdmUgaGVyZS4gIgogICAgICAgICAgICAgICAgICAgICJEbyBub3QgZGVsZXRlIGJ5IGhhbmQuIiwKICAgICAgICAgICAgImRyYWZ0IjogRmFsc2UsICJwcmVyZWxlYXNlIjogVHJ1ZSwKICAgICAgICB9LCB0aW1lb3V0PTYwKQogICAgci5yYWlzZV9mb3Jfc3RhdHVzKCkKICAgIHJldHVybiByLmpzb24oKQoKCmRlZiBfYXNzZXRzKHJlbGVhc2VfaWQpOgogICAgciA9IHJlcXVlc3RzLmdldChmIntBUEl9L3JlcG9zL3tfcmVwbygpfS9yZWxlYXNlcy97cmVsZWFzZV9pZH0vYXNzZXRzIiwKICAgICAgICAgICAgICAgICAgICAgaGVhZGVycz1faCgpLCB0aW1lb3V0PTYwKQogICAgci5yYWlzZV9mb3Jfc3RhdHVzKCkKICAgIHJldHVybiByLmpzb24oKQoKCmRlZiBfdXBsb2FkKHJlbGVhc2UsIG5hbWUsIGRhdGEsIGN0eXBlKToKICAgIHVwID0gcmVxdWVzdHMucG9zdCgKICAgICAgICByZWxlYXNlWyJ1cGxvYWRfdXJsIl0uc3BsaXQoInsiKVswXSwKICAgICAgICBoZWFkZXJzPXsqKl9oKCksICJDb250ZW50LVR5cGUiOiBjdHlwZX0sCiAgICAgICAgcGFyYW1zPXsibmFtZSI6IG5hbWV9LCBkYXRhPWRhdGEsIHRpbWVvdXQ9OTAwLAogICAgKQogICAgdXAucmFpc2VfZm9yX3N0YXR1cygpCiAgICByZXR1cm4gdXAuanNvbigpCgoKZGVmIF9kZWxldGVfYXNzZXQoYXNzZXRfaWQpOgogICAgcmVxdWVzdHMuZGVsZXRlKGYie0FQSX0vcmVwb3Mve19yZXBvKCl9L3JlbGVhc2VzL2Fzc2V0cy97YXNzZXRfaWR9IiwKICAgICAgICAgICAgICAgICAgICBoZWFkZXJzPV9oKCksIHRpbWVvdXQ9NjApCgoKZGVmIGxvYWRfbWFuaWZlc3QoKToKICAgIHJlbCA9IF9yZWxlYXNlKCkKICAgIGZvciBhIGluIF9hc3NldHMocmVsWyJpZCJdKToKICAgICAgICBpZiBhWyJuYW1lIl0gPT0gTUFOSUZFU1Q6CiAgICAgICAgICAgIHIgPSByZXF1ZXN0cy5nZXQoCiAgICAgICAgICAgICAgICBmIntBUEl9L3JlcG9zL3tfcmVwbygpfS9yZWxlYXNlcy9hc3NldHMve2FbJ2lkJ119IiwKICAgICAgICAgICAgICAgIGhlYWRlcnM9eyoqX2goKSwgIkFjY2VwdCI6ICJhcHBsaWNhdGlvbi9vY3RldC1zdHJlYW0ifSwKICAgICAgICAgICAgICAgIHRpbWVvdXQ9NjApCiAgICAgICAgICAgIHIucmFpc2VfZm9yX3N0YXR1cygpCiAgICAgICAgICAgIG0gPSBqc29uLmxvYWRzKHIuY29udGVudC5kZWNvZGUoInV0Zi04IikpCiAgICAgICAgICAgIG0uc2V0ZGVmYXVsdCgicGVuZGluZyIsIHt9KQogICAgICAgICAgICBtLnNldGRlZmF1bHQoImRvbmUiLCB7fSkKICAgICAgICAgICAgcmV0dXJuIG0KICAgIHJldHVybiB7InBlbmRpbmciOiB7fSwgImRvbmUiOiB7fX0KCgpkZWYgc2F2ZV9tYW5pZmVzdChtYW5pZmVzdCk6CiAgICByZWwgPSBfcmVsZWFzZSgpCiAgICBmb3IgYSBpbiBfYXNzZXRzKHJlbFsiaWQiXSk6CiAgICAgICAgaWYgYVsibmFtZSJdID09IE1BTklGRVNUOgogICAgICAgICAgICBfZGVsZXRlX2Fzc2V0KGFbImlkIl0pCiAgICBfdXBsb2FkKHJlbCwgTUFOSUZFU1QsCiAgICAgICAgICAgIGpzb24uZHVtcHMobWFuaWZlc3QsIGVuc3VyZV9hc2NpaT1GYWxzZSwgaW5kZW50PTEpLmVuY29kZSgidXRmLTgiKSwKICAgICAgICAgICAgImFwcGxpY2F0aW9uL2pzb24iKQoKCmRlZiBwdXRfdmlkZW8odG9waWNfaWQsIHZpZGVvX3BhdGgpOgogICAgIiIiU3RvcmUgKG9yIHJlcGxhY2UpIHRoZSBwZW5kaW5nIHZpZGVvOyByZXR1cm5zIHRoZSBhc3NldCBpZC4iIiIKICAgIHJlbCA9IF9yZWxlYXNlKCkKICAgIG5hbWUgPSBmInt0b3BpY19pZH0ubXA0IgogICAgZm9yIGEgaW4gX2Fzc2V0cyhyZWxbImlkIl0pOgogICAgICAgIGlmIGFbIm5hbWUiXSA9PSBuYW1lOgogICAgICAgICAgICBfZGVsZXRlX2Fzc2V0KGFbImlkIl0pCiAgICB3aXRoIG9wZW4odmlkZW9fcGF0aCwgInJiIikgYXMgZjoKICAgICAgICBhc3NldCA9IF91cGxvYWQocmVsLCBuYW1lLCBmLCAidmlkZW8vbXA0IikKICAgIHJldHVybiBhc3NldFsiaWQiXQoKCmRlZiBnZXRfdmlkZW8oYXNzZXRfaWQsIGRlc3RfcGF0aCk6CiAgICByID0gcmVxdWVzdHMuZ2V0KAogICAgICAgIGYie0FQSX0vcmVwb3Mve19yZXBvKCl9L3JlbGVhc2VzL2Fzc2V0cy97YXNzZXRfaWR9IiwKICAgICAgICBoZWFkZXJzPXsqKl9oKCksICJBY2NlcHQiOiAiYXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtIn0sCiAgICAgICAgdGltZW91dD05MDApCiAgICByLnJhaXNlX2Zvcl9zdGF0dXMoKQogICAgd2l0aCBvcGVuKGRlc3RfcGF0aCwgIndiIikgYXMgZjoKICAgICAgICBmLndyaXRlKHIuY29udGVudCkKICAgIHJldHVybiBkZXN0X3BhdGgKCgpkZWYgZGVsZXRlX3ZpZGVvKGFzc2V0X2lkKToKICAgIF9kZWxldGVfYXNzZXQoYXNzZXRfaWQpCg==
+#!/usr/bin/env python3
+"""Pending-video vault — a built video is NEVER lost if publishing fails.
+
+Storage: one permanent GitHub Release (tag "vault") in this repo.
+Assets: one <topic_id>.mp4 per pending video + one vault.json manifest.
+
+Manifest shape:
+{
+  "pending": {
+     "<topic_id>": {
+        "slot": "morning|evening", "title": ..., "caption": ...,
+        "description": ..., "tags": [...], "fingerprint": ...,
+        "built_at": iso, "video_asset": <asset id>,
+        "platforms": {
+           "facebook":  {"status": "pending|done", "id": ..., "error": ...},
+           "instagram": {...}, "youtube": {...}
+        }
+     }
+  },
+  "done": { "<topic_id>": {"fingerprint": ..., "at": iso} }
+}
+
+The manifest is updated through the API after EVERY platform attempt, so
+a crashed or failed run never loses track of what is already posted —
+that is what makes retries duplicate-safe.
+"""
+import json
+import os
+
+import requests
+
+API = "https://api.github.com"
+TAG = "vault"
+MANIFEST = "vault.json"
+
+
+def _h():
+    return {
+        "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+        "Accept": "application/vnd.github+json",
+    }
+
+
+def _repo():
+    return os.environ["GITHUB_REPOSITORY"]  # owner/name, auto-set in Actions
+
+
+def _release():
+    r = requests.get(f"{API}/repos/{_repo()}/releases/tags/{TAG}",
+                     headers=_h(), timeout=60)
+    if r.status_code == 404:
+        r = requests.post(f"{API}/repos/{_repo()}/releases", headers=_h(), json={
+            "tag_name": TAG, "name": "Pending Video Vault",
+            "body": "Videos built but not yet fully published live here. "
+                    "Do not delete by hand.",
+            "draft": False, "prerelease": True,
+        }, timeout=60)
+    r.raise_for_status()
+    return r.json()
+
+
+def _assets(release_id):
+    r = requests.get(f"{API}/repos/{_repo()}/releases/{release_id}/assets",
+                     headers=_h(), timeout=60)
+    r.raise_for_status()
+    return r.json()
+
+
+def _upload(release, name, data, ctype):
+    up = requests.post(
+        release["upload_url"].split("{")[0],
+        headers={**_h(), "Content-Type": ctype},
+        params={"name": name}, data=data, timeout=900,
+    )
+    up.raise_for_status()
+    return up.json()
+
+
+def _delete_asset(asset_id):
+    requests.delete(f"{API}/repos/{_repo()}/releases/assets/{asset_id}",
+                    headers=_h(), timeout=60)
+
+
+def load_manifest():
+    rel = _release()
+    for a in _assets(rel["id"]):
+        if a["name"] == MANIFEST:
+            r = requests.get(
+                f"{API}/repos/{_repo()}/releases/assets/{a['id']}",
+                headers={**_h(), "Accept": "application/octet-stream"},
+                timeout=60)
+            r.raise_for_status()
+            m = json.loads(r.content.decode("utf-8"))
+            m.setdefault("pending", {})
+            m.setdefault("done", {})
+            return m
+    return {"pending": {}, "done": {}}
+
+
+def save_manifest(manifest):
+    rel = _release()
+    for a in _assets(rel["id"]):
+        if a["name"] == MANIFEST:
+            _delete_asset(a["id"])
+    _upload(rel, MANIFEST,
+            json.dumps(manifest, ensure_ascii=False, indent=1).encode("utf-8"),
+            "application/json")
+
+
+def put_video(topic_id, video_path):
+    """Store (or replace) the pending video; returns the asset id."""
+    rel = _release()
+    name = f"{topic_id}.mp4"
+    for a in _assets(rel["id"]):
+        if a["name"] == name:
+            _delete_asset(a["id"])
+    with open(video_path, "rb") as f:
+        asset = _upload(rel, name, f, "video/mp4")
+    return asset["id"]
+
+
+def get_video(asset_id, dest_path):
+    r = requests.get(
+        f"{API}/repos/{_repo()}/releases/assets/{asset_id}",
+        headers={**_h(), "Accept": "application/octet-stream"},
+        timeout=900)
+    r.raise_for_status()
+    with open(dest_path, "wb") as f:
+        f.write(r.content)
+    return dest_path
+
+
+def delete_video(asset_id):
+    _delete_asset(asset_id)
