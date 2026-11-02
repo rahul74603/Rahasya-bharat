@@ -26,6 +26,7 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gen_meta
 import gh_release
 import make_video
 import preflight
@@ -139,7 +140,8 @@ def publish_entry(manifest, topic_id, entry, video_path):
         "facebook": lambda: publish_fb.publish(video_path, entry["caption"]),
         "instagram": ig_flow,
         "youtube": lambda: publish_yt.publish(
-            video_path, entry["yt_title"], entry["description"], YT_TAGS),
+            video_path, entry["yt_title"], entry["description"],
+            entry.get("yt_tags") or YT_TAGS),
     }
     for name in PLATFORMS:
         if entry["platforms"][name]["status"] == "done":
@@ -272,12 +274,23 @@ def main():
 
     workdir = os.path.join(ROOT, "build", f"{ist_now():%Y%m%d}-{args.slot}-{topic['id']}")
     built = make_video.build(topic, workdir)
-    caption, description, yt_title = texts(topics, topic)
+
+    # Metadata: Gemini har video ke hisaab se banata hai (dynamic);
+    # na mile to purani rotation wali fallback — post kabhi nahi rukti.
+    meta = gen_meta.generate(topics, topic)
+    if meta:
+        caption, description = meta["caption"], meta["description"]
+        yt_title, yt_tags = meta["yt_title"], meta["yt_tags"]
+        print("metadata: Gemini dynamic (title/tags is video ke hisaab se)")
+    else:
+        caption, description, yt_title = texts(topics, topic)
+        yt_tags = YT_TAGS
+        print("metadata: fallback rotation")
 
     # 3) Vault BEFORE publishing — the built video can no longer be lost.
     entry = {
         "slot": args.slot, "title": topic["title"], "yt_title": yt_title,
-        "caption": caption, "description": description,
+        "caption": caption, "description": description, "yt_tags": yt_tags,
         "fingerprint": fingerprint(topic),
         "attempts": 0,
         "built_at": ist_now().isoformat(timespec="seconds"),
