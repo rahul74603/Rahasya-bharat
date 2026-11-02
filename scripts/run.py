@@ -29,6 +29,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gen_meta
 import gh_release
 import make_video
+import post_comment
 import preflight
 import publish_fb
 import publish_ig
@@ -154,6 +155,42 @@ def publish_entry(manifest, topic_id, entry, video_path):
     return all(entry["platforms"][p]["status"] == "done" for p in PLATFORMS)
 
 
+QUESTION_FALLBACK = {
+    "morning": "आपको क्या लगता है — क्या आप इस जगह की ये कहानी पहले से जानते थे? Comment में बताइए 👇",
+    "evening": "आपको क्या लगता है — ये सच है या किंवदंती? Comment में अपनी राय बताइए 👇",
+}
+
+
+def try_extras(manifest, topic_id, entry):
+    """Pinned-question comments — garnish, never a gate. The video is
+    already posted; each platform's comment is attempted once per run,
+    recorded in entry['extras'], and failures are printed loudly but
+    change nothing about the video's posted status."""
+    question = entry.get("question") or QUESTION_FALLBACK.get(entry["slot"], "")
+    entry.setdefault("extras", {})
+    jobs = {
+        "facebook": lambda: post_comment.comment_facebook(
+            entry["platforms"]["facebook"]["id"], question),
+        "instagram": lambda: post_comment.comment_instagram(
+            entry["platforms"]["instagram"]["id"], question),
+        "youtube": lambda: post_comment.comment_youtube(
+            entry["platforms"]["youtube"]["id"], question),
+    }
+    for name in PLATFORMS:
+        if entry["platforms"][name]["status"] != "done":
+            continue
+        if entry["extras"].get(name, {}).get("status") == "done":
+            continue
+        try:
+            cid = jobs[name]()
+            entry["extras"][name] = {"status": "done", "id": str(cid), "error": None}
+            print(f"[OK] {name} sawal comment: {cid}")
+        except Exception as e:
+            entry["extras"][name] = {"status": "failed", "id": None, "error": str(e)}
+            print(f"[FAIL] {name} sawal comment (video posted hai, ye extra hai): {e}")
+        vault.save_manifest(manifest)
+
+
 def finish_entry(manifest, state, topic_id, entry):
     """All platforms have it: clear the vault slot, remember it forever."""
     try:
@@ -171,6 +208,7 @@ def finish_entry(manifest, state, topic_id, entry):
         "results": {p: entry["platforms"][p]["id"] for p in PLATFORMS},
         "failures": [],
         "fingerprint": entry["fingerprint"],
+        "comments": {p: s.get("status") for p, s in entry.get("extras", {}).items()},
     }
     save("state.json", state)
 
@@ -188,6 +226,7 @@ def process_vault(manifest, state, slot):
             video_path = vault.get_video(entry["video_asset"],
                                          os.path.join(td, f"{topic_id}.mp4"))
             if publish_entry(manifest, topic_id, entry, video_path):
+                try_extras(manifest, topic_id, entry)
                 finish_entry(manifest, state, topic_id, entry)
             else:
                 entry["attempts"] = entry.get("attempts", 0) + 1
@@ -281,16 +320,19 @@ def main():
     if meta:
         caption, description = meta["caption"], meta["description"]
         yt_title, yt_tags = meta["yt_title"], meta["yt_tags"]
+        question = meta.get("question")
         print("metadata: Gemini dynamic (title/tags is video ke hisaab se)")
     else:
         caption, description, yt_title = texts(topics, topic)
         yt_tags = YT_TAGS
+        question = None
         print("metadata: fallback rotation")
 
     # 3) Vault BEFORE publishing — the built video can no longer be lost.
     entry = {
         "slot": args.slot, "title": topic["title"], "yt_title": yt_title,
         "caption": caption, "description": description, "yt_tags": yt_tags,
+        "question": question,
         "fingerprint": fingerprint(topic),
         "attempts": 0,
         "built_at": ist_now().isoformat(timespec="seconds"),
@@ -304,6 +346,7 @@ def main():
 
     # 4) Publish; on any failure the entry stays in the vault for next run.
     if publish_entry(manifest, topic["id"], entry, built["video"]):
+        try_extras(manifest, topic["id"], entry)
         finish_entry(manifest, state, topic["id"], entry)
         print(json.dumps({"posted": topic["id"], "ok": list(PLATFORMS)},
                          ensure_ascii=False))
