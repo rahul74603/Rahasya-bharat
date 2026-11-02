@@ -1,0 +1,74 @@
+name: Rahasya Bharat — Daily Video
+
+# Subah 08:00 IST = 02:30 UTC  |  Shaam 19:00 IST = 13:30 UTC
+on:
+  schedule:
+    - cron: "30 2 * * *"
+    - cron: "30 13 * * *"
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "Kaunsi video banani hai"
+        type: choice
+        options: [morning, evening]
+        default: morning
+      dry_run:
+        description: "Sirf video banao, publish mat karo"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system deps (ffmpeg + Devanagari fonts)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-core > /dev/null
+          fc-list | grep -i devanagari | head -2 || true
+
+      - name: Install Python deps
+        run: pip install -q -r requirements.txt
+
+      - name: Decide slot
+        id: slot
+        run: |
+          if [ -n "${{ inputs.slot }}" ] && [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "slot=${{ inputs.slot }}" >> "$GITHUB_OUTPUT"
+          elif [ "$(date -u +%H)" = "02" ]; then
+            echo "slot=morning" >> "$GITHUB_OUTPUT"
+          else
+            echo "slot=evening" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build + publish
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DRY=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then DRY="--dry-run"; fi
+          python scripts/run.py --slot "${{ steps.slot.outputs.slot }}" $DRY
+
+      - name: Save rotation state (kaunsa topic post ho gaya)
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name "rahasya-bot"
+          git config user.email "actions@github.com"
+          git add state.json
+          git diff --cached --quiet || git commit -m "chore: rotation state update [skip ci]"
+          git push
