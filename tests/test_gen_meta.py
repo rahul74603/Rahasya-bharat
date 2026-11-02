@@ -22,6 +22,7 @@ GOOD = {
     "tags": ["roopkund", "roopkund lake mystery", "uttarakhand rahasya",
              "skeleton lake", "hindi facts", "roopkund ki kahani"],
     "hashtags": ["#RahasyaBharat", "#HindiFacts", "#Shorts"],
+    "question": "क्या आप कभी रूपकुंड जैसी किसी रहस्यमयी जगह पर गए हैं?",
 }
 
 
@@ -41,6 +42,21 @@ class TestGenMeta(unittest.TestCase):
         self.assertTrue(meta["yt_title"].endswith("Rahasya Bharat"))
         self.assertGreaterEqual(len(meta["yt_tags"]), 5)
         self.assertIn("RahasyaBharat", meta["caption"])
+
+    def test_question_carried_when_valid(self):
+        with mock.patch.dict(os.environ, {"GEMINI_API_KEY": "k"}):
+            gen_meta._gemini_json = lambda prompt: dict(GOOD)
+            meta = gen_meta.generate(TOPICS, TOPIC)
+        self.assertIn("question", meta)
+
+    def test_question_optional(self):
+        noq = dict(GOOD)
+        del noq["question"]
+        with mock.patch.dict(os.environ, {"GEMINI_API_KEY": "k"}):
+            gen_meta._gemini_json = lambda prompt: noq
+            meta = gen_meta.generate(TOPICS, TOPIC)
+        self.assertIsNotNone(meta)
+        self.assertNotIn("question", meta)
 
     def test_title_suffix_appended_when_missing(self):
         bad = dict(GOOD)
