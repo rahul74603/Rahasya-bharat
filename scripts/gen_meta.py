@@ -17,43 +17,69 @@ import json
 import os
 import re
 
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 API = "https://generativelanguage.googleapis.com/v1beta/models"
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 GROQ_API = "https://api.groq.com/openai/v1/chat/completions"
+
+# Model names ROT: providers retire models without asking (2026-11-03:
+# gemini-2.0-flash AND llama-3.3-70b-versatile both started returning
+# 404 the same week, silently disabling every AI feature). Never depend
+# on one name — env override first, then current models, then older.
+GEMINI_MODELS = [m for m in dict.fromkeys([
+    os.environ.get("GEMINI_MODEL"),
+    "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash",
+]) if m]
+GROQ_MODELS = [m for m in dict.fromkeys([
+    os.environ.get("GROQ_MODEL"),
+    "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "llama-3.1-8b-instant",
+]) if m]
 
 
 def _groq_json(prompt):
     """Groq (free tier) — the backup brain when Gemini is unavailable."""
     import requests
-    r = requests.post(GROQ_API,
-                      headers={"Authorization":
-                               f"Bearer {os.environ['GROQ_API_KEY']}"},
-                      json={"model": GROQ_MODEL,
-                            "messages": [{"role": "user", "content": prompt}],
-                            "temperature": 0.7,
-                            "response_format": {"type": "json_object"}},
-                      timeout=60)
-    r.raise_for_status()
-    text = r.json()["choices"][0]["message"]["content"]
-    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
-    return json.loads(text)
+    last = None
+    for model in GROQ_MODELS:
+        try:
+            r = requests.post(GROQ_API,
+                              headers={"Authorization":
+                                       f"Bearer {os.environ['GROQ_API_KEY']}"},
+                              json={"model": model,
+                                    "messages": [{"role": "user",
+                                                  "content": prompt}],
+                                    "temperature": 0.7,
+                                    "response_format": {"type": "json_object"}},
+                              timeout=60)
+            r.raise_for_status()
+            text = r.json()["choices"][0]["message"]["content"]
+            text = re.sub(r"^```(?:json)?|```$", "", text.strip(),
+                          flags=re.M).strip()
+            return json.loads(text)
+        except Exception as e:
+            last = e
+    raise last
 
 
 def _gemini_json(prompt):
     import requests
     key = os.environ["GEMINI_API_KEY"]
-    r = requests.post(f"{API}/{MODEL}:generateContent",
-                      params={"key": key},
-                      json={"contents": [{"parts": [{"text": prompt}]}],
-                            "generationConfig": {
-                                "temperature": 0.7,
-                                "responseMimeType": "application/json"}},
-                      timeout=60)
-    r.raise_for_status()
-    text = r.json()["candidates"][0]["content"]["parts"][0]["text"]
-    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
-    return json.loads(text)
+    last = None
+    for model in GEMINI_MODELS:
+        try:
+            r = requests.post(f"{API}/{model}:generateContent",
+                              params={"key": key},
+                              json={"contents": [{"parts": [{"text": prompt}]}],
+                                    "generationConfig": {
+                                        "temperature": 0.7,
+                                        "responseMimeType": "application/json"}},
+                              timeout=60)
+            r.raise_for_status()
+            text = r.json()["candidates"][0]["content"]["parts"][0]["text"]
+            text = re.sub(r"^```(?:json)?|```$", "", text.strip(),
+                          flags=re.M).strip()
+            return json.loads(text)
+        except Exception as e:
+            last = e
+    raise last
 
 
 def _trending_hint():
