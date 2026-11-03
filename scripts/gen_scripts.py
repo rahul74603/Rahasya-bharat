@@ -128,6 +128,7 @@ SCRIPT KE NIYAM (lazmi):
 - script: Devanagari Hindi me 820-1000 characters ki boli jaane wali narration. Pehli line hook wali ho — wahi "hook" field me bhi do (ek chhoti si line jo 3 second me sunne wale ko rok de, "..." se shuru ho sakti hai jaise "एक गाँव... जहाँ...").
 - Lehja: katha-vachak jaisa, aasan shabdon me, har 2-3 line me nayi baat ya mod — bore hone ki jagah na ho.
 - IMAANDARI SABSE UPAR: sirf pakke, mashhoor tathya hi likho. Jo baat pakki na ho use "kaha jata hai" / "mana jata hai" karke likho. Kinwadanti ko kinwadanti hi kaho, use sach mat banao. Koi date, sankhya ya naam andaze se bilkul mat banao — shak ho to woh detail chhod do.
+- CTA (har script me lazmi): ant me, tease wali line se PEHLE, ek natural si appeal ho — pehle usi kahani ke rahasya par ek chhota sa sawal jiska jawab sunne wala comment me dena chahe (jaise "aapko kya lagta hai — ye sach hai ya kinwadanti? comment me bataiye"), phir ek pyari si line me YouTube par subscribe aur Instagram/Facebook par follow karne ki appeal. Lafz kahani ke hisaab se badalte raho — har video me ek-si ghisi-piti line bilkul nahi, aur kahani ke beech me CTA mat ghusedo.
 - Ant ki aakhri line me agli video ka tease ho: "{when} — {next_title}" ki tarz par ek chhoti si jhalak.
 - desc_extra: ek line me video ka saar (caption ke liye).
 - stock_query: 2-4 angrezi shabdon me stock video ki khoj — sirf MAHAUL ke liye (jaise pahad, kohra, mandir ki ghanti, udte pakshi); asli jagah ka naam mat do, mahaul do."""
