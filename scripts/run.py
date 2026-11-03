@@ -33,6 +33,7 @@ import post_comment
 import preflight
 import publish_fb
 import publish_ig
+import publish_tg
 import publish_yt
 import vault
 
@@ -161,9 +162,19 @@ QUESTION_FALLBACK = {
 }
 
 
-def try_extras(manifest, topic_id, entry):
-    """Pinned-question comments — garnish, never a gate. The video is
-    already posted; each platform's comment is attempted once per run,
+def _tg_caption(entry):
+    p = entry["platforms"]
+    lines = [entry["caption"], ""]
+    if p["youtube"].get("id"):
+        lines.append(f"▶️ YouTube: https://youtu.be/{p['youtube']['id']}")
+    lines.append("📸 Instagram: https://www.instagram.com/rahasyabharatt/")
+    lines.append("📘 Facebook: https://www.facebook.com/rahasyabharatt")
+    return "\n".join(lines)
+
+
+def try_extras(manifest, topic_id, entry, video_path=None):
+    """Pinned-question comments + Telegram post — garnish, never a gate.
+    The video is already posted; each extra is attempted once per run,
     recorded in entry['extras'], and failures are printed loudly but
     change nothing about the video's posted status."""
     question = entry.get("question") or QUESTION_FALLBACK.get(entry["slot"], "")
@@ -188,6 +199,23 @@ def try_extras(manifest, topic_id, entry):
         except Exception as e:
             entry["extras"][name] = {"status": "failed", "id": None, "error": str(e)}
             print(f"[FAIL] {name} sawal comment (video posted hai, ye extra hai): {e}")
+        vault.save_manifest(manifest)
+
+    # Telegram — channel ki apni audience, teeno bade platforms ke
+    # algorithm se azaad. Video file chahiye, isliye sirf tab jab
+    # caller ne video_path diya ho aur dono secrets lage hon.
+    if (video_path and os.environ.get("TELEGRAM_BOT_TOKEN")
+            and os.environ.get("TELEGRAM_CHAT_ID")
+            and entry["extras"].get("telegram", {}).get("status") != "done"):
+        try:
+            mid = publish_tg.publish(video_path, _tg_caption(entry))
+            entry["extras"]["telegram"] = {
+                "status": "done", "id": str(mid), "error": None}
+            print(f"[OK] telegram post: {mid}")
+        except Exception as e:
+            entry["extras"]["telegram"] = {
+                "status": "failed", "id": None, "error": str(e)}
+            print(f"[FAIL] telegram post (extra hai, video posted hai): {e}")
         vault.save_manifest(manifest)
 
 
@@ -226,7 +254,7 @@ def process_vault(manifest, state, slot):
             video_path = vault.get_video(entry["video_asset"],
                                          os.path.join(td, f"{topic_id}.mp4"))
             if publish_entry(manifest, topic_id, entry, video_path):
-                try_extras(manifest, topic_id, entry)
+                try_extras(manifest, topic_id, entry, video_path)
                 finish_entry(manifest, state, topic_id, entry)
             else:
                 entry["attempts"] = entry.get("attempts", 0) + 1
@@ -327,6 +355,8 @@ def main():
         yt_tags = YT_TAGS
         question = None
         print("metadata: fallback rotation")
+    if built.get("music"):
+        description += f"\n\n🎵 Background music: {built['music']}"
 
     # 3) Vault BEFORE publishing — the built video can no longer be lost.
     entry = {
@@ -346,7 +376,7 @@ def main():
 
     # 4) Publish; on any failure the entry stays in the vault for next run.
     if publish_entry(manifest, topic["id"], entry, built["video"]):
-        try_extras(manifest, topic["id"], entry)
+        try_extras(manifest, topic["id"], entry, built["video"])
         finish_entry(manifest, state, topic["id"], entry)
         print(json.dumps({"posted": topic["id"], "ok": list(PLATFORMS)},
                          ensure_ascii=False))
