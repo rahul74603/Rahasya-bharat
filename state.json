@@ -58,6 +58,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "shani-shingnapur": {
+   "at": "2026-11-04T01:48:11+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1149373714292295",
+    "instagram": "18111034574233876",
+    "youtube": "mWyo6aYxCLU"
+   },
+   "failures": [],
+   "fingerprint": "c5d0019f066485bd",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
