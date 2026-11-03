@@ -9,6 +9,38 @@
     "youtube": "-Wf1OSHZ4w0"
    },
    "failures": []
+  },
+  "nalanda": {
+   "at": "2026-11-03T05:32:15+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "2601779696962215",
+    "instagram": "18092938415688590",
+    "youtube": "NWWqaSEdrV8"
+   },
+   "failures": [],
+   "fingerprint": "451e1723930010b9",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed"
+   }
+  },
+  "hampi-pillars": {
+   "at": "2026-11-03T05:35:23+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "4706644739662869",
+    "instagram": "18182354314437405",
+    "youtube": "9CcfTHp1Olo"
+   },
+   "failures": [],
+   "fingerprint": "eb7b1e4c48561f00",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed"
+   }
   }
  }
 }
