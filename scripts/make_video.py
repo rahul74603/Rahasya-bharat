@@ -21,6 +21,9 @@ import requests
 import stock_media
 
 W, H = 1080, 1920
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MUSIC_MANIFEST = os.path.join(ROOT, "assets", "music.json")
+MUSIC_VOLUME = os.environ.get("MUSIC_VOLUME", "0.13")
 VOICE = os.environ.get("TTS_VOICE", "hi-IN-MadhurNeural")
 RATE = os.environ.get("TTS_RATE", "+6%")
 PITCH = os.environ.get("TTS_PITCH", "-2Hz")
@@ -42,9 +45,114 @@ def probe_duration(path):
     return float(json.loads(out)["format"]["duration"])
 
 
-async def tts(text, out_mp3):
+def _rate_float():
+    try:
+        return 1.0 + float(RATE.strip().rstrip("%")) / 100.0
+    except Exception:
+        return 1.0
+
+
+def _tts_google(text, out_mp3):
+    """Google Cloud TTS (free tier) — Neural2 Hindi voices, far more
+    natural than the free default. Active only when GOOGLE_TTS_API_KEY
+    is set; any failure falls through to the next provider."""
+    import base64
+    r = requests.post(
+        "https://texttospeech.googleapis.com/v1/text:synthesize",
+        params={"key": os.environ["GOOGLE_TTS_API_KEY"]},
+        json={"input": {"text": text},
+              "voice": {"languageCode": "hi-IN",
+                        "name": os.environ.get("GOOGLE_TTS_VOICE",
+                                               "hi-IN-Neural2-B")},
+              "audioConfig": {"audioEncoding": "MP3",
+                              "speakingRate": _rate_float()}},
+        timeout=120)
+    r.raise_for_status()
+    with open(out_mp3, "wb") as f:
+        f.write(base64.b64decode(r.json()["audioContent"]))
+
+
+def _tts_azure(text, out_mp3):
+    """Azure Speech free tier — same voice family as edge-tts but with
+    full SSML control. Active only when AZURE_SPEECH_KEY is set."""
+    from xml.sax.saxutils import escape as xml_escape
+    region = os.environ.get("AZURE_SPEECH_REGION", "centralindia")
+    ssml = ("<speak version='1.0' xml:lang='hi-IN'>"
+            f"<voice name='{VOICE}'>"
+            f"<prosody rate='{RATE}' pitch='{PITCH}'>"
+            f"{xml_escape(text)}</prosody></voice></speak>")
+    r = requests.post(
+        f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1",
+        headers={"Ocp-Apim-Subscription-Key": os.environ["AZURE_SPEECH_KEY"],
+                 "Content-Type": "application/ssml+xml",
+                 "X-Microsoft-OutputFormat":
+                     "audio-24khz-96kbitrate-mono-mp3"},
+        data=ssml.encode("utf-8"), timeout=120)
+    r.raise_for_status()
+    with open(out_mp3, "wb") as f:
+        f.write(r.content)
+
+
+async def _tts_edge(text, out_mp3):
     import edge_tts
     await edge_tts.Communicate(text, VOICE, rate=RATE, pitch=PITCH).save(out_mp3)
+
+
+def tts(text, out_mp3):
+    """Voice provider chain — first success wins: Google Neural2 (key
+    lagi ho to) -> Azure -> edge-tts (the always-available default).
+    Narration can never be blocked by one provider being down."""
+    errors = []
+    if os.environ.get("GOOGLE_TTS_API_KEY"):
+        try:
+            _tts_google(text, out_mp3)
+            print("tts: Google (Neural2)")
+            return
+        except Exception as e:
+            errors.append(f"google: {e}")
+            print("tts google failed, trying next:", e)
+    if os.environ.get("AZURE_SPEECH_KEY"):
+        try:
+            _tts_azure(text, out_mp3)
+            print("tts: Azure")
+            return
+        except Exception as e:
+            errors.append(f"azure: {e}")
+            print("tts azure failed, trying next:", e)
+    try:
+        asyncio.run(_tts_edge(text, out_mp3))
+        print("tts: edge-tts", VOICE)
+    except Exception as e:
+        errors.append(f"edge: {e}")
+        raise RuntimeError("all TTS providers failed: " + "; ".join(errors))
+
+
+def fetch_music(topic, workdir):
+    """Pick a background track for the topic's slot from the manifest
+    (rotated daily) and download it. Music is garnish, never a gate:
+    returns None on any problem and the video is built without it."""
+    try:
+        tracks = json.load(open(MUSIC_MANIFEST, encoding="utf-8"))["tracks"]
+    except Exception:
+        return None
+    slot = topic.get("slot")
+    pool = [t for t in tracks if slot in t.get("slots", [])] or tracks
+    if not pool:
+        return None
+    import datetime as dt
+    pick = pool[dt.datetime.now().timetuple().tm_yday % len(pool)]
+    ext = os.path.splitext(pick["url"].split("?")[0])[1] or ".ogg"
+    dest = os.path.join(workdir, "music" + ext)
+    try:
+        r = requests.get(pick["url"], headers=UA, timeout=120)
+        r.raise_for_status()
+        with open(dest, "wb") as f:
+            f.write(r.content)
+        print("music:", pick["name"], "—", pick["credit"])
+        return {"path": dest, "credit": pick["credit"]}
+    except Exception as e:
+        print("music unavailable:", e)
+        return None
 
 
 def split_sentences(text):
@@ -195,7 +303,7 @@ def build(topic, workdir):
     os.makedirs(workdir, exist_ok=True)
     script = topic["script"]
     voice_mp3 = os.path.join(workdir, "voice.mp3")
-    asyncio.run(tts(script, voice_mp3))
+    tts(script, voice_mp3)
     duration = probe_duration(voice_mp3)
     print(f"narration: {duration:.1f}s")
 
@@ -248,13 +356,29 @@ def build(topic, workdir):
     sub = (f"subtitles={srt}:force_style='FontName=Noto Sans Devanagari,"
            "FontSize=15,PrimaryColour=&HFFFFFF,OutlineColour=&H90000000,"
            "Outline=2,Alignment=2,MarginV=90'")
-    sh(["ffmpeg", "-y", "-v", "error", "-i", silent, "-i", voice_mp3,
-        "-vf", sub + hook_filter(topic, workdir), "-map", "0:v", "-map", "1:a",
-        "-c:v", "libx264",
-        "-preset", "medium", "-crf", "20", "-c:a", "aac", "-b:a", "160k",
-        "-shortest", out])
+    vf = sub + hook_filter(topic, workdir)
+    music = fetch_music(topic, workdir)
+    if music:
+        fade_out = max(0.0, duration - 4)
+        fc = (f"[0:v]{vf}[v];"
+              f"[2:a]volume={MUSIC_VOLUME},afade=t=in:st=0:d=2,"
+              f"afade=t=out:st={fade_out:.1f}:d=4[mus];"
+              "[1:a][mus]amix=inputs=2:duration=first:"
+              "dropout_transition=0[a]")
+        sh(["ffmpeg", "-y", "-v", "error", "-i", silent, "-i", voice_mp3,
+            "-stream_loop", "-1", "-i", music["path"],
+            "-filter_complex", fc, "-map", "[v]", "-map", "[a]",
+            "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+            "-c:a", "aac", "-b:a", "160k", "-shortest", out])
+    else:
+        sh(["ffmpeg", "-y", "-v", "error", "-i", silent, "-i", voice_mp3,
+            "-vf", vf, "-map", "0:v", "-map", "1:a",
+            "-c:v", "libx264",
+            "-preset", "medium", "-crf", "20", "-c:a", "aac", "-b:a", "160k",
+            "-shortest", out])
     print("video:", out, f"{os.path.getsize(out) / 1e6:.1f} MB")
-    return {"video": out, "duration": duration}
+    return {"video": out, "duration": duration,
+            "music": music["credit"] if music else None}
 
 
 if __name__ == "__main__":
