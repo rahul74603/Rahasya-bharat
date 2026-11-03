@@ -15,43 +15,68 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 API = "https://generativelanguage.googleapis.com/v1beta/models"
 PER_SLOT = 2
+
+# Model names ROT: providers retire models without asking (2026-11-03:
+# gemini-2.0-flash AND llama-3.3-70b-versatile both started returning
+# 404 the same week, and every draft silently failed). So never depend
+# on one name — try the current model first, then the fallbacks; an env
+# override, when set, is tried before all of them.
+GEMINI_MODELS = [m for m in dict.fromkeys([
+    os.environ.get("GEMINI_MODEL"),
+    "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash",
+]) if m]
+GROQ_MODELS = [m for m in dict.fromkeys([
+    os.environ.get("GROQ_MODEL"),
+    "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "llama-3.1-8b-instant",
+]) if m]
 
 
 def _gemini_json(prompt):
     import requests
-    r = requests.post(f"{API}/{MODEL}:generateContent",
-                      params={"key": os.environ["GEMINI_API_KEY"]},
-                      json={"contents": [{"parts": [{"text": prompt}]}],
-                            "generationConfig": {
-                                "temperature": 0.8,
-                                "responseMimeType": "application/json"}},
-                      timeout=90)
-    r.raise_for_status()
-    text = r.json()["candidates"][0]["content"]["parts"][0]["text"]
-    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
-    return json.loads(text)
-
-
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+    last = None
+    for model in GEMINI_MODELS:
+        try:
+            r = requests.post(f"{API}/{model}:generateContent",
+                              params={"key": os.environ["GEMINI_API_KEY"]},
+                              json={"contents": [{"parts": [{"text": prompt}]}],
+                                    "generationConfig": {
+                                        "temperature": 0.8,
+                                        "responseMimeType": "application/json"}},
+                              timeout=90)
+            r.raise_for_status()
+            text = r.json()["candidates"][0]["content"]["parts"][0]["text"]
+            text = re.sub(r"^```(?:json)?|```$", "", text.strip(),
+                          flags=re.M).strip()
+            return json.loads(text)
+        except Exception as e:
+            last = e
+    raise last
 
 
 def _groq_json(prompt):
     import requests
-    r = requests.post("https://api.groq.com/openai/v1/chat/completions",
-                      headers={"Authorization":
-                               f"Bearer {os.environ['GROQ_API_KEY']}"},
-                      json={"model": GROQ_MODEL,
-                            "messages": [{"role": "user", "content": prompt}],
-                            "temperature": 0.8,
-                            "response_format": {"type": "json_object"}},
-                      timeout=90)
-    r.raise_for_status()
-    text = r.json()["choices"][0]["message"]["content"]
-    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
-    return json.loads(text)
+    last = None
+    for model in GROQ_MODELS:
+        try:
+            r = requests.post("https://api.groq.com/openai/v1/chat/completions",
+                              headers={"Authorization":
+                                       f"Bearer {os.environ['GROQ_API_KEY']}"},
+                              json={"model": model,
+                                    "messages": [{"role": "user",
+                                                  "content": prompt}],
+                                    "temperature": 0.8,
+                                    "response_format": {"type": "json_object"}},
+                              timeout=90)
+            r.raise_for_status()
+            text = r.json()["choices"][0]["message"]["content"]
+            text = re.sub(r"^```(?:json)?|```$", "", text.strip(),
+                          flags=re.M).strip()
+            return json.loads(text)
+        except Exception as e:
+            last = e
+    raise last
 
 
 def _draft_json(prompt):
@@ -142,6 +167,7 @@ def main():
         return 0
 
     ist = dt.timezone(dt.timedelta(hours=5, minutes=30))
+    made = 0
     for t in picks:
         try:
             raw = _draft_json(_prompt(t, _next_title(topics, t)))
@@ -166,6 +192,7 @@ def main():
             except Exception as e:
                 print(f"qc skipped for {t['id']}: {e}")
             drafts["drafts"].append(entry)
+            made += 1
             print(f"drafted: {t['id']} ({len(script)} chars)")
         except Exception as e:
             print(f"draft failed for {t['id']}: {e}")
@@ -173,6 +200,13 @@ def main():
     with open(drafts_path, "w", encoding="utf-8") as f:
         json.dump(drafts, f, ensure_ascii=False, indent=1)
     print(f"drafts.json now holds {len(drafts['drafts'])} draft(s)")
+    if not made:
+        # Topics needed drafts and EVERY provider failed: go red so the
+        # failure is seen, instead of a green run that drafted nothing
+        # (the StudyGyaan silent-failure disease — never again).
+        print("ERROR: 0 drafts made although topics were waiting — "
+              "all AI providers failed. See the lines above.")
+        return 1
     return 0
 
 
