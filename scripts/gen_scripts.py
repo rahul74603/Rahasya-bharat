@@ -22,14 +22,16 @@ PER_SLOT = 2
 # gemini-2.0-flash AND llama-3.3-70b-versatile both started returning
 # 404 the same week, and every draft silently failed). So never depend
 # on one name — try the current model first, then the fallbacks; an env
-# override, when set, is tried before all of them.
+# override, when set, is tried before all of them. Retired names were
+# REMOVED 2026-11-04 (a dead last model hides the live models' real
+# errors in the log), and every model's failure is printed by name.
 GEMINI_MODELS = [m for m in dict.fromkeys([
     os.environ.get("GEMINI_MODEL"),
-    "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash",
+    "gemini-2.5-flash", "gemini-2.5-flash-lite",
 ]) if m]
 GROQ_MODELS = [m for m in dict.fromkeys([
     os.environ.get("GROQ_MODEL"),
-    "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "llama-3.1-8b-instant",
+    "openai/gpt-oss-120b", "llama-3.1-8b-instant",
 ]) if m]
 
 
@@ -51,6 +53,7 @@ def _gemini_json(prompt):
                           flags=re.M).strip()
             return json.loads(text)
         except Exception as e:
+            print(f"gen_scripts: gemini model {model} failed: {e}")
             last = e
     raise last
 
@@ -75,6 +78,7 @@ def _groq_json(prompt):
                           flags=re.M).strip()
             return json.loads(text)
         except Exception as e:
+            print(f"gen_scripts: groq model {model} failed: {e}")
             last = e
     raise last
 
