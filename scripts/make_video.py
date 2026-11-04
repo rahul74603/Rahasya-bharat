@@ -32,6 +32,11 @@ VOICE = os.environ.get("TTS_VOICE", "hi-IN-MadhurNeural")
 # sa farq. Google speakingRate bhi isi se banta hai (_rate_float).
 RATE = os.environ.get("TTS_RATE", "+1%")
 PITCH = os.environ.get("TTS_PITCH", "-2Hz")
+# Captions upgrade (2026-11-04): jumla-dar-jumla TTS se har jumle ka
+# start/end pakka milta hai (Phase 1), phir faster-whisper se shabd-
+# highlight (Phase 2, scripts/word_captions.py). SENTENCE_GAP = jumlon
+# ke beech ki halki khamoshi (seconds) — bol kata-kata na lage.
+SENTENCE_GAP = 0.08
 UA = {"User-Agent": "RahasyaBharatBot/1.0 (educational channel automation)"}
 FONT = "/usr/share/fonts/truetype/noto/NotoSansDevanagari-Bold.ttf"
 
@@ -207,6 +212,101 @@ def make_srt(text, duration, path):
             t += d
 
 
+def _silence_mp3(path, dur):
+    sh(["ffmpeg", "-y", "-v", "error", "-f", "lavfi",
+        "-i", "anullsrc=r=44100:cl=mono", "-t", f"{dur:.3f}",
+        "-c:a", "libmp3lame", "-q:a", "4", path])
+
+
+def synthesize_sentences(script, out_mp3, workdir):
+    """Phase 1: jumla-dar-jumla TTS — har jumla EXISTING provider chain
+    (tts()) se alag banta hai, beech me ~80ms khamoshi, phir sab jud kar
+    ek voice file. Har jumle ki asal lambai probe ki jati hai, isiliye
+    uska start/end BILKUL pakka hota hai — captions ka drift khatam.
+    Returns (total_duration, [(sentence, start, end), ...]).
+    Ek bhi jumla fail ho to raise — caller poori-script TTS par girta hai."""
+    sentences = split_sentences(script)
+    if len(sentences) < 2:
+        # ek hi jumla: alag-alag banane se koi fayda nahi
+        tts(script, out_mp3)
+        return probe_duration(out_mp3), None
+    gap = os.path.join(workdir, "gap.mp3")
+    _silence_mp3(gap, SENTENCE_GAP)
+    parts, timings, t = [], [], 0.0
+    for i, s in enumerate(sentences):
+        if i:
+            parts.append(gap)
+            t += SENTENCE_GAP
+        p = os.path.join(workdir, f"sent{i}.mp3")
+        tts(s, p)
+        d = probe_duration(p)
+        parts.append(p)
+        timings.append((s, t, t + d))
+        t += d
+    listfile = os.path.join(workdir, "voice-parts.txt")
+    with open(listfile, "w") as f:
+        for p in parts:
+            f.write(f"file '{os.path.abspath(p)}'\n")
+    sh(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0",
+        "-i", listfile, "-c:a", "libmp3lame", "-q:a", "3", out_mp3])
+    return probe_duration(out_mp3), timings
+
+
+def make_srt_from_timings(timings, path):
+    """Phase-1 captions: EXACT jumla timings wali SRT. Har jumle ka samay
+    usi ke phrase cues me akshar-share se banta hai — isiliye andaza
+    kabhi jumle ki sarhad paar nahi kar sakta (drift impossible).
+    Returns cues ki list [(start, end, text), ...]."""
+    cues = []
+    for sentence, start, end in timings:
+        parts = wrap_caption(sentence)
+        if not parts:
+            continue
+        total = sum(len(p) for p in parts) or 1
+        t = start
+        for p in parts:
+            d = (end - start) * len(p) / total
+            cues.append((t, t + d, p))
+            t += d
+        # aakhri cue ko jumle ke end par pin karo (float rounding safai)
+        cues[-1] = (cues[-1][0], end, cues[-1][2])
+    with open(path, "w", encoding="utf-8") as f:
+        for i, (a, b, c) in enumerate(cues, 1):
+            f.write(f"{i}\n{ts(a)} --> {ts(b)}\n{c}\n\n")
+    return cues
+
+
+def choose_captions(script, duration, voice_mp3, workdir, sent_timings):
+    """Caption fallback seedhi — kabhi raise nahi karti:
+      word     : faster-whisper karaoke ASS (Phase 2)
+      sentence : exact jumla-timing SRT (Phase 1)
+      legacy   : andaza-char-share SRT (make_srt, sabse purana raasta)
+    CAPTIONS_MODE = word (default) | sentence | legacy — kill switch.
+    Returns (path, is_ass)."""
+    mode = os.environ.get("CAPTIONS_MODE", "word").strip().lower()
+    if mode == "word":
+        try:
+            import word_captions
+            ass = os.path.join(workdir, "captions.ass")
+            if word_captions.make_word_captions(voice_mp3, script, ass):
+                print("captions: word (ASS karaoke)")
+                return ass, True
+        except Exception as e:
+            print("word captions unavailable, sentence par giro:", e)
+    if mode in ("word", "sentence") and sent_timings:
+        try:
+            srt = os.path.join(workdir, "captions.srt")
+            make_srt_from_timings(sent_timings, srt)
+            print("captions: sentence (exact-timing SRT)")
+            return srt, False
+        except Exception as e:
+            print("sentence captions failed, legacy par giro:", e)
+    srt = os.path.join(workdir, "captions.srt")
+    make_srt(script, duration, srt)
+    print("captions: legacy (andaza SRT)")
+    return srt, False
+
+
 def fetch_images(query, outdir, want=4):
     params = {
         "action": "query", "format": "json", "generator": "search",
@@ -308,12 +408,21 @@ def build(topic, workdir):
     os.makedirs(workdir, exist_ok=True)
     script = topic["script"]
     voice_mp3 = os.path.join(workdir, "voice.mp3")
-    tts(script, voice_mp3)
-    duration = probe_duration(voice_mp3)
+    # Phase 1: jumla-dar-jumla awaaz taaki har jumle ka samay pakka ho.
+    # Kuch bhi gadbad ho to purani poori-script wali awaaz par giro —
+    # narration kabhi captions-upgrade ki wajah se nahi rukti.
+    sent_timings = None
+    try:
+        duration, sent_timings = synthesize_sentences(script, voice_mp3,
+                                                      workdir)
+    except Exception as e:
+        print("sentence TTS failed, whole-script fallback:", e)
+        tts(script, voice_mp3)
+        duration = probe_duration(voice_mp3)
     print(f"narration: {duration:.1f}s")
 
-    srt = os.path.join(workdir, "captions.srt")
-    make_srt(script, duration, srt)
+    sub_path, sub_is_ass = choose_captions(script, duration, voice_mp3,
+                                           workdir, sent_timings)
 
     images = fetch_images(topic["image_query"], workdir)
     if len(images) < 2:
@@ -358,9 +467,14 @@ def build(topic, workdir):
         "-i", listfile, "-c", "copy", silent])
 
     out = os.path.join(workdir, "video.mp4")
-    sub = (f"subtitles={srt}:force_style='FontName=Noto Sans Devanagari,"
-           "FontSize=15,PrimaryColour=&HFFFFFF,OutlineColour=&H90000000,"
-           "Outline=2,Alignment=2,MarginV=90'")
+    if sub_is_ass:
+        # ASS ke andar apni style pehle se hai (karaoke highlight) —
+        # force_style lagana usey bigaad dega, isiliye saaf raasta.
+        sub = f"subtitles={sub_path}"
+    else:
+        sub = (f"subtitles={sub_path}:force_style='FontName=Noto Sans "
+               "Devanagari,FontSize=15,PrimaryColour=&HFFFFFF,"
+               "OutlineColour=&H90000000,Outline=2,Alignment=2,MarginV=90'")
     vf = sub + hook_filter(topic, workdir)
     music = fetch_music(topic, workdir)
     if music:
