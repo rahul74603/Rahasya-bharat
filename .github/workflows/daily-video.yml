@@ -44,10 +44,16 @@ jobs:
 
       - name: Decide slot
         id: slot
+        # Slot ghadi se NAHI, is run ko bulane wale cron se tay hota hai.
+        # Purana ghadi-wala niyam (UTC hour = 02 tabhi morning) 2026-11-04
+        # ko fail hua: GitHub ne subah wala run 7 ghante late chalaya,
+        # ghadi shaam dikha rahi thi, to subah ki video ki jagah shaam ki
+        # video ban gayi. github.event.schedule me woh cron string hoti
+        # hai jisne run bulaya — run kitna bhi late ho, woh nahi badalti.
         run: |
           if [ -n "${{ inputs.slot }}" ] && [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "slot=${{ inputs.slot }}" >> "$GITHUB_OUTPUT"
-          elif [ "$(date -u +%H)" = "02" ]; then
+          elif [ "${{ github.event.schedule }}" = "30 2 * * *" ]; then
             echo "slot=morning" >> "$GITHUB_OUTPUT"
           else
             echo "slot=evening" >> "$GITHUB_OUTPUT"
