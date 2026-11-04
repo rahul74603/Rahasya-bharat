@@ -32,12 +32,20 @@ that is what makes retries duplicate-safe.
 """
 import json
 import os
+import time
 
 import requests
 
 API = "https://api.github.com"
 TAG = "vault"
 MANIFEST = "vault.json"
+
+# GitHub occasionally answers a perfectly good request with a transient
+# 502/503 (2026-11-04: a manifest save died on a 502 right after the
+# Facebook post succeeded, killing the run before Instagram/YouTube).
+# 5xx and network errors are retried with backoff; 4xx is a real error
+# and raises immediately.
+RETRY_DELAYS = (3, 8, 20)
 
 
 def _h():
@@ -73,13 +81,30 @@ def _assets(release_id):
 
 
 def _upload(release, name, data, ctype):
-    up = requests.post(
-        release["upload_url"].split("{")[0],
-        headers={**_h(), "Content-Type": ctype},
-        params={"name": name}, data=data, timeout=900,
-    )
-    up.raise_for_status()
-    return up.json()
+    last = None
+    for attempt in range(len(RETRY_DELAYS) + 1):
+        try:
+            up = requests.post(
+                release["upload_url"].split("{")[0],
+                headers={**_h(), "Content-Type": ctype},
+                params={"name": name}, data=data, timeout=900,
+            )
+            if up.status_code >= 500:
+                raise requests.HTTPError(
+                    f"{up.status_code} Server Error for asset upload {name}",
+                    response=up)
+            up.raise_for_status()
+            return up.json()
+        except (requests.HTTPError, requests.RequestException) as e:
+            if isinstance(e, requests.HTTPError) and \
+                    e.response is not None and e.response.status_code < 500:
+                raise
+            last = e
+            if attempt < len(RETRY_DELAYS):
+                print(f"vault upload {name}: transient error ({e}) — "
+                      f"retry {attempt + 1} in {RETRY_DELAYS[attempt]}s")
+                time.sleep(RETRY_DELAYS[attempt])
+    raise last
 
 
 def _delete_asset(asset_id):
@@ -105,13 +130,27 @@ def load_manifest():
 
 
 def save_manifest(manifest):
-    rel = _release()
-    for a in _assets(rel["id"]):
-        if a["name"] == MANIFEST:
-            _delete_asset(a["id"])
-    _upload(rel, MANIFEST,
-            json.dumps(manifest, ensure_ascii=False, indent=1).encode("utf-8"),
-            "application/json")
+    data = json.dumps(manifest, ensure_ascii=False,
+                      indent=1).encode("utf-8")
+    last = None
+    for attempt in range(len(RETRY_DELAYS) + 1):
+        try:
+            rel = _release()
+            for a in _assets(rel["id"]):
+                if a["name"] == MANIFEST:
+                    _delete_asset(a["id"])
+            _upload(rel, MANIFEST, data, "application/json")
+            return
+        except requests.RequestException as e:
+            last = e
+            status = getattr(e.response, "status_code", None)
+            if status is not None and status < 500:
+                raise
+            if attempt < len(RETRY_DELAYS):
+                print(f"vault save_manifest: transient error ({e}) — "
+                      f"retry {attempt + 1} in {RETRY_DELAYS[attempt]}s")
+                time.sleep(RETRY_DELAYS[attempt])
+    raise last
 
 
 def put_video(topic_id, video_path):
@@ -122,7 +161,9 @@ def put_video(topic_id, video_path):
         if a["name"] == name:
             _delete_asset(a["id"])
     with open(video_path, "rb") as f:
-        asset = _upload(rel, name, f, "video/mp4")
+        data = f.read()  # bytes, not a stream — an upload retry must be
+        # able to resend the whole file, a consumed stream cannot
+    asset = _upload(rel, name, data, "video/mp4")
     return asset["id"]
 
 
