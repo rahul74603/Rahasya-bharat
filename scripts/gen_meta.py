@@ -23,14 +23,17 @@ GROQ_API = "https://api.groq.com/openai/v1/chat/completions"
 # Model names ROT: providers retire models without asking (2026-11-03:
 # gemini-2.0-flash AND llama-3.3-70b-versatile both started returning
 # 404 the same week, silently disabling every AI feature). Never depend
-# on one name — env override first, then current models, then older.
+# on one name — env override first, then current models. Retired names
+# were REMOVED 2026-11-04: keeping gemini-2.0-flash last in the chain
+# made its 404 the only error the log showed, hiding why the live
+# models had failed. Every model's failure is now printed by name.
 GEMINI_MODELS = [m for m in dict.fromkeys([
     os.environ.get("GEMINI_MODEL"),
-    "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash",
+    "gemini-2.5-flash", "gemini-2.5-flash-lite",
 ]) if m]
 GROQ_MODELS = [m for m in dict.fromkeys([
     os.environ.get("GROQ_MODEL"),
-    "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "llama-3.1-8b-instant",
+    "openai/gpt-oss-120b", "llama-3.1-8b-instant",
 ]) if m]
 
 
@@ -55,6 +58,7 @@ def _groq_json(prompt):
                           flags=re.M).strip()
             return json.loads(text)
         except Exception as e:
+            print(f"gen_meta: groq model {model} failed: {e}")
             last = e
     raise last
 
@@ -78,6 +82,7 @@ def _gemini_json(prompt):
                           flags=re.M).strip()
             return json.loads(text)
         except Exception as e:
+            print(f"gen_meta: gemini model {model} failed: {e}")
             last = e
     raise last
 
