@@ -23,9 +23,14 @@ import stock_media
 W, H = 1080, 1920
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MUSIC_MANIFEST = os.path.join(ROOT, "assets", "music.json")
-MUSIC_VOLUME = os.environ.get("MUSIC_VOLUME", "0.13")
+# 0.13 par music sunai hi nahi deta tha (Eric, 2026-11-04) — 0.20 par
+# narration ke neeche saaf mehsoos hota hai, awaaz par haavi nahi hota.
+MUSIC_VOLUME = os.environ.get("MUSIC_VOLUME", "0.20")
 VOICE = os.environ.get("TTS_VOICE", "hi-IN-MadhurNeural")
-RATE = os.environ.get("TTS_RATE", "+6%")
+# +6% Google Neural2 par thoda tez laga (Eric, 2026-11-04: "bilkul
+# thoda sa slow karo, zyada nahi") — +1% matlab ~5% slow, bas ek halka
+# sa farq. Google speakingRate bhi isi se banta hai (_rate_float).
+RATE = os.environ.get("TTS_RATE", "+1%")
 PITCH = os.environ.get("TTS_PITCH", "-2Hz")
 UA = {"User-Agent": "RahasyaBharatBot/1.0 (educational channel automation)"}
 FONT = "/usr/share/fonts/truetype/noto/NotoSansDevanagari-Bold.ttf"
