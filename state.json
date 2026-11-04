@@ -109,6 +109,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "kodinhi": {
+   "at": "2026-11-05T02:04:00+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1107134655267962",
+    "instagram": "18120699514970279",
+    "youtube": "W-1KqcMqkJY"
+   },
+   "failures": [],
+   "fingerprint": "c1381ddd955bec3e",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
