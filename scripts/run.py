@@ -123,10 +123,27 @@ def attempt(entry, name, fn):
         return False
 
 
+def save_manifest_safe(manifest):
+    """A manifest save must never kill a publish in progress (2026-11-04:
+    a transient GitHub 502 on the save after Facebook succeeded crashed
+    the run before Instagram/YouTube were even attempted). vault.save_
+    manifest already retries 5xx; if it still fails, warn loudly and let
+    publishing continue — the end-of-publish save in publish_entry and
+    finish_entry's save remain the loud, run-failing checkpoints."""
+    try:
+        vault.save_manifest(manifest)
+        return True
+    except Exception as e:
+        print(f"[WARN] vault manifest save failed (publishing continues, "
+              f"save will be retried): {e}")
+        return False
+
+
 def publish_entry(manifest, topic_id, entry, video_path):
     """Publish one vault entry on every platform still missing it.
     Manifest is saved after EACH platform, so progress is never lost."""
     warnings = []
+    manifest_saved = True
 
     def ig_flow():
         rid, tag, url = gh_release.create_public_copy(video_path)
@@ -150,6 +167,11 @@ def publish_entry(manifest, topic_id, entry, video_path):
             print(f"[skip] {name} already posted for {topic_id}")
             continue
         attempt(entry, name, jobs[name])
+        manifest_saved = save_manifest_safe(manifest)
+    if not manifest_saved:
+        # One last loud attempt before returning: if this raises, the
+        # run fails visibly instead of silently losing track of what
+        # was posted — but every platform has had its chance by now.
         vault.save_manifest(manifest)
     if warnings:
         print("warnings:", warnings)
@@ -199,7 +221,7 @@ def try_extras(manifest, topic_id, entry, video_path=None):
         except Exception as e:
             entry["extras"][name] = {"status": "failed", "id": None, "error": str(e)}
             print(f"[FAIL] {name} sawal comment (video posted hai, ye extra hai): {e}")
-        vault.save_manifest(manifest)
+        save_manifest_safe(manifest)
 
     # Telegram — channel ki apni audience, teeno bade platforms ke
     # algorithm se azaad. Video file chahiye, isliye sirf tab jab
@@ -216,7 +238,7 @@ def try_extras(manifest, topic_id, entry, video_path=None):
             entry["extras"]["telegram"] = {
                 "status": "failed", "id": None, "error": str(e)}
             print(f"[FAIL] telegram post (extra hai, video posted hai): {e}")
-        vault.save_manifest(manifest)
+        save_manifest_safe(manifest)
 
 
 def finish_entry(manifest, state, topic_id, entry):
