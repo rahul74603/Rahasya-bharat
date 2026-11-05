@@ -8,8 +8,9 @@ sirf chain ka vyavhaar hai:
 
 - kokoro safal -> mp3 banta hai, model ek hi baar load hota hai
   (jumla-dar-jumla TTS me singleton zaroori hai);
-- chain me kokoro edge-tts se PEHLE aata hai;
-- kokoro package na ho / create() fail ho -> chain edge par girti hai;
+- chain me kokoro SABSE PEHLE aata hai (channel ki final awaaz,
+  2026-11-05) — Google key lagi ho tab bhi kokoro hi jeet-ta hai;
+- kokoro package na ho / create() fail ho -> chain aage girti hai;
 - KOKORO_TTS=off -> kokoro chhua hi nahi jata.
 
 Dhyaan: test_pipeline.py sys.modules me "make_video" ka STUB ghusedta
@@ -152,6 +153,29 @@ class TestChainOrder(KokoroBase):
                 "soundfile": _fake_soundfile()}
         with mock.patch.dict(sys.modules, mods):
             make_video.tts("namaste", self.out)
+        self.assertEqual(self.edge_calls, [])
+        with open(self.out, "rb") as f:
+            self.assertEqual(f.read(), b"fake-mp3")
+
+    def test_kokoro_wins_over_google(self):
+        # Kokoro PRIMARY hai: GOOGLE_TTS_API_KEY lagi ho aur Google
+        # safal bhi ho jaye, tab bhi pehle Kokoro hi chalega.
+        google_calls = []
+
+        def fake_google(text, out_mp3):
+            google_calls.append(text)
+            with open(out_mp3, "wb") as f:
+                f.write(b"google-mp3")
+
+        mods = {"kokoro_onnx": _fake_kokoro_module(),
+                "soundfile": _fake_soundfile()}
+        with mock.patch.dict(os.environ,
+                             {"GOOGLE_TTS_API_KEY": "fake-key"}):
+            with mock.patch.object(make_video, "_tts_google",
+                                   fake_google):
+                with mock.patch.dict(sys.modules, mods):
+                    make_video.tts("namaste", self.out)
+        self.assertEqual(google_calls, [])
         self.assertEqual(self.edge_calls, [])
         with open(self.out, "rb") as f:
             self.assertEqual(f.read(), b"fake-mp3")
