@@ -113,23 +113,25 @@ def _trending_hint():
         return ""
 
 
-def _prompt(topics, topic, trending):
+def _prompt(topics, topic, trending, keywords=None):
     slot_hi = "इतिहास की कहानी" if topic["slot"] == "morning" else "रहस्य/अनोखी जगह"
     trend_line = (f"\nAaj India me Education category ke popular titles (sirf andaz ke liye, copy bilkul mat karna): {trending}"
                   if trending else "")
+    kw_line = (f"\nLog YouTube/Google/Bing par asal me ye khojte hain (asal search data, keyword_research se): {' | '.join(keywords)} — inme se jo is kahani par sach me fit baithe unhe tags/hashtags me swabhavik roop se istemal karo; jo fit na baithe use zabardasti mat ghusedo, aur in shabdon se script se bahar ka koi dawa mat banao."
+               if keywords else "")
     return f"""Tum ek Hindi YouTube channel "Rahasya Bharat" ke SEO expert ho. Neeche ek Shorts video ki script di hai ({slot_hi} series). Isi video ke liye metadata banao.
 
 Hook: {topic['hook']}
 Draft title: {topic['title']}
 Description extra: {topic['desc_extra']}
-Script: {topic['script']}{trend_line}
+Script: {topic['script']}{trend_line}{kw_line}
 
 SIRF ek JSON object do (koi extra text nahi):
 {{"yt_title": "...", "caption": "...", "description": "...", "tags": ["...", ...], "hashtags": ["#...", ...], "question": "..."}}
 
 NIYAM (lazmi):
 - yt_title: Devanagari Hindi me, 90 characters se kam, script ke sach par based — jo baat script me nahi hai woh title me daalna MANA hai, jhootha clickbait MANA hai. Ant me "| Rahasya Bharat" jodo.
-- tags: 15-20 search phrases — is kahani ke sthan, naam, prashn par. Devanagari Hindi + Hinglish + English ka mix.
+- tags: 15-20 search phrases — is kahani ke sthan, naam, prashn par. Upar diye asal search shabdon ko pehle prathmikta do. Devanagari Hindi + Hinglish + English ka mix.
 - hashtags: 5-8, pehla #RahasyaBharat ho.
 - caption: pehli line hook wali ho, phir 2-3 chhoti lines, ant me ye line bilkul aisi: "{topics['outro_line']}" aur phir hashtags.
 - description: 3-5 lines — kahani ka saar aur ek sawal jo comment ke liye uksaye, ant me hashtags.
@@ -190,11 +192,64 @@ def _validate(raw, topics):
     return meta
 
 
+def _keyword_hint(topic):
+    """Real searched phrases for this topic (keyword_research) —
+    data for the prompt, [] on any problem. Never raises."""
+    try:
+        import keyword_research
+        found = keyword_research.research(topic)
+        if found:
+            print(f"gen_meta: keyword hints {len(found)} mile")
+        return found
+    except Exception:
+        return []
+
+
+def _ensure_keywords(meta, keywords):
+    """Safety net: agar AI ne asal search phrases me se koi istemal hi
+    nahi kiya, to video ke title/description se milte-julte 1-2 phrase
+    tags me jod do (480-char budget ke andar, _clean_tags se). Tags
+    search phrases hote hain — ye koi naya dawa nahi banata. Kuch fit
+    na ho to meta jaisa hai waisa rehta hai."""
+    if not keywords:
+        return meta
+    text = (meta.get("yt_title", "") + " "
+            + meta.get("description", "")).lower()
+    tags = list(meta.get("yt_tags") or [])
+    have = " | ".join(tags).lower()
+    # Galat-iraade wale shabd: log in shabdon se film/gaana dhundte
+    # hain — itihaas ki kahani ke tags me inka kaam nahi (AI khud
+    # chaahe to prompt me manaahi pehle se hai; ye sirf safety-net ki
+    # kasauti hai).
+    wrong_intent = {"मूवी", "फिल्म", "एपिसोड", "गाना", "movie", "film",
+                    "episode", "song", "download", "डाउनलोड"}
+    added = 0
+    for kw in keywords:
+        if added >= 2:
+            break
+        k = str(kw).strip()
+        if not k or k.lower() in have:
+            continue
+        if wrong_intent & set(k.lower().split()):
+            continue
+        toks = [t for t in re.split(r"\s+", k.lower()) if len(t) >= 3]
+        if toks and sum(1 for t in toks if t in text) \
+                >= max(1, len(toks) // 2):
+            tags.append(k)
+            have += " | " + k.lower()
+            added += 1
+    if added:
+        meta["yt_tags"] = _clean_tags(tags)
+        print(f"gen_meta: {added} asal search phrase tags me jude")
+    return meta
+
+
 def generate(topics, topic):
     """Returns {yt_title, caption, description, yt_tags} or None.
     Provider chain: Gemini, then Groq (both free), then None —
     the caller falls back to deterministic rotation. Never raises."""
-    prompt = _prompt(topics, topic, _trending_hint())
+    keywords = _keyword_hint(topic)
+    prompt = _prompt(topics, topic, _trending_hint(), keywords)
     providers = []
     if os.environ.get("GEMINI_API_KEY"):
         providers.append(("Gemini", _gemini_json))
@@ -208,7 +263,7 @@ def generate(topics, topic):
             meta = _validate(fn(prompt), topics)
             if meta is not None:
                 print(f"gen_meta: {name} metadata ready")
-                return meta
+                return _ensure_keywords(meta, keywords)
             print(f"gen_meta: {name} output failed validation")
         except Exception as e:
             print(f"gen_meta: {name} failed ({e})")
