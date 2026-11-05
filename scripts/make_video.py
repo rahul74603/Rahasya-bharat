@@ -103,6 +103,60 @@ def _tts_azure(text, out_mp3):
         f.write(r.content)
 
 
+_KOKORO_MODEL = None  # lazy singleton — jumla-dar-jumla TTS me har
+# jumle par ~350MB ka model dobara load nahi hota.
+
+
+def _kokoro_cache_paths():
+    cache = os.environ.get(
+        "KOKORO_CACHE_DIR",
+        os.path.join(os.path.expanduser("~"), ".cache", "rahasya-kokoro"))
+    os.makedirs(cache, exist_ok=True)
+    return (os.path.join(cache, "kokoro-v1.0.onnx"),
+            os.path.join(cache, "voices-v1.0.bin"))
+
+
+def _kokoro_download(url, path):
+    import urllib.request
+    tmp = path + ".tmp"
+    urllib.request.urlretrieve(url, tmp)
+    os.replace(tmp, path)
+
+
+def _tts_kokoro(text, out_mp3):
+    """Kokoro-82M (Apache-2.0) — poori tarah OFFLINE Hindi TTS, koi API
+    key nahi, CPU par chalti hai. Model pehle istemal par cache dir me
+    download hota hai (~350MB, ek hi baar). Package installed na ho ya
+    kuch bhi fail ho to exception uthta hai aur chain aage gir jati
+    hai — video kabhi nahi rukta. Awaaz: KOKORO_TTS_VOICE
+    (hm_omega/hm_psi purush, hf_alpha/hf_beta mahila)."""
+    global _KOKORO_MODEL
+    import soundfile as sf
+    from kokoro_onnx import Kokoro
+    model_path, voices_path = _kokoro_cache_paths()
+    base = ("https://github.com/thewh1teagle/kokoro-onnx/releases/"
+            "download/model-files-v1.0/")
+    if not os.path.exists(model_path):
+        _kokoro_download(base + "kokoro-v1.0.onnx", model_path)
+    if not os.path.exists(voices_path):
+        _kokoro_download(base + "voices-v1.0.bin", voices_path)
+    if _KOKORO_MODEL is None:
+        _KOKORO_MODEL = Kokoro(model_path, voices_path)
+    samples, sr = _KOKORO_MODEL.create(
+        text, voice=os.environ.get("KOKORO_TTS_VOICE", "hm_omega"),
+        speed=_rate_float(), lang="hi")
+    if samples is None or len(samples) == 0:
+        raise RuntimeError("kokoro produced no audio")
+    tmp_wav = out_mp3 + ".kokoro.wav"
+    try:
+        sf.write(tmp_wav, samples, sr)
+        sh(["ffmpeg", "-y", "-v", "error", "-i", tmp_wav,
+            "-codec:a", "libmp3lame", "-q:a", "3", out_mp3])
+    finally:
+        if os.path.exists(tmp_wav):
+            os.remove(tmp_wav)
+
+
 async def _tts_edge(text, out_mp3):
     import edge_tts
     await edge_tts.Communicate(text, VOICE, rate=RATE, pitch=PITCH).save(out_mp3)
@@ -110,8 +164,9 @@ async def _tts_edge(text, out_mp3):
 
 def tts(text, out_mp3):
     """Voice provider chain — first success wins: Google Neural2 (key
-    lagi ho to) -> Azure -> edge-tts (the always-available default).
-    Narration can never be blocked by one provider being down."""
+    lagi ho to) -> Azure -> Kokoro (offline) -> edge-tts (the
+    always-available default). Narration can never be blocked by one
+    provider being down. KOKORO_TTS=off se Kokoro band ho jata hai."""
     errors = []
     if os.environ.get("GOOGLE_TTS_API_KEY"):
         try:
@@ -129,6 +184,14 @@ def tts(text, out_mp3):
         except Exception as e:
             errors.append(f"azure: {e}")
             print("tts azure failed, trying next:", e)
+    if os.environ.get("KOKORO_TTS", "on").lower() != "off":
+        try:
+            _tts_kokoro(text, out_mp3)
+            print("tts: Kokoro (offline)")
+            return
+        except Exception as e:
+            errors.append(f"kokoro: {e}")
+            print("tts kokoro failed, trying next:", e)
     try:
         asyncio.run(_tts_edge(text, out_mp3))
         print("tts: edge-tts", VOICE)
