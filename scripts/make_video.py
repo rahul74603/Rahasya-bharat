@@ -23,9 +23,14 @@ import stock_media
 W, H = 1080, 1920
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MUSIC_MANIFEST = os.path.join(ROOT, "assets", "music.json")
-# 0.13 par music sunai hi nahi deta tha (Eric, 2026-11-04) — 0.20 par
-# narration ke neeche saaf mehsoos hota hai, awaaz par haavi nahi hota.
-MUSIC_VOLUME = os.environ.get("MUSIC_VOLUME", "0.20")
+# Music sunai hi nahi deta tha — DO wajah pakdi gayi (2026-11-05):
+# (1) amix ka default normalize=1 mix me har input ko aadha kar deta
+# tha, matlab 0.20 asal me 0.10 bajta tha; ab normalize=0 hai, isliye
+# ye number jo hai wahi bajega. (2) Track har build me Wikimedia se
+# download hota tha aur wahan 429 milne par video bina music banti
+# thi — ab tracks repo me hi bundled hain (assets/music/*.b64).
+# 0.25 = narration ke neeche saaf maujud, awaaz par haavi nahi.
+MUSIC_VOLUME = os.environ.get("MUSIC_VOLUME", "0.25")
 VOICE = os.environ.get("TTS_VOICE", "hi-IN-MadhurNeural")
 # +6% Google Neural2 par thoda tez laga (Eric, 2026-11-04: "bilkul
 # thoda sa slow karo, zyada nahi") — +1% matlab ~5% slow, bas ek halka
@@ -202,10 +207,60 @@ def tts(text, out_mp3):
         raise RuntimeError("all TTS providers failed: " + "; ".join(errors))
 
 
+def _music_ok(path):
+    """Track asal me chalegi ya nahi — size aur ffprobe duration se
+    jaanch. Kharab/chhoti file ko 'music mil gaya' nahi mana jayega."""
+    try:
+        if os.path.getsize(path) < 50_000:
+            return False
+        return probe_duration(path) >= 15
+    except Exception:
+        return False
+
+
+def _decode_bundle(b64_path, dest):
+    """Repo me rakhi base64 track ko asal audio file me badlo.
+    (GitHub par binary seedha nahi ja sakta tha, isliye bundle .b64
+    hai — checkout ke saath aata hai, koi download nahi chahiye.)"""
+    import base64
+    with open(b64_path, encoding="utf-8") as f:
+        raw = base64.b64decode(f.read())
+    with open(dest, "wb") as f:
+        f.write(raw)
+    return dest
+
+
+def _download(url, dest):
+    """Aakhiri raasta: URL se download, 429 par Retry-After ke saath
+    3 koshish. Fail ho to exception — caller agla track try karega."""
+    import time
+    last = None
+    for _ in range(3):
+        try:
+            r = requests.get(url, headers=UA, timeout=120)
+            if r.status_code == 429:
+                wait = min(int(r.headers.get("Retry-After", 10)), 20)
+                print(f"music download: 429, {wait}s ruk kar retry")
+                time.sleep(wait)
+                continue
+            r.raise_for_status()
+            with open(dest, "wb") as f:
+                f.write(r.content)
+            return dest
+        except Exception as e:
+            last = e
+            time.sleep(3)
+    raise RuntimeError(f"download failed: {last}")
+
+
 def fetch_music(topic, workdir):
-    """Pick a background track for the topic's slot from the manifest
-    (rotated daily) and download it. Music is garnish, never a gate:
-    returns None on any problem and the video is built without it."""
+    """Slot ke hisaab se background track — pakka raasta pehle:
+    (1) repo me BUNDLED track (koi download nahi, 429 ka khatra
+    khatm), (2) pool ke baaki tracks ek-ek karke, (3) sabse aakhir me
+    URL download. Har track _music_ok se jaancha jata hai. Kuch na
+    mile to None — video fir bhi banti hai (post kabhi nahi rukti),
+    par log me zor se chetaavni chhapti hai aur build() ke result me
+    music=None dikhta hai — chhupa hua fail nahi hoga."""
     try:
         tracks = json.load(open(MUSIC_MANIFEST, encoding="utf-8"))["tracks"]
     except Exception:
@@ -215,19 +270,55 @@ def fetch_music(topic, workdir):
     if not pool:
         return None
     import datetime as dt
-    pick = pool[dt.datetime.now().timetuple().tm_yday % len(pool)]
-    ext = os.path.splitext(pick["url"].split("?")[0])[1] or ".ogg"
-    dest = os.path.join(workdir, "music" + ext)
-    try:
-        r = requests.get(pick["url"], headers=UA, timeout=120)
-        r.raise_for_status()
-        with open(dest, "wb") as f:
-            f.write(r.content)
-        print("music:", pick["name"], "—", pick["credit"])
-        return {"path": dest, "credit": pick["credit"]}
-    except Exception as e:
-        print("music unavailable:", e)
-        return None
+    start = dt.datetime.now().timetuple().tm_yday % len(pool)
+    ordered = pool[start:] + pool[:start]  # aaj ka rotation pehle
+    for pick in ordered:
+        rel = pick.get("file")
+        if rel:
+            bundle = os.path.join(ROOT, "assets", rel)
+            if os.path.exists(bundle):
+                ext = os.path.splitext(rel)[0]  # .b64 hata kar asal ext
+                ext = os.path.splitext(ext)[1] or ".ogg"
+                dest = os.path.join(workdir, "music" + ext)
+                try:
+                    _decode_bundle(bundle, dest)
+                    if _music_ok(dest):
+                        print("music (bundled):", pick["name"],
+                              "—", pick["credit"])
+                        return {"path": dest, "credit": pick["credit"]}
+                    print("music: bundled track kharab nikla:", pick["name"])
+                except Exception as e:
+                    print("music: bundle decode fail:", pick["name"], e)
+    for pick in ordered:
+        if not pick.get("url"):
+            continue
+        ext = os.path.splitext(pick["url"].split("?")[0])[1] or ".ogg"
+        dest = os.path.join(workdir, "music" + ext)
+        try:
+            _download(pick["url"], dest)
+            if _music_ok(dest):
+                print("music (download):", pick["name"],
+                      "—", pick["credit"])
+                return {"path": dest, "credit": pick["credit"]}
+        except Exception as e:
+            print("music: download fail:", pick["name"], e)
+    print("⚠️ MUSIC UNAVAILABLE: saare tracks fail — "
+          "video BINA music banegi")
+    return None
+
+
+def _mix_filter(vf, duration):
+    """Voice + music ka filter. amix me normalize=0 LAZMI hai —
+    default normalize=1 har input ko aadha kar deta hai (yahi purani
+    'music sunai nahi deta' ki asal wajah thi). Aakhir me limiter
+    hai taaki dono ke judne par awaaz phate nahi."""
+    fade_out = max(0.0, duration - 4)
+    return (f"[0:v]{vf}[v];"
+            f"[2:a]volume={MUSIC_VOLUME},afade=t=in:st=0:d=2,"
+            f"afade=t=out:st={fade_out:.1f}:d=4[mus];"
+            "[1:a][mus]amix=inputs=2:duration=first:"
+            "dropout_transition=0:normalize=0[mixed];"
+            "[mixed]alimiter=limit=0.95[a]")
 
 
 def split_sentences(text):
@@ -543,12 +634,7 @@ def build(topic, workdir):
     vf = sub + hook_filter(topic, workdir)
     music = fetch_music(topic, workdir)
     if music:
-        fade_out = max(0.0, duration - 4)
-        fc = (f"[0:v]{vf}[v];"
-              f"[2:a]volume={MUSIC_VOLUME},afade=t=in:st=0:d=2,"
-              f"afade=t=out:st={fade_out:.1f}:d=4[mus];"
-              "[1:a][mus]amix=inputs=2:duration=first:"
-              "dropout_transition=0[a]")
+        fc = _mix_filter(vf, duration)
         sh(["ffmpeg", "-y", "-v", "error", "-i", silent, "-i", voice_mp3,
             "-stream_loop", "-1", "-i", music["path"],
             "-filter_complex", fc, "-map", "[v]", "-map", "[a]",
