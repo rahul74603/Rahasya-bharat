@@ -163,11 +163,21 @@ async def _tts_edge(text, out_mp3):
 
 
 def tts(text, out_mp3):
-    """Voice provider chain — first success wins: Google Neural2 (key
-    lagi ho to) -> Azure -> Kokoro (offline) -> edge-tts (the
-    always-available default). Narration can never be blocked by one
-    provider being down. KOKORO_TTS=off se Kokoro band ho jata hai."""
+    """Voice provider chain — first success wins: Kokoro (channel ki
+    FINAL awaaz — Eric ne 2026-11-05 ko dono sample sunkar pasand ki;
+    default hm_omega) -> Google Neural2 (key lagi ho to) -> Azure ->
+    edge-tts (the always-available default). Narration can never be
+    blocked by one provider being down. KOKORO_TTS=off se Kokoro band
+    ho jata hai (purani chain par wapas)."""
     errors = []
+    if os.environ.get("KOKORO_TTS", "on").lower() != "off":
+        try:
+            _tts_kokoro(text, out_mp3)
+            print("tts: Kokoro (offline)")
+            return
+        except Exception as e:
+            errors.append(f"kokoro: {e}")
+            print("tts kokoro failed, trying next:", e)
     if os.environ.get("GOOGLE_TTS_API_KEY"):
         try:
             _tts_google(text, out_mp3)
@@ -184,14 +194,6 @@ def tts(text, out_mp3):
         except Exception as e:
             errors.append(f"azure: {e}")
             print("tts azure failed, trying next:", e)
-    if os.environ.get("KOKORO_TTS", "on").lower() != "off":
-        try:
-            _tts_kokoro(text, out_mp3)
-            print("tts: Kokoro (offline)")
-            return
-        except Exception as e:
-            errors.append(f"kokoro: {e}")
-            print("tts kokoro failed, trying next:", e)
     try:
         asyncio.run(_tts_edge(text, out_mp3))
         print("tts: edge-tts", VOICE)
