@@ -29,6 +29,7 @@ GOOD = {
 class TestGenMeta(unittest.TestCase):
     def setUp(self):
         gen_meta._trending_hint = lambda: ""
+        gen_meta._keyword_hint = lambda topic: []
 
     def test_groq_fallback_when_gemini_fails(self):
         with mock.patch.dict(os.environ, {"GEMINI_API_KEY": "k",
@@ -115,6 +116,43 @@ class TestGenMeta(unittest.TestCase):
     def test_hashtag_brand_forced_first(self):
         tags = gen_meta._clean_hashtags(["#HindiFacts", "#Shorts"])
         self.assertEqual(tags[0], "#RahasyaBharat")
+
+    def test_prompt_carries_keywords(self):
+        p = gen_meta._prompt(TOPICS, TOPIC, "", ["रूपकुंड झील रहस्य"])
+        self.assertIn("रूपकुंड झील रहस्य", p)
+        self.assertIn("asal me ye khojte hain", p)
+
+    def test_prompt_without_keywords_unchanged_shape(self):
+        p = gen_meta._prompt(TOPICS, TOPIC, "", [])
+        self.assertNotIn("asal me ye khojte hain", p)
+
+    def test_ensure_keywords_appends_fitting(self):
+        meta = {"yt_title": "झील का रहस्य | Rahasya Bharat",
+                "description": "रूपकुंड झील की कहानी और उसका इतिहास।",
+                "yt_tags": ["roopkund", "uttarakhand"]}
+        meta = gen_meta._ensure_keywords(
+            meta, ["रूपकुंड झील", "बिलकुल अलग विषय"])
+        self.assertIn("रूपकुंड झील", meta["yt_tags"])
+        self.assertNotIn("बिलकुल अलग विषय", meta["yt_tags"])
+
+    def test_ensure_keywords_noop_without_keywords(self):
+        meta = {"yt_title": "x", "description": "y", "yt_tags": ["a"]}
+        self.assertEqual(gen_meta._ensure_keywords(meta, []), meta)
+
+    def test_ensure_keywords_skips_wrong_intent(self):
+        meta = {"yt_title": "झील का रहस्य | Rahasya Bharat",
+                "description": "रूपकुंड झील की कहानी और उसका इतिहास।",
+                "yt_tags": ["roopkund", "uttarakhand"]}
+        meta = gen_meta._ensure_keywords(meta, ["रूपकुंड झील मूवी"])
+        self.assertNotIn("रूपकुंड झील मूवी", meta["yt_tags"])
+
+    def test_generate_uses_keyword_hints_end_to_end(self):
+        gen_meta._keyword_hint = lambda topic: ["रूपकुंड झील"]
+        with mock.patch.dict(os.environ, {"GEMINI_API_KEY": "k"}):
+            gen_meta._gemini_json = lambda prompt: dict(GOOD)
+            meta = gen_meta.generate(TOPICS, TOPIC)
+        self.assertIsNotNone(meta)
+        self.assertIn("रूपकुंड झील", meta["yt_tags"])
 
 
 if __name__ == "__main__":
