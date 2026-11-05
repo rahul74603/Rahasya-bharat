@@ -126,6 +126,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "kohinoor": {
+   "at": "2026-11-05T12:47:53+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "2362588467841163",
+    "instagram": "18099209426417098",
+    "youtube": "V9BzI8eBgIQ"
+   },
+   "failures": [],
+   "fingerprint": "f92dc1a5c2460ed1",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
