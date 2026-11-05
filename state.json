@@ -143,6 +143,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "ashoka-nine": {
+   "at": "2026-11-05T15:19:07+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1102427122776689",
+    "instagram": "17879017170633691",
+    "youtube": "d4zLJ35kioI"
+   },
+   "failures": [],
+   "fingerprint": "b81771ff211223d1",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
