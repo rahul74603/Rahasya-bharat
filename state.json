@@ -160,6 +160,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "lonar": {
+   "at": "2026-11-06T02:21:51+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1813527343197607",
+    "instagram": "18102537530382088",
+    "youtube": "P5ZLSn_Srp4"
+   },
+   "failures": [],
+   "fingerprint": "b46c1d3a6748fe59",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
