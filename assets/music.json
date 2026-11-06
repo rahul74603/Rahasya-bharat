@@ -1,41 +1,32 @@
 {
- "tracks": [
-  {
-   "credit": "\"Dark Fog\" by Kevin MacLeod (CC BY 3.0)",
-   "file": "music/dark_fog.ogg.b64",
-   "name": "Dark Fog (Dark Ambient)",
-   "slots": [
-    "evening"
-   ],
-   "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Dark%20Fog.mp3"
-  },
-  {
-   "credit": "\"Ghost Dance\" by Kevin MacLeod (CC BY 3.0)",
-   "file": "music/ghost_dance.ogg.b64",
-   "name": "Ghost Dance",
-   "slots": [
-    "evening"
-   ],
-   "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Ghost%20Dance.mp3"
-  },
-  {
-   "credit": "\"Stratosphere\" by Kevin MacLeod (CC BY 3.0)",
-   "file": "music/stratosphere.ogg.b64",
-   "name": "Stratosphere",
-   "slots": [
-    "morning"
-   ],
-   "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Stratosphere.mp3"
-  },
-  {
-   "credit": "\"Limit 70\" by Kevin MacLeod (CC0)",
-   "file": "music/limit_70.ogg.b64",
-   "name": "Limit 70",
-   "slots": [
-    "morning",
-    "evening"
-   ],
-   "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Limit%2070.mp3"
-  }
- ]
+    "tracks": [
+        {
+            "credit": "\"Dark Fog\" by Kevin MacLeod (CC BY 3.0)",
+            "file": "music/dark_fog.ogg.b64",
+            "name": "Dark Fog (Dark Ambient)",
+            "slots": [
+                "evening"
+            ],
+            "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Dark%20Fog.mp3"
+        },
+        {
+            "credit": "\"Ghost Dance\" by Kevin MacLeod (CC BY 3.0)",
+            "file": "music/ghost_dance.ogg.b64",
+            "name": "Ghost Dance",
+            "slots": [
+                "evening"
+            ],
+            "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Ghost%20Dance.mp3"
+        },
+        {
+            "credit": "\"Limit 70\" by Kevin MacLeod (CC0)",
+            "file": "music/limit_70.ogg.b64",
+            "name": "Limit 70",
+            "slots": [
+                "morning",
+                "evening"
+            ],
+            "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Limit%2070.mp3"
+        }
+    ]
 }
