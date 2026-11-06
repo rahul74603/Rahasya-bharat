@@ -177,6 +177,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "chola-navy": {
+   "at": "2026-11-06T15:16:33+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1890247505665221",
+    "instagram": "17903750616655911",
+    "youtube": "r37_fNGqlCk"
+   },
+   "failures": [],
+   "fingerprint": "2e1c64ce5455dee9",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
