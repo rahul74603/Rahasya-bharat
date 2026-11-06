@@ -194,6 +194,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "karni-mata": {
+   "at": "2026-11-07T02:10:53+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1692483489205030",
+    "instagram": "17925188007446834",
+    "youtube": "Jz8QvcJ2Y2A"
+   },
+   "failures": [],
+   "fingerprint": "bc64f32e542f95be",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
