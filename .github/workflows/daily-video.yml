@@ -98,3 +98,51 @@ jobs:
               for info in (state.get("posted") or {}).values():
                   if not isinstance(info, dict) or info.get("slot") != slot:
                       continue
+                  if pipe_day(str(info.get("at", ""))) != today:
+                      continue
+                  res = info.get("results") or {}
+                  if isinstance(res, dict) and any(res.values()):
+                      posted = True
+          except Exception as e:
+              print("guard check fail, run jaari rahega:", e)
+          print("slot =", slot, "| aaj (IST) =", today, "| pehle post hua =", posted)
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write("skip=" + ("true" if posted else "false") + "\n")
+          PY
+
+      - name: Build + publish
+        if: ${{ steps.guard.outputs.skip != 'true' }}
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DRY=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then DRY="--dry-run"; fi
+          python scripts/run.py --slot "${{ steps.slot.outputs.slot }}" $DRY
+
+      - name: Save rotation state (kaunsa topic post ho gaya)
+        if: ${{ inputs.dry_run != true && steps.guard.outputs.skip != 'true' }}
+        run: |
+          git config user.name "rahasya-bot"
+          git config user.email "actions@github.com"
+          git add state.json
+          git diff --cached --quiet || git commit -m "chore: rotation state update [skip ci]"
+          git push
+
+      - name: Run summary (posted / pending / quarantined / topic bank)
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/summary.py
