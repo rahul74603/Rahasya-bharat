@@ -211,6 +211,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "rani-ki-vav": {
+   "at": "2026-11-08T10:25:12+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1451957810243555",
+    "instagram": "18160354513511355",
+    "youtube": "LkLuy3IJx5A"
+   },
+   "failures": [],
+   "fingerprint": "b1915be5f9e8a0d4",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
