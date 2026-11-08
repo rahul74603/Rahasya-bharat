@@ -228,6 +228,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "bhangarh": {
+   "at": "2026-11-08T19:16:21+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "4514751248838377",
+    "instagram": "18209200672372514",
+    "youtube": "jeKPc3LYaio"
+   },
+   "failures": [],
+   "fingerprint": "4085875e8f9f6a56",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
