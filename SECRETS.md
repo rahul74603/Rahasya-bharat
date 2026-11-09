@@ -72,6 +72,27 @@ Tab tak ke liye YouTube Studio app se us video ko haath se public karna hoga.
 
 ---
 
+## 7–8. Threads ke do secrets (2026-11-09 joda gaya)
+
+Threads ka token FB Page token se ALAG hota hai — Threads API Page
+token nahi leti. Dono secrets na hon to pipeline Threads ko chhod
+kar purani teen platforms par chalti rehti hai; hon to Threads bhi
+chautha platform ban jata hai (vault retry samet).
+
+**THREADS_USER_ID:** `17841441106180278` (@rahasyabharatt ki Threads ID — taiyaar hai, bas daal do)
+
+**THREADS_ACCESS_TOKEN banane ke steps:**
+1. [developers.facebook.com](https://developers.facebook.com) → My Apps → **rahasya bharat**.
+2. Left side **Use cases** (ya "Add products") → **Threads API** jodo / Customize kholo.
+3. Wahan **User Token Generator** milega → **Add account** → @rahasyabharatt
+   wale account se login karke allow karo. (Agar Threads app me invite
+   aaye to Threads app → Settings → Website permissions → Invites me
+   use pehle accept karna hoga.)
+4. Account jud jaye to uske saamne **Generate token** dabao → jo token
+   mile wahi `THREADS_ACCESS_TOKEN` secret me daal do. **Chat me mat bhejna.**
+5. Token lagbhag **60 din** chalta hai; khatam hone se pehle Muse
+   yaad dilayega, tab yahi steps dohra kar naya daal dena hai.
+
 ## Checklist (sab ho jaye to Muse ko "secrets dal diye" bolna)
 
 - [ ] FB_PAGE_ID
@@ -80,6 +101,8 @@ Tab tak ke liye YouTube Studio app se us video ko haath se public karna hoga.
 - [ ] YT_CLIENT_ID
 - [ ] YT_CLIENT_SECRET
 - [ ] YT_REFRESH_TOKEN
+- [ ] THREADS_USER_ID
+- [ ] THREADS_ACCESS_TOKEN (upar wale steps se bana kar)
 
 Uske baad Muse: pehle **dry-run** test karega (video bankar ready, bina publish),
 phir ek **asli test post** karke teeno platform par live verify karke report dega.

@@ -8,7 +8,9 @@ Flow per run:
   2. Otherwise pick the next script-ready topic, build the video, put it
      in the vault BEFORE publishing, then publish platform by platform,
      saving progress after every single platform.
-  3. A topic is recorded as posted only when all 3 platforms have it.
+  3. A topic is recorded as posted only when all active platforms have
+     it. Threads counts as a platform only while its secrets are set
+     (see threads_enabled) — without them the original three rule.
 
 Design rules: nothing fails silently (any failure -> exit 1 -> red run);
 a built video is never lost; the same script is never posted twice
@@ -34,12 +36,33 @@ import preflight
 import publish_fb
 import publish_ig
 import publish_tg
+import publish_threads
 import publish_yt
 import vault
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLATFORMS = ("facebook", "instagram", "youtube")
 MAX_ATTEMPTS = 3  # failed runs before a pending video is quarantined
+
+
+def threads_enabled():
+    """Threads tabhi platform banta hai jab uske dono secrets maujood
+    hon. Secrets na hon to pipeline purani teen platforms par hi chalti
+    hai — nayi cheez ki wajah se post kabhi nahi rukti."""
+    return bool(os.environ.get("THREADS_USER_ID")
+                and os.environ.get("THREADS_ACCESS_TOKEN"))
+
+
+def entry_platforms(entry):
+    """Is entry ke sakriya platforms ki list. Threads on ho to purani
+    pending entries me bhi uska khana ban jata hai (setdefault), taaki
+    vault retry use bhi gin le; off ho to woh gin-ti me aata hi nahi."""
+    plats = list(PLATFORMS)
+    if threads_enabled():
+        entry["platforms"].setdefault(
+            "threads", {"status": "pending", "id": None, "error": None})
+        plats.append("threads")
+    return plats
 YT_TAGS = ["Rahasya Bharat", "Hindi Facts", "Itihaas", "Rahasya"]
 
 
@@ -155,14 +178,26 @@ def publish_entry(manifest, topic_id, entry, video_path):
             except Exception as e:
                 warnings.append(f"ig temp-release cleanup: {e}")
 
+    def threads_flow():
+        rid, tag, url = gh_release.create_public_copy(video_path)
+        try:
+            return publish_threads.publish(url, entry["caption"])
+        finally:
+            try:
+                gh_release.delete_public_copy(rid, tag)
+            except Exception as e:
+                warnings.append(f"threads temp-release cleanup: {e}")
+
+    plats = entry_platforms(entry)
     jobs = {
         "facebook": lambda: publish_fb.publish(video_path, entry["caption"]),
         "instagram": ig_flow,
         "youtube": lambda: publish_yt.publish(
             video_path, entry["yt_title"], entry["description"],
             entry.get("yt_tags") or YT_TAGS),
+        "threads": threads_flow,
     }
-    for name in PLATFORMS:
+    for name in plats:
         if entry["platforms"][name]["status"] == "done":
             print(f"[skip] {name} already posted for {topic_id}")
             continue
@@ -175,7 +210,7 @@ def publish_entry(manifest, topic_id, entry, video_path):
         vault.save_manifest(manifest)
     if warnings:
         print("warnings:", warnings)
-    return all(entry["platforms"][p]["status"] == "done" for p in PLATFORMS)
+    return all(entry["platforms"][p]["status"] == "done" for p in plats)
 
 
 QUESTION_FALLBACK = {
@@ -255,7 +290,7 @@ def finish_entry(manifest, state, topic_id, entry):
     state.setdefault("posted", {})[topic_id] = {
         "at": ist_now().isoformat(timespec="seconds"),
         "slot": entry["slot"],
-        "results": {p: entry["platforms"][p]["id"] for p in PLATFORMS},
+        "results": {p: entry["platforms"][p]["id"] for p in entry["platforms"]},
         "failures": [],
         "fingerprint": entry["fingerprint"],
         "comments": {p: s.get("status") for p, s in entry.get("extras", {}).items()},
@@ -392,6 +427,9 @@ def main():
         "platforms": {p: {"status": "pending", "id": None, "error": None}
                       for p in PLATFORMS},
     }
+    if threads_enabled():
+        entry["platforms"]["threads"] = {
+            "status": "pending", "id": None, "error": None}
     manifest["pending"][topic["id"]] = entry
     vault.save_manifest(manifest)
     print(f"vault: {topic['id']} stored (asset {entry['video_asset']})")
@@ -400,7 +438,7 @@ def main():
     if publish_entry(manifest, topic["id"], entry, built["video"]):
         try_extras(manifest, topic["id"], entry, built["video"])
         finish_entry(manifest, state, topic["id"], entry)
-        print(json.dumps({"posted": topic["id"], "ok": list(PLATFORMS)},
+        print(json.dumps({"posted": topic["id"], "ok": list(entry["platforms"])},
                          ensure_ascii=False))
         return 0
     entry["attempts"] = entry.get("attempts", 0) + 1

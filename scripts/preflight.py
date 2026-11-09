@@ -101,6 +101,36 @@ def check_instagram():
                        ig_id, "IG user")
 
 
+def check_threads():
+    # Threads optional hai: secrets na hon to check hi nahi — OK maan
+    # kar aage badho, taaki feature band haalat me pipeline na ruke.
+    # Token Threads ka apna hota hai (FB Page token se alag) aur
+    # threads_basic ke saath /me padh sakta hai, isliye yahan asal
+    # read probe chal sakta hai.
+    user_id = os.environ.get("THREADS_USER_ID")
+    token = os.environ.get("THREADS_ACCESS_TOKEN")
+    if not user_id or not token:
+        return "not configured (secrets missing) — Threads skipped"
+    try:
+        r = requests.get("https://graph.threads.net/v1.0/me",
+                         params={"fields": "id,username",
+                                 "access_token": token},
+                         timeout=TIMEOUT)
+    except requests.RequestException as e:
+        return (f"probe network error ({e.__class__.__name__}) — token not "
+                "proven dead, proceeding")
+    if r.status_code == 200:
+        d = r.json()
+        if str(d.get("id")) != str(user_id):
+            raise RuntimeError(
+                f"token returned a different Threads user: {d.get('id')}")
+        return "reachable: " + str(d.get("username") or d["id"])
+    alive, detail = _classify_meta(r)
+    if alive:
+        return detail
+    raise RuntimeError(detail)
+
+
 def check_youtube():
     # The refresh exchange IS the credential test: a revoked/expired
     # refresh token fails here with invalid_grant. channels.list is
@@ -124,7 +154,8 @@ def check_youtube():
 
 CHECKS = (("facebook", check_facebook),
           ("instagram", check_instagram),
-          ("youtube", check_youtube))
+          ("youtube", check_youtube),
+          ("threads", check_threads))
 
 
 def check_all():
