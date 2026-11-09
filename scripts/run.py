@@ -43,12 +43,15 @@ import vault
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLATFORMS = ("facebook", "instagram", "youtube")
 MAX_ATTEMPTS = 3  # failed runs before a pending video is quarantined
+THREADS_RUNTIME_OFF = False  # preflight fail ho to is run ke liye Threads band
 
 
 def threads_enabled():
     """Threads tabhi platform banta hai jab uske dono secrets maujood
     hon. Secrets na hon to pipeline purani teen platforms par hi chalti
     hai — nayi cheez ki wajah se post kabhi nahi rukti."""
+    if THREADS_RUNTIME_OFF:
+        return False
     return bool(os.environ.get("THREADS_USER_ID")
                 and os.environ.get("THREADS_ACCESS_TOKEN"))
 
@@ -357,8 +360,19 @@ def main():
     failed = []
     for name, ok, detail in preflight.check_all():
         print(f"preflight {name}: {'OK' if ok else 'FAIL'} — {detail}")
-        if not ok:
-            failed.append(name)
+        if ok:
+            continue
+        if name == "threads":
+            # Threads OPTIONAL hai — uski credential gadbad ho to sirf
+            # Threads is run me band rahega, baaki pipeline HAR haal me
+            # chalegi. (2026-11-10: naye Threads check ne 9 Nov shaam aur
+            # 10 Nov subah ke do poore run gira diye the — preflight fail
+            # par run rukne se video bani hi nahi.)
+            globals()["THREADS_RUNTIME_OFF"] = True
+            print("WARNING: Threads is run ke liye band — baaki platforms "
+                  "par video jayegi; Threads credential baad me theek hogi.")
+            continue
+        failed.append(name)
     if failed:
         print(f"PREFLIGHT FAILED: {', '.join(failed)} — fix the credential "
               "first; nothing was built or posted.")
