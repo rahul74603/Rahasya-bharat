@@ -245,6 +245,40 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "chand-baori": {
+   "at": "2026-11-09T05:31:02+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1176971531507705",
+    "instagram": "18133796356833618",
+    "youtube": "6MwcpSYqYBE"
+   },
+   "failures": [],
+   "fingerprint": "22c2192ac53d219f",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
+  },
+  "dhanushkodi": {
+   "at": "2026-11-09T05:36:37+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1428077866158037",
+    "instagram": "17921459298458901",
+    "youtube": "helzQO-DFgs"
+   },
+   "failures": [],
+   "fingerprint": "ffc82c2699cbb22d",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
