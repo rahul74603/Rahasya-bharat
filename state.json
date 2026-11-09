@@ -279,6 +279,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "takshashila": {
+   "at": "2026-11-10T04:55:22+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "2374082232999225",
+    "instagram": "18439626331197462",
+    "youtube": "Ha6YwCHVhP4"
+   },
+   "failures": [],
+   "fingerprint": "af7583c1da8f9288",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
