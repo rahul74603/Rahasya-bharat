@@ -296,6 +296,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "root-bridges": {
+   "at": "2026-11-10T20:40:44+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "980791191292187",
+    "instagram": "18103735949673285",
+    "youtube": "SjE0zy_TNY8"
+   },
+   "failures": [],
+   "fingerprint": "e78bc52cbb9e719e",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
