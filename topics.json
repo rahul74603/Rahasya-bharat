@@ -331,13 +331,14 @@
    "title": "कुलधरा — एक रात में खाली हुआ गाँव | Rahasya Bharat"
   },
   {
-   "desc_extra": "",
-   "hook": null,
+   "desc_extra": "मांडू के जहाज़ महल का रहस्य और जल पर तैरते महल की कहानी।",
+   "hook": "पानी पर तैरता महल — जो असल में जहाज़ जैसा दिखता है!",
    "id": "mandu-jahaz-mahal",
    "image_query": "Jahaz Mahal Mandu Madhya Pradesh",
-   "script": null,
+   "script": "पानी पर तैरता महल — जो असल में जहाज़ जैसा दिखता है! मध्य प्रदेश के मांडू में खड़ा जहाज़ महल, दो झीलों — मुंज तालाब और कपूर तालाब — के बीच एक संकरी पट्टी पर बना है। बरसात में जब दोनों तालाब भर जाते हैं, तो यह महल पानी पर तैरते जहाज़ जैसा लगता है — इसीलिए इसका नाम पड़ा जहाज़ महल। इसे पंद्रहवीं सदी में मालवा के सुल्तान ग़ियासुद्दीन खिलजी ने बनवाया था, अपने हरम के लिए — कहा जाता है कि वहाँ पंद्रह हज़ार महिलाएँ रहती थीं। यह दो मंज़िला महल करीब 110 मीटर लंबा है, और इसके चारों ओर पानी की नहरें, कुंड और बावड़ियाँ बनी हैं — मध्यकालीन इंजीनियरिंग का कमाल। आज यह भारतीय पुरातत्व सर्वेक्षण का संरक्षित स्मारक है, और मांडू आने वाला हर यात्री इसे देखकर ठहर जाता है। तो बताइए — क्या आपको लगता है यह महल वाकई जहाज़ जैसा लगता है, या यह सिर्फ पानी का खेल है? अपनी राय कमेंट में बताइए, और ऐसी ही कहानियों के लिए चैनल को सब्सक्राइब कीजिए, इंस्टाग्राम और फेसबुक पर हमें फॉलो कीजिए। कल सुबह — कोणार्क — पत्थर का रथ, जो सूरज के लिए बना।",
    "slot": "morning",
-   "title": "मांडू का जहाज़ महल — पानी पर तैरता महल | Rahasya Bharat"
+   "title": "मांडू का जहाज़ महल — पानी पर तैरता महल | Rahasya Bharat",
+   "stock_query": "water reflections, stone walls, sunrise mist"
   },
   {
    "desc_extra": "",
@@ -365,6 +366,56 @@
    "script": null,
    "slot": "evening",
    "title": "मावलिनोंग — एशिया का सबसे साफ़ गाँव | Rahasya Bharat"
+  },
+  {
+   "id": "ajanta-caves",
+   "slot": "morning",
+   "title": "अजंता की गुफाएँ — पहाड़ में छिपा 2,000 साल पुराना खज़ाना | Rahasya Bharat",
+   "image_query": "Ajanta Caves Maharashtra Buddhist paintings",
+   "script": null,
+   "hook": null,
+   "desc_extra": "",
+   "stock_query": null
+  },
+  {
+   "id": "ellora-kailasa",
+   "slot": "morning",
+   "title": "कैलास मंदिर — एक ही चट्टान को काटकर बना मंदिर | Rahasya Bharat",
+   "image_query": "Kailasa Temple Ellora rock cut monolithic",
+   "script": null,
+   "hook": null,
+   "desc_extra": "",
+   "stock_query": null
+  },
+  {
+   "id": "mahabalipuram-shore",
+   "slot": "morning",
+   "title": "मामल्लपुरम — समुद्र किनारे खड़ा पल्लवों का मंदिर | Rahasya Bharat",
+   "image_query": "Shore Temple Mahabalipuram Mamallapuram sea",
+   "script": null,
+   "hook": null,
+   "desc_extra": "",
+   "stock_query": null
+  },
+  {
+   "id": "fatehpur-sikri",
+   "slot": "morning",
+   "title": "फ़तेहपुर सीकरी — अकबर का शहर जो खाली हो गया | Rahasya Bharat",
+   "image_query": "Fatehpur Sikri Buland Darwaza red sandstone",
+   "script": null,
+   "hook": null,
+   "desc_extra": "",
+   "stock_query": null
+  },
+  {
+   "id": "golconda-fort",
+   "slot": "morning",
+   "title": "गोलकुंडा किला — ताली की आवाज़ जो ऊपर तक सुनाई देती है | Rahasya Bharat",
+   "image_query": "Golconda Fort Hyderabad acoustic wonder",
+   "script": null,
+   "hook": null,
+   "desc_extra": "",
+   "stock_query": null
   }
  ]
 }
