@@ -27,13 +27,21 @@ GROQ_API = "https://api.groq.com/openai/v1/chat/completions"
 # were REMOVED 2026-11-04: keeping gemini-2.0-flash last in the chain
 # made its 404 the only error the log showed, hiding why the live
 # models had failed. Every model's failure is now printed by name.
+# 2026-11-10 rot: Google retired the whole gemini-2.5 family for newer
+# keys (404 "no longer available to new users" — Google's own error names
+# gemini-3.8-flash, and gemini-3.6-flash is verified on this same
+# generateContent call). Groq retired llama-3.1-8b-instant (404);
+# openai/gpt-oss-20b is its named replacement. Groq calls no longer send
+# response_format either: gpt-oss models reject it (400) — the prompts
+# demand JSON and replies are fence-stripped before parsing.
 GEMINI_MODELS = [m for m in dict.fromkeys([
     os.environ.get("GEMINI_MODEL"),
-    "gemini-2.5-flash", "gemini-2.5-flash-lite",
+    "gemini-3.6-flash", "gemini-3.8-flash",
+    "gemini-flash-latest", "gemini-3.5-flash-lite",
 ]) if m]
 GROQ_MODELS = [m for m in dict.fromkeys([
     os.environ.get("GROQ_MODEL"),
-    "openai/gpt-oss-120b", "llama-3.1-8b-instant",
+    "openai/gpt-oss-120b", "openai/gpt-oss-20b",
 ]) if m]
 
 
@@ -49,8 +57,7 @@ def _groq_json(prompt):
                               json={"model": model,
                                     "messages": [{"role": "user",
                                                   "content": prompt}],
-                                    "temperature": 0.7,
-                                    "response_format": {"type": "json_object"}},
+                                    "temperature": 0.7},
                               timeout=60)
             r.raise_for_status()
             text = r.json()["choices"][0]["message"]["content"]
@@ -58,7 +65,9 @@ def _groq_json(prompt):
                           flags=re.M).strip()
             return json.loads(text)
         except Exception as e:
-            print(f"gen_meta: groq model {model} failed: {e}")
+            resp = getattr(e, "response", None)
+            print(f"gen_meta: groq model {model} failed: {e}",
+                  (resp.text[:200] if resp is not None else ""))
             last = e
     raise last
 
@@ -82,7 +91,9 @@ def _gemini_json(prompt):
                           flags=re.M).strip()
             return json.loads(text)
         except Exception as e:
-            print(f"gen_meta: gemini model {model} failed: {e}")
+            resp = getattr(e, "response", None)
+            print(f"gen_meta: gemini model {model} failed: {e}",
+                  (resp.text[:200] if resp is not None else ""))
             last = e
     raise last
 
