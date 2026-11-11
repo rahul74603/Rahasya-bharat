@@ -313,6 +313,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "brihadeeswara-shadow": {
+   "at": "2026-11-11T05:45:06+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1680589676912086",
+    "instagram": "17930869770186298",
+    "youtube": "yRvtdPC9E88"
+   },
+   "failures": [],
+   "fingerprint": "9fa225e202a49841",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
