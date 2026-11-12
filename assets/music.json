@@ -1,24 +1,6 @@
 {
     "tracks": [
         {
-            "credit": "\"Dark Fog\" by Kevin MacLeod (CC BY 3.0)",
-            "file": "music/dark_fog.ogg.b64",
-            "name": "Dark Fog (Dark Ambient)",
-            "slots": [
-                "evening"
-            ],
-            "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Dark%20Fog.mp3"
-        },
-        {
-            "credit": "\"Ghost Dance\" by Kevin MacLeod (CC BY 3.0)",
-            "file": "music/ghost_dance.ogg.b64",
-            "name": "Ghost Dance",
-            "slots": [
-                "evening"
-            ],
-            "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Ghost%20Dance.mp3"
-        },
-        {
             "credit": "\"Limit 70\" by Kevin MacLeod (CC0)",
             "file": "music/limit_70.ogg.b64",
             "name": "Limit 70",
@@ -27,6 +9,34 @@
                 "evening"
             ],
             "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Limit%2070.mp3"
+        },
+        {
+            "credit": "\"Dark Ambient\" — FreePD (CC0 / Public Domain)",
+            "file": "music/dark_ambient_cc0.ogg.b64",
+            "name": "Dark Ambient (CC0)",
+            "slots": [
+                "evening"
+            ],
+            "url": "https://archive.org/download/freepd/Page2/Dark%20Ambient.mp3"
+        },
+        {
+            "credit": "\"Ancient Power Of Serpents\" — FreePD (CC0 / Public Domain)",
+            "file": "music/ancient_serpents_cc0.ogg.b64",
+            "name": "Ancient Power Of Serpents (CC0)",
+            "slots": [
+                "morning",
+                "evening"
+            ],
+            "url": "https://archive.org/download/freepd/Page2/Ancient%20Power%20Of%20Serpents.mp3"
+        },
+        {
+            "credit": "\"Island Mystery\" — FreePD (CC0 / Public Domain)",
+            "file": "music/island_mystery_cc0.ogg.b64",
+            "name": "Island Mystery (CC0)",
+            "slots": [
+                "evening"
+            ],
+            "url": "https://archive.org/download/freepd/Page2/Island%20Mystery.mp3"
         }
     ]
 }
