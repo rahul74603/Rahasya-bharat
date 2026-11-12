@@ -366,6 +366,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "kamakhya": {
+   "at": "2026-11-12T21:05:23+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1854471835575754",
+    "instagram": "18206082733332177",
+    "youtube": "btaqEhAYaOQ",
+    "threads": "18098560109673343"
+   },
+   "failures": [],
+   "fingerprint": "25f81aec9ded8f1f",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
