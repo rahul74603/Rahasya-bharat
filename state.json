@@ -348,6 +348,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "lothal": {
+   "at": "2026-11-12T07:12:55+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "2081538019217417",
+    "instagram": "18082556141441718",
+    "youtube": "BhMrEeA0OUI",
+    "threads": "18140182018628376"
+   },
+   "failures": [],
+   "fingerprint": "87a96a147bdbe1ba",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
