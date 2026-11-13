@@ -402,6 +402,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "rameswaram-stones": {
+   "at": "2026-11-13T20:22:33+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1519565576666956",
+    "instagram": "18105854291455765",
+    "youtube": "ien89eW4IsM",
+    "threads": "18157814155525238"
+   },
+   "failures": [],
+   "fingerprint": "106e4655c131b4cb",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
