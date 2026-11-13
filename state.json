@@ -384,6 +384,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "kumbhalgarh": {
+   "at": "2026-11-13T06:13:04+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1624370619487737",
+    "instagram": "18649935550038607",
+    "youtube": "B_Bw2M06a-I",
+    "threads": "18113190746463055"
+   },
+   "failures": [],
+   "fingerprint": "d1ce271ad3201710",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
