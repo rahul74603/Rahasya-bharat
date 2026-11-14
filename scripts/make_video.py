@@ -167,6 +167,56 @@ async def _tts_edge(text, out_mp3):
     await edge_tts.Communicate(text, VOICE, rate=RATE, pitch=PITCH).save(out_mp3)
 
 
+# ---------------------------------------------------------------------------
+# Awaaz ke liye Latin shabd -> Devanagari (14 Nov 2026, Eric ki shikayat):
+# script me "Instagram"/"Facebook" jaise Latin shabd Hindi awaaz (Kokoro
+# lang=hi) se padhwane par awaaz unhe Hindi dhwaniyon se tod deti hai -
+# woh hissa bilkul kharab sunai deta hai (Sanchi video ke CTA me sabit).
+# Isiliye kisi bhi engine ko dene se pehle jane-pehchane English shabdon
+# ko Devanagari me badal dete hain. Ye badlav SIRF awaaz ke liye hai -
+# screen ke captions asal script hi rahte hain (woh tts() se nahi guzarte).
+_TTS_LATIN_MAP = {
+    "instagram": "इंस्टाग्राम",
+    "facebook": "फ़ेसबुक",
+    "youtube": "यूट्यूब",
+    "whatsapp": "व्हाट्सऐप",
+    "telegram": "टेलीग्राम",
+    "twitter": "ट्विटर",
+    "subscribe": "सब्सक्राइब",
+    "subscribed": "सब्सक्राइब किया",
+    "subscriber": "सब्सक्राइबर",
+    "subscribers": "सब्सक्राइबर्स",
+    "follow": "फ़ॉलो",
+    "followers": "फ़ॉलोवर्स",
+    "comment": "कमेंट",
+    "comments": "कमेंट्स",
+    "channel": "चैनल",
+    "like": "लाइक",
+    "share": "शेयर",
+    "shorts": "शॉर्ट्स",
+    "video": "वीडियो",
+    "videos": "वीडियो",
+    "reels": "रील्स",
+    "reel": "रील",
+    "post": "पोस्ट",
+    "online": "ऑनलाइन",
+    "link": "लिंक",
+    "page": "पेज",
+    "unesco": "यूनेस्को",
+    "dna": "डीएनए",
+    "ai": "एआई",
+}
+
+
+def _tts_normalize(text):
+    """Latin (a-z) shabdon ko upar ki list se Devanagari me badlo - sirf
+    awaaz ke liye. List me na ho to shabd waisa hi rahta hai."""
+    def repl(m):
+        w = m.group(0)
+        return _TTS_LATIN_MAP.get(w.lower(), w)
+    return re.sub(r"[A-Za-z]+", repl, text)
+
+
 def tts(text, out_mp3):
     """Voice provider chain — first success wins: Kokoro (channel ki
     FINAL awaaz — Eric ne 2026-11-05 ko dono sample sunkar pasand ki;
@@ -174,6 +224,7 @@ def tts(text, out_mp3):
     edge-tts (the always-available default). Narration can never be
     blocked by one provider being down. KOKORO_TTS=off se Kokoro band
     ho jata hai (purani chain par wapas)."""
+    text = _tts_normalize(text)
     errors = []
     if os.environ.get("KOKORO_TTS", "on").lower() != "off":
         try:
