@@ -456,6 +456,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "vikramshila": {
+   "at": "2026-11-15T04:49:25+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1880589383097345",
+    "instagram": "17947733121369460",
+    "youtube": "LBEr2v-WIXM",
+    "threads": "17992679795867809"
+   },
+   "failures": [],
+   "fingerprint": "150a4f61ef84fc65",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
