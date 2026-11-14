@@ -438,6 +438,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "shettihalli": {
+   "at": "2026-11-14T19:19:15+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1116331357843397",
+    "instagram": "17943842319380879",
+    "youtube": "V5wsutnImIQ",
+    "threads": "18127192414908185"
+   },
+   "failures": [],
+   "fingerprint": "de9c47d224148d92",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
