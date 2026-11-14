@@ -420,6 +420,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "sanchi": {
+   "at": "2026-11-14T06:04:03+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1110707978609476",
+    "instagram": "18132221632823114",
+    "youtube": "lrh4eIbgDp4",
+    "threads": "17997351956843550"
+   },
+   "failures": [],
+   "fingerprint": "cb2edc64ba66ca03",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
