@@ -474,6 +474,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "komic-hikkim": {
+   "at": "2026-11-15T19:45:59+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1122203290393120",
+    "instagram": "18097839086259565",
+    "youtube": "ZmaABIB9Mn4",
+    "threads": "18078637634461964"
+   },
+   "failures": [],
+   "fingerprint": "98341df431da2d3b",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
