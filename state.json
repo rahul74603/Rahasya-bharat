@@ -492,6 +492,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "mandu-jahaz-mahal": {
+   "at": "2026-11-16T05:03:45+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1612510260203210",
+    "instagram": "18201602431383361",
+    "youtube": "4b5flvK8-A8",
+    "threads": "18359968903220295"
+   },
+   "failures": [],
+   "fingerprint": "1232bc79f19a9955",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
