@@ -479,6 +479,51 @@
    "slot": "morning",
    "stock_query": "ancient fort walls sunset",
    "title": "चित्तौड़गढ़ — भारत का सबसे बड़ा किला | Rahasya Bharat"
+  },
+  {
+   "desc_extra": "",
+   "hook": null,
+   "id": "khajuraho-temples",
+   "image_query": "Khajuraho temples Madhya Pradesh",
+   "script": null,
+   "slot": "morning",
+   "title": "खजुराहो — हज़ार साल पुराने मंदिरों का रहस्य | Rahasya Bharat"
+  },
+  {
+   "desc_extra": "",
+   "hook": null,
+   "id": "meenakshi-temple",
+   "image_query": "Meenakshi Temple Madurai gopuram",
+   "script": null,
+   "slot": "morning",
+   "title": "मीनाक्षी मंदिर — 14 गोपुरमों वाला जीवंत चमत्कार | Rahasya Bharat"
+  },
+  {
+   "desc_extra": "",
+   "hook": null,
+   "id": "qutub-minar",
+   "image_query": "Qutub Minar Delhi",
+   "script": null,
+   "slot": "morning",
+   "title": "क़ुतुब मीनार — 800 साल पुरानी दिल्ली की शान | Rahasya Bharat"
+  },
+  {
+   "desc_extra": "",
+   "hook": null,
+   "id": "mehrangarh-fort",
+   "image_query": "Mehrangarh Fort Jodhpur",
+   "script": null,
+   "slot": "morning",
+   "title": "मेहरानगढ़ किला — सूरज का किला और साधु का शाप | Rahasya Bharat"
+  },
+  {
+   "desc_extra": "",
+   "hook": null,
+   "id": "mahabodhi-temple",
+   "image_query": "Mahabodhi Temple Bodh Gaya",
+   "script": null,
+   "slot": "morning",
+   "title": "महाबोधि मंदिर — जहाँ बुद्ध को ज्ञान मिला | Rahasya Bharat"
   }
  ]
 }
