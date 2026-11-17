@@ -510,6 +510,23 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "konark-sun-temple": {
+   "at": "2026-11-17T13:14:39+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1130972589687106",
+    "instagram": "18115812293160160",
+    "youtube": "CgqETCTjtHw"
+   },
+   "failures": [],
+   "fingerprint": "835c0cbc73e4153e",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "failed"
+   }
   }
  }
 }
