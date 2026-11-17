@@ -527,6 +527,23 @@
     "youtube": "failed",
     "telegram": "failed"
    }
+  },
+  "kuldhara": {
+   "at": "2026-11-17T21:53:32+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "3292656284456871",
+    "instagram": "18154268074540116",
+    "youtube": "Tc2gEs7e9lI"
+   },
+   "failures": [],
+   "fingerprint": "0db43f25e2b6ee6f",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
