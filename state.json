@@ -578,6 +578,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "nidhivan-vrindavan": {
+   "at": "2026-11-18T21:49:39+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1654851349673312",
+    "instagram": "18139642636654274",
+    "youtube": "Xph2Kl-xmNk",
+    "threads": "17968567499981326"
+   },
+   "failures": [],
+   "fingerprint": "f9b213ac072277a6",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "failed"
+   }
   }
  }
 }
