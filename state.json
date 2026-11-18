@@ -544,6 +544,25 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "ajanta-caves": {
+   "at": "2026-11-18T06:04:01+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "4721236724800148",
+    "instagram": "18024656339941901",
+    "youtube": null
+   },
+   "failures": [
+    "youtube deferred — channel account band hai, video backlog me park hai"
+   ],
+   "fingerprint": "569718fbb7c3e3c6",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "telegram": "done"
+   },
+   "youtube_deferred": true
   }
  }
 }
