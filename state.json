@@ -551,18 +551,33 @@
    "results": {
     "facebook": "4721236724800148",
     "instagram": "18024656339941901",
-    "youtube": null
+    "youtube": "T2q7mnddOO8"
    },
-   "failures": [
-    "youtube deferred — channel account band hai, video backlog me park hai"
-   ],
+   "failures": [],
    "fingerprint": "569718fbb7c3e3c6",
    "comments": {
     "facebook": "failed",
     "instagram": "failed",
-    "telegram": "done"
+    "telegram": "done",
+    "youtube": "failed"
+   }
+  },
+  "ellora-kailasa": {
+   "at": "2026-11-18T18:27:34+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1410768060853810",
+    "instagram": "17957462970038020",
+    "youtube": "5p3hCIz6Vd8"
    },
-   "youtube_deferred": true
+   "failures": [],
+   "fingerprint": "ff433dece939b26d",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
