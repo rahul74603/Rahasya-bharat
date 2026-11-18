@@ -38,6 +38,7 @@ def main():
             lines.append(f"_(vault read failed: {e})_")
     pending = manifest.get("pending", {}) if manifest else {}
     quarantined = manifest.get("quarantined", {}) if manifest else {}
+    yt_backlog = manifest.get("yt_backlog", {}) if manifest else {}
 
     if posted:
         last_id = max(posted, key=lambda k: posted[k].get("at", ""))
@@ -64,7 +65,13 @@ def main():
         for tid, e in quarantined.items():
             lines.append(f"- `{tid}` — {e.get('quarantine_reason', '')}")
 
-    done_ids = set(posted) | set(pending) | set(quarantined)
+    if yt_backlog:
+        lines.append("")
+        lines.append("**🎬 YouTube backlog (channel wapas aate hi apne aap chadhengi):**")
+        for tid in yt_backlog:
+            lines.append(f"- `{tid}`")
+
+    done_ids = set(posted) | set(pending) | set(quarantined) | set(yt_backlog)
     if manifest:
         done_ids |= set(manifest.get("done", {}))
     lines.append("")
