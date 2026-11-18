@@ -560,8 +560,9 @@ def main():
             finish_entry(manifest, state, topic["id"], entry)
         else:
             park_yt_backlog(manifest, state, topic["id"], entry)
-        print(json.dumps({"posted": topic["id"], "ok": list(entry["platforms"])},
-                         ensure_ascii=False))
+        print(json.dumps({"posted": topic["id"], "ok": [
+            p for p, s in entry["platforms"].items() if s["status"] == "done"]},
+            ensure_ascii=False))
         return 0
     entry["attempts"] = entry.get("attempts", 0) + 1
     vault.save_manifest(manifest)
