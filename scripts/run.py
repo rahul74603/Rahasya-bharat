@@ -44,6 +44,18 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLATFORMS = ("facebook", "instagram", "youtube")
 MAX_ATTEMPTS = 3  # failed runs before a pending video is quarantined
 THREADS_RUNTIME_OFF = False  # preflight fail ho to is run ke liye Threads band
+YOUTUBE_RUNTIME_OFF = False  # preflight fail ho to is run ke liye YouTube band
+YT_BACKLOG_CAP = 10  # ek run me zyada se zyada itni parked videos YouTube par chadhengi
+
+
+def youtube_enabled():
+    """YouTube tabhi sakriya platform hai jab is run ke preflight ne uska
+    token zinda paya ho. Token mara ho (2026-11-18: channel wala Google
+    account disable ho gaya, appeal chal rahi hai) to YouTube us run ke
+    liye band — video baaki platforms par jati hai aur YouTube ke liye
+    vault ke yt_backlog me park ho jati hai. Token wapas zinda hote hi
+    backlog apne aap drain hota hai (drain_yt_backlog dekho)."""
+    return not YOUTUBE_RUNTIME_OFF
 
 
 def threads_enabled():
@@ -60,7 +72,9 @@ def entry_platforms(entry):
     """Is entry ke sakriya platforms ki list. Threads on ho to purani
     pending entries me bhi uska khana ban jata hai (setdefault), taaki
     vault retry use bhi gin le; off ho to woh gin-ti me aata hi nahi."""
-    plats = list(PLATFORMS)
+    plats = ["facebook", "instagram"]
+    if youtube_enabled():
+        plats.append("youtube")
     if threads_enabled():
         entry["platforms"].setdefault(
             "threads", {"status": "pending", "id": None, "error": None})
@@ -301,6 +315,81 @@ def finish_entry(manifest, state, topic_id, entry):
     save("state.json", state)
 
 
+def park_yt_backlog(manifest, state, topic_id, entry):
+    """YouTube band hai lekin baaki sakriya platforms par video ja chuki
+    hai: entry pending se hatakar yt_backlog me park karo. Video vault me
+    SURAKSHIT rehti hai (delete NAHI hoti), topic state me posted gina
+    jata hai taaki dobara build/post na ho, aur YouTube token zinda hote
+    hi drain_yt_backlog use wahan chadha dega."""
+    manifest.setdefault("yt_backlog", {})
+    manifest["pending"].pop(topic_id, None)
+    manifest["yt_backlog"][topic_id] = entry
+    vault.save_manifest(manifest)
+    state.setdefault("posted", {})[topic_id] = {
+        "at": ist_now().isoformat(timespec="seconds"),
+        "slot": entry["slot"],
+        "results": {p: entry["platforms"][p]["id"] for p in entry["platforms"]},
+        "failures": ["youtube deferred — channel account band hai, video backlog me park hai"],
+        "fingerprint": entry["fingerprint"],
+        "comments": {p: s.get("status") for p, s in entry.get("extras", {}).items()},
+        "youtube_deferred": True,
+    }
+    save("state.json", state)
+    print(f"YT BACKLOG: {topic_id} — video vault me park hai; YouTube "
+          "wapas aate hi apne aap chadh jayegi.")
+
+
+def drain_yt_backlog(manifest, state):
+    """YouTube token zinda hai aur backlog me videos park hain to unhe
+    purani-se-nayi order me YouTube par chadhao (ek run me cap tak).
+    Safal upload par state ka record pura hota hai aur vault ki video
+    saaf hoti hai; fail ho to entry backlog me hi rehti hai — koi
+    quarantine nahi, koi nuksan nahi."""
+    backlog = manifest.setdefault("yt_backlog", {})
+    if not backlog:
+        return
+    if not youtube_enabled():
+        print(f"YT BACKLOG: {len(backlog)} video(s) YouTube ke intezaar me "
+              "park hain (token abhi bhi band hai).")
+        return
+    ids = sorted(backlog, key=lambda k: backlog[k].get("built_at", ""))
+    print(f"YT BACKLOG DRAIN: {len(ids)} video(s) park hain — purani se "
+          f"nayi, is run me zyada se zyada {YT_BACKLOG_CAP}.")
+    for topic_id in ids[:YT_BACKLOG_CAP]:
+        entry = backlog[topic_id]
+        print(f"yt backlog upload: {topic_id}")
+        with tempfile.TemporaryDirectory() as td:
+            video_path = vault.get_video(entry["video_asset"],
+                                         os.path.join(td, f"{topic_id}.mp4"))
+            ok = attempt(entry, "youtube", lambda: publish_yt.publish(
+                video_path, entry["yt_title"], entry["description"],
+                entry.get("yt_tags") or YT_TAGS))
+            if not ok:
+                vault.save_manifest(manifest)
+                continue
+            try_extras(manifest, topic_id, entry, video_path)
+        try:
+            vault.delete_video(entry["video_asset"])
+        except Exception as e:
+            print("vault video delete warning:", e)
+        backlog.pop(topic_id, None)
+        manifest["done"][topic_id] = {
+            "fingerprint": entry["fingerprint"],
+            "at": ist_now().isoformat(timespec="seconds"),
+        }
+        vault.save_manifest(manifest)
+        posted = state.setdefault("posted", {}).get(topic_id)
+        if posted is not None:
+            posted.setdefault("results", {})["youtube"] = \
+                entry["platforms"]["youtube"]["id"]
+            posted["failures"] = []
+            posted.pop("youtube_deferred", None)
+            posted["comments"] = {
+                p: s.get("status") for p, s in entry.get("extras", {}).items()}
+            save("state.json", state)
+        print(f"YT BACKLOG DONE: {topic_id} — YouTube par chadh gayi.")
+
+
 def process_vault(manifest, state, slot):
     """Retry this slot's pending videos. Returns how many are STILL
     incomplete afterwards (those block new builds for the slot)."""
@@ -315,7 +404,10 @@ def process_vault(manifest, state, slot):
                                          os.path.join(td, f"{topic_id}.mp4"))
             if publish_entry(manifest, topic_id, entry, video_path):
                 try_extras(manifest, topic_id, entry, video_path)
-                finish_entry(manifest, state, topic_id, entry)
+                if entry["platforms"]["youtube"]["status"] == "done":
+                    finish_entry(manifest, state, topic_id, entry)
+                else:
+                    park_yt_backlog(manifest, state, topic_id, entry)
             else:
                 entry["attempts"] = entry.get("attempts", 0) + 1
                 if entry["attempts"] >= MAX_ATTEMPTS:
@@ -362,6 +454,16 @@ def main():
         print(f"preflight {name}: {'OK' if ok else 'FAIL'} — {detail}")
         if ok:
             continue
+        if name == "youtube":
+            # YouTube bhi OPTIONAL hai (2026-11-18 se): channel wala
+            # Google account disable ho gaya hai aur appeal chal rahi
+            # hai. Token mara ho to is run ke liye YouTube band — video
+            # baaki platforms par jayegi aur YouTube ke liye yt_backlog
+            # me park hogi; token zinda hote hi backlog apne aap drain.
+            globals()["YOUTUBE_RUNTIME_OFF"] = True
+            print("WARNING: YouTube is run ke liye band — video baaki "
+                  "platforms par jayegi; YouTube ke liye backlog me park hogi.")
+            continue
         if name == "threads":
             # Threads OPTIONAL hai — uski credential gadbad ho to sirf
             # Threads is run me band rahega, baaki pipeline HAR haal me
@@ -380,14 +482,17 @@ def main():
 
     manifest = vault.load_manifest()
     manifest.setdefault("quarantined", {})
+    manifest.setdefault("yt_backlog", {})
+    drain_yt_backlog(manifest, state)
     for qid in manifest["quarantined"]:
         print(f"WARNING: {qid} is QUARANTINED in the vault (video safe, "
               "not blocking). Manual review needed to retry or drop it.")
     posted_ids = (set(state.get("posted", {})) | set(manifest["done"])
-                  | set(manifest["quarantined"]))
+                  | set(manifest["quarantined"]) | set(manifest["yt_backlog"]))
     done_fps = {v.get("fingerprint") for v in state.get("posted", {}).values()}
     done_fps |= {v.get("fingerprint") for v in manifest["done"].values()}
     done_fps |= {v.get("fingerprint") for v in manifest["quarantined"].values()}
+    done_fps |= {v.get("fingerprint") for v in manifest["yt_backlog"].values()}
 
     # 1) Vault first — kal ki adhuri video aaj ki nayi video se pehle.
     stuck = process_vault(manifest, state, args.slot)
@@ -396,7 +501,7 @@ def main():
               "incomplete — not building a new one until the queue clears.")
         return 1
     posted_ids = (set(state.get("posted", {})) | set(manifest["done"])
-                  | set(manifest["quarantined"]))
+                  | set(manifest["quarantined"]) | set(manifest["yt_backlog"]))
 
     # 2) Next topic.
     topic = pick_topic(topics, posted_ids, done_fps, args.slot)
@@ -451,7 +556,10 @@ def main():
     # 4) Publish; on any failure the entry stays in the vault for next run.
     if publish_entry(manifest, topic["id"], entry, built["video"]):
         try_extras(manifest, topic["id"], entry, built["video"])
-        finish_entry(manifest, state, topic["id"], entry)
+        if entry["platforms"]["youtube"]["status"] == "done":
+            finish_entry(manifest, state, topic["id"], entry)
+        else:
+            park_yt_backlog(manifest, state, topic["id"], entry)
         print(json.dumps({"posted": topic["id"], "ok": list(entry["platforms"])},
                          ensure_ascii=False))
         return 0
