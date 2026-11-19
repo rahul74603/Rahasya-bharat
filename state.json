@@ -614,6 +614,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "mawlynnong": {
+   "at": "2026-11-19T21:32:21+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "2025363718649972",
+    "instagram": "18115384300887987",
+    "youtube": "mhhzWGWnXPk",
+    "threads": "18116635325147476"
+   },
+   "failures": [],
+   "fingerprint": "fcd3385d9b5a0e92",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
