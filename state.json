@@ -596,6 +596,24 @@
     "youtube": "failed",
     "telegram": "failed"
    }
+  },
+  "mahabalipuram-shore": {
+   "at": "2026-11-19T06:56:47+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1524231882848174",
+    "instagram": "18139289029643953",
+    "youtube": "IsjIUE0zqps",
+    "threads": "18138162481645125"
+   },
+   "failures": [],
+   "fingerprint": "61041591bc7407f5",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
