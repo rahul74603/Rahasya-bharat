@@ -650,6 +650,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "shetphal-snake-village": {
+   "at": "2026-11-20T21:15:48+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1653033109623926",
+    "instagram": "18128792017894121",
+    "youtube": "artWRLywhno",
+    "threads": "18217659130361900"
+   },
+   "failures": [],
+   "fingerprint": "e03922791765ead3",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
