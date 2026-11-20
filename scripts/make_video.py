@@ -12,6 +12,7 @@ import asyncio
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import urllib.parse
@@ -425,6 +426,57 @@ def _silence_mp3(path, dur):
         "-c:a", "libmp3lame", "-q:a", "4", path])
 
 
+
+def _mean_volume_db(path):
+    """ffmpeg volumedetect se mean volume (dB). Naap na sake to None."""
+    try:
+        r = subprocess.run(
+            ["ffmpeg", "-v", "info", "-i", path, "-af", "volumedetect",
+             "-f", "null", "-"],
+            capture_output=True, text=True, timeout=30)
+        m = re.search(r"mean_volume:\s*(-?[\d.]+) dB", r.stderr or "")
+        return float(m.group(1)) if m else None
+    except Exception:
+        return None
+
+
+def _trim_sentence_audio(path):
+    """✂️ Auto-Editor trim (2026-11-20): jumle ki TTS file ke aage-peeche ki
+    mrit khamoshi aur andar ke lambe pause --margin 0.35s tak sikodta hai —
+    har video se kuch second bekaar khamoshi kam, kahani ki gati tez.
+    FAIL-SAFE: AUTOEDITOR_TRIM=off ho, tool na mile, file lagbhag khamosh
+    ho (nakli/test audio), trim file ko 30% se zyada sikod de, ya koi bhi
+    error aaye — har haal me ASLI file hi aage jati hai. Trim hamesha
+    probe_duration se PEHLE hota hai, isliye jumla-timings aur captions
+    kabhi drift nahi hote (2026-11-20 ko whisper se verify bhi kiya)."""
+    if os.environ.get("AUTOEDITOR_TRIM", "on").strip().lower() == "off":
+        return path
+    exe = shutil.which("auto-editor")
+    if not exe:
+        return path
+    vol = _mean_volume_db(path)
+    if vol is not None and vol < -45:
+        return path  # lagbhag khamosh file — ise chhuna hi mat
+    out = path.replace(".mp3", "_trim.mp3")
+    try:
+        r = subprocess.run([exe, path, "--margin", "0.35s", "--output", out],
+                           capture_output=True, timeout=180)
+        if r.returncode != 0 or not os.path.exists(out) \
+                or os.path.getsize(out) < 1000:
+            return path
+        d0, d1 = probe_duration(path), probe_duration(out)
+        if d0 <= 0 or d1 < 0.7 * d0 or d1 > d0 + 0.05:
+            try:
+                os.remove(out)
+            except OSError:
+                pass
+            return path
+        print(f"trim: {os.path.basename(path)} {d0:.2f}s -> {d1:.2f}s")
+        return out
+    except Exception as e:
+        print("auto-editor trim fail, asli audio chalega:", e)
+        return path
+
 def synthesize_sentences(script, out_mp3, workdir):
     """Phase 1: jumla-dar-jumla TTS — har jumla EXISTING provider chain
     (tts()) se alag banta hai, beech me ~80ms khamoshi, phir sab jud kar
@@ -436,6 +488,9 @@ def synthesize_sentences(script, out_mp3, workdir):
     if len(sentences) < 2:
         # ek hi jumla: alag-alag banane se koi fayda nahi
         tts(script, out_mp3)
+        trimmed = _trim_sentence_audio(out_mp3)
+        if trimmed != out_mp3:
+            os.replace(trimmed, out_mp3)
         return probe_duration(out_mp3), None
     gap = os.path.join(workdir, "gap.mp3")
     _silence_mp3(gap, SENTENCE_GAP)
@@ -446,6 +501,7 @@ def synthesize_sentences(script, out_mp3, workdir):
             t += SENTENCE_GAP
         p = os.path.join(workdir, f"sent{i}.mp3")
         tts(s, p)
+        p = _trim_sentence_audio(p)  # timings iske BAAD naapi jati hain
         d = probe_duration(p)
         parts.append(p)
         timings.append((s, t, t + d))
