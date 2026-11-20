@@ -56,6 +56,9 @@ jobs:
       - name: Test gate (offline unit tests — fail here, nothing is built)
         run: python -m unittest discover -s tests -v
 
+      - name: Install Auto-Editor (jumla-audio trim; test gate ke BAAD isliye ki tests par asar na pade — tool na mile to make_video trim skip kar deta hai)
+        run: pip install -q auto-editor
+
       - name: Decide slot
         id: slot
         # Slot ghadi se NAHI, is run ko bulane wale cron se tay hota hai.
