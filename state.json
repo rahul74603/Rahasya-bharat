@@ -632,6 +632,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "fatehpur-sikri": {
+   "at": "2026-11-20T07:06:37+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1930312931093049",
+    "instagram": "17967516405220331",
+    "youtube": "-1keilVlCsE",
+    "threads": "18129612989512910"
+   },
+   "failures": [],
+   "fingerprint": "08931f8135f51314",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
