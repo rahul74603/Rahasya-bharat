@@ -668,6 +668,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "golconda-fort": {
+   "at": "2026-11-21T06:30:54+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1413307410884520",
+    "instagram": "17970025110229893",
+    "youtube": "3tY9l6ZjrV4",
+    "threads": "18102451982451796"
+   },
+   "failures": [],
+   "fingerprint": "89291c5593cb81f5",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
