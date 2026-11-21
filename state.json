@@ -686,6 +686,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "loktak-phumdis": {
+   "at": "2026-11-21T20:25:05+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1912867876362197",
+    "instagram": "18108137123321879",
+    "youtube": "vFmGT-cplCI",
+    "threads": "18120744656008367"
+   },
+   "failures": [],
+   "fingerprint": "3dd9135d72a2dde5",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
