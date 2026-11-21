@@ -704,6 +704,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "chittorgarh-fort": {
+   "at": "2026-11-22T05:28:11+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1465166009055524",
+    "instagram": "17917203684505546",
+    "youtube": "TVM9GwJiPBc",
+    "threads": "18109143179346911"
+   },
+   "failures": [],
+   "fingerprint": "1f31d9609ac8fd45",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
