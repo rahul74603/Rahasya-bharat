@@ -722,6 +722,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "st-marys-island": {
+   "at": "2026-11-22T20:21:27+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1436237795160381",
+    "instagram": "17922914907461508",
+    "youtube": "rVaXUJ-mbrk",
+    "threads": "17922104262466993"
+   },
+   "failures": [],
+   "fingerprint": "d714df04e0b6055b",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
