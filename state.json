@@ -740,6 +740,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "khajuraho-temples": {
+   "at": "2026-11-23T05:59:36+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1503182985250523",
+    "instagram": "17893140603619203",
+    "youtube": "DLKGx7HOlbE",
+    "threads": "18120417091804053"
+   },
+   "failures": [],
+   "fingerprint": "1be215ab7864e00a",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
