@@ -758,6 +758,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "ross-island": {
+   "at": "2026-11-24T00:10:19+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1815207612890611",
+    "instagram": "18202128049388730",
+    "youtube": "B_EcbXrqqt4",
+    "threads": "18148802557592936"
+   },
+   "failures": [],
+   "fingerprint": "4796b4aedaa67c91",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
