@@ -794,6 +794,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "meenakshi-temple": {
+   "at": "2026-11-24T09:57:48+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1581978453735574",
+    "instagram": "17968370580035574",
+    "youtube": "eNuEz3du3kU",
+    "threads": "18124300195738598"
+   },
+   "failures": [],
+   "fingerprint": "fd5a9302ed649067",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
