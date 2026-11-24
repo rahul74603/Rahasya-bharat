@@ -776,6 +776,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "bhedaghat-marble-rocks": {
+   "at": "2026-11-24T05:48:23+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "905740462566656",
+    "instagram": "18139706662680166",
+    "youtube": "BAyQOzbS8Qo",
+    "threads": "17908160262606109"
+   },
+   "failures": [],
+   "fingerprint": "57fb4f12eea5ab19",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
