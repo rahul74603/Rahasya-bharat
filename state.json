@@ -812,6 +812,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "belum-caves": {
+   "at": "2026-11-25T04:16:49+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "2103272720360811",
+    "instagram": "18010912688822954",
+    "youtube": "P5eF0oFTwYs",
+    "threads": "18110673832969584"
+   },
+   "failures": [],
+   "fingerprint": "0b1746447651e9dd",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
