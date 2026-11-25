@@ -830,6 +830,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "qutub-minar": {
+   "at": "2026-11-25T08:43:53+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1691862119228576",
+    "instagram": "18097575011163304",
+    "youtube": "MIXSQtaWLFw",
+    "threads": "18120372791044357"
+   },
+   "failures": [],
+   "fingerprint": "45304d698e9c4654",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
