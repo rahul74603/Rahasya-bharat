@@ -848,6 +848,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "mehrangarh-fort": {
+   "at": "2026-11-26T07:58:44+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "2278153789414857",
+    "instagram": "17982383255918552",
+    "youtube": "lJOX6GOfpoM",
+    "threads": "18445377814176091"
+   },
+   "failures": [],
+   "fingerprint": "b5f906e1c52daba6",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
