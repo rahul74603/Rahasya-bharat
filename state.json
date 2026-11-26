@@ -866,6 +866,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "borra-caves": {
+   "at": "2026-11-26T22:44:54+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1753138912905896",
+    "instagram": "17938927527418106",
+    "youtube": "F9HZVkHS5Ws",
+    "threads": "17921230914467344"
+   },
+   "failures": [],
+   "fingerprint": "121bda78dcb3e2a5",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
