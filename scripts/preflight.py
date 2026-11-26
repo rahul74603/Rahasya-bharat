@@ -24,7 +24,7 @@ import os
 
 import requests
 
-GRAPH = "https://graph.facebook.com/v19.0"
+GRAPH = "https://graph.facebook.com/v25.0"
 TIMEOUT = 30
 
 DEAD_MARKERS = ("Error validating access token", "Session has expired",
