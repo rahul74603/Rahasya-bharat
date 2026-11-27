@@ -884,6 +884,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "jhansi-fort": {
+   "at": "2026-11-27T15:39:22+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1876342197055540",
+    "instagram": "17977156938187827",
+    "youtube": "J_YNyikBgRs",
+    "threads": "18120808268588607"
+   },
+   "failures": [],
+   "fingerprint": "cfe1e2c6577d8dc2",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
