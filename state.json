@@ -902,6 +902,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "gandikota-canyon": {
+   "at": "2026-11-27T22:28:23+05:30",
+   "slot": "evening",
+   "results": {
+    "facebook": "1225043140207203",
+    "instagram": "17986680489132477",
+    "youtube": "-KxiF2lIsgM",
+    "threads": "17914173765304944"
+   },
+   "failures": [],
+   "fingerprint": "f1864d376864b999",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
