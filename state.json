@@ -920,6 +920,24 @@
     "youtube": "failed",
     "telegram": "done"
    }
+  },
+  "hawa-mahal": {
+   "at": "2026-11-28T07:41:04+05:30",
+   "slot": "morning",
+   "results": {
+    "facebook": "1293192516341918",
+    "instagram": "18037643933885987",
+    "youtube": "B16bxL5mnTI",
+    "threads": "18361511842175970"
+   },
+   "failures": [],
+   "fingerprint": "d424c57507368422",
+   "comments": {
+    "facebook": "failed",
+    "instagram": "failed",
+    "youtube": "failed",
+    "telegram": "done"
+   }
   }
  }
 }
